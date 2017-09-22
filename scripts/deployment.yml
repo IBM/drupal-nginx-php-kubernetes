@@ -1,0 +1,73 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: php7
+  labels:
+    app: php7
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: php7
+        tier: frontend
+    spec:
+      containers:
+      - image: php:5.6-fpm
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password.txt
+        ports:
+        - containerPort: 9000
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-local-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-local-storage
+        persistentVolumeClaim:
+          claimName: wp-lv-claim
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: nginx
+  type: NodePort
+  sessionAffinity: None
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: php7-service
+  namespace: default
+  labels:
+    app: php7
+spec:
+  ports:
+  - name: listener
+    protocol: TCP
+    port: 9000
+    targetPort: 9000
+  selector:
+    app: php7
+  type: NodePort
+  sessionAffinity: None
