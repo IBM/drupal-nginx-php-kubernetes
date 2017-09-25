@@ -2,6 +2,7 @@
 set -x
 
 # Create service credentials as a secrect
+kubectl delete secret service-credentials
 kubectl create secret generic service-credentials --from-env-file=kubernetes/secrets/service-credentials.txt
 
 # Processes everything in the kubernetes folder:

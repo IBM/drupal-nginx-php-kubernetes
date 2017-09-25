@@ -1,7 +1,5 @@
 <h1>This is a dynamic page served with PHP-FPM.</h1>
 
-<?php print_r($_SERVER); exit; ?>
-
 <h2>MySQL test</h2>
 <?php
 $mysqlUser = getenv('MYSQL_USER');
