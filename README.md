@@ -1,9 +1,9 @@
 # NGINX and PHP-FPM Container Cluster on IBM Bluemix
-Simple demonstration of a set of containers deployed to the IBM Bluemix Container Service that mounts a persistent volume and connects to MySQL, Redis, and Memcached services from the Bluemix catalog.
+Simple demonstration of a set of NGINX and PHP containers deployed to the IBM Bluemix Container Service. These containers mounts a persistent volume and connect to MySQL, Redis, and Memcached services from the Bluemix catalog (not self-hosted containers inside the same cluster).
 
-This highlights several basic concepts for deploying a multi-container NGINX & PHP cluster to Kubernetes, but more complex approaches might use Helm or more sophisticated build and deploy approaches that deploy on commit to a GitHub repo.
+This shows several basic concepts for deploying a multi-container deployment of NGINX & PHP cluster to Kubernetes and exposing them as services. More complex approaches might use Helm or more sophisticated build and deploy approaches that deploy on commit to a GitHub repo.
 
-It covers these baseline scenarios:
+It covers these baseline features and scenarios:
 - [ ] Provides a script [`scripts/setup-infrastructure.sh`](scripts/setup-infrastructure.sh) that is a placeholder to deploy a Kubernetes cluster and provision the MySQL, Redis, and Memcached services from Bluemix. See the Bluemix [configuration page](docs/INITIAL-SETUP.md) for the UI instructions.
 - [x] Provides a script [`scripts/build-containers.sh`](scripts/build-containers.sh) that starts with a supported base PHP 5.6 image, injects custom code, runs Composer, tags and pushes the image to a Bluemix Container Registry.
 - [x] Provides a script [`scripts/deploy-containers.sh`](scripts/deploy-containers.sh) to deploy a set of 4 containers (1 NGINX container, 2 PHP-FPM containers, 1 PHP-CLI) from those images and mounts a shared volume to the 3 PHP containers.

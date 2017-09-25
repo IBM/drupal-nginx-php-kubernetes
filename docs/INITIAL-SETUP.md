@@ -8,8 +8,8 @@
 
 ## Connect to your Kubernetes cluster from your workstation
 - Click on the Access link to download and configure the `bx` and `kubectl` CLIs.
-- Run the configuration commands, making sure that the `$KUBECONFIG` variable path is indeed correct.
-- You can then use `kubectl` or the proxy dashboard to inspect your Kubernetes environment.
+- Run the configuration commands, making sure that the `$KUBECONFIG` variable path is indeed correct (it may not reflect your actual home directory).
+- You can then use `kubectl` or the `kubectl proxy` dashboard web UI to inspect your Kubernetes environment.
 
 ## Provision and bind a MySQL-as-a-Service
 - You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
