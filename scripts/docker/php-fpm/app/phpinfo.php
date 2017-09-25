@@ -1,5 +1,7 @@
 <h1>This is a dynamic page served with PHP-FPM.</h1>
 
+<?php print_r($_SERVER); exit; ?>
+
 <h2>MySQL test</h2>
 <?php
 $mysqlUser = getenv('MYSQL_USER');
@@ -40,8 +42,8 @@ if ($redis->connect($redisHost, $redisPort)) {
 
 <h2>memcached test</h2>
 <?php
-$memcachedUser = getenv('REDIS_USER');
-$memcachedPass = getenv('REDIS_PASS');
+$memcachedUser = getenv('MEMCACHED_USER');
+$memcachedPass = getenv('MEMCACHED_PASS');
 $memcachedHost = getenv('MEMCACHED_HOST');
 $memcachedPort = getenv('MEMCACHED_PORT');
 

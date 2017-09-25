@@ -9,7 +9,7 @@ It covers these baseline features and scenarios:
 - [x] Provides a script [`scripts/deploy-containers.sh`](scripts/deploy-containers.sh) to deploy a set of 4 containers (1 NGINX container, 2 PHP-FPM containers, 1 PHP-CLI) from those images and mounts a shared volume to the 3 PHP containers.
 - [x] Connects the 3 PHP containers to a MySQL-as-a-Service on startup.
 - [x] Connects the 3 PHP containers to a Redis-as-a-Service on startup.
-- [x] Connects the 3 PHP containers to a Redis-as-a-Service on startup.
+- [x] Connects the 3 PHP containers to a Memcached-as-a-Service on startup.
 - [ ] Exposes a load balanced endpoint that takes an HTTP POST request and routes it through NGINX to the PHP containers, which saves data in the MySQL and Redis databases, stores it in Memcached, and writes a file to the shared file system.
 - [ ] Exposes a load balanced endpoint [`scripts/docker/php-fpm/app/read.php`](scripts/docker/php-fpm/app/read.php) that takes an HTTP GET request and routes it through NGINX to the PHP containers, which retrieves data in the MySQL and Redis databases, retrieves data from Memcached, and reads a file from the shared file system.
 - [ ] Exposes a load balanced endpoint [`scripts/docker/php-fpm/app/create.php`](scripts/docker/php-fpm/app/create.php) that takes an HTTP POST request and routes it through NGINX to the PHP containers, which creates data in the MySQL and Redis databases, caches data from Memcached, and creates a file on the shared file system.

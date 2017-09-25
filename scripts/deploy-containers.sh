@@ -1,13 +1,16 @@
 #!/bin/bash
 set -x
 
-# Create the shared persistent volume
-# Create the deployment replication controllers for NGINX and PHP-FPM
-# Create the services for the NGINX and PHP-FPM deployment
+# Create service credentials as a secrect
+kubectl create secret generic service-credentials --from-env-file=kubernetes/secrets/service-credentials.txt
 
-# Processes everything in the kubernetes folder
+# Processes everything in the kubernetes folder:
+# - Create the shared persistent volume
+# - Create the deployment replication controllers for NGINX and PHP-FPM
+# - Create the services for the NGINX and PHP-FPM deployment
 kubectl apply -f kubernetes
 
+# Confirm everything looks good
 kubectl describe deployment php-fpm
 kubectl describe service php-fpm
 kubectl describe deployment nginx
