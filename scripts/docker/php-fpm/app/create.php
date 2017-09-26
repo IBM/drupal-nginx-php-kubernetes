@@ -9,4 +9,4 @@ $redis->set('Cat', 'Tarball!');
 $memcached->set('Cat', 'Tarball!');
 
 date_default_timezone_set('UTC');
-file_put_contents('/content/uploads/file.txt', 'Wrote some text about Tarball the cat on ' . date('l jS \of F Y h:i:s A'));
+file_put_contents('/content/uploads/data/file.txt', 'Wrote some text about Tarball the cat on ' . date('l jS \of F Y h:i:s A'));

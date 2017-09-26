@@ -103,6 +103,7 @@ spec:
             -
               mountPath: /content/uploads
               name: user-files-local-storage
+              readOnly: false
       imagePullSecrets:
         -
           name: image-pull

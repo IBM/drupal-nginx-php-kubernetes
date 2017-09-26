@@ -13,7 +13,7 @@ COPY fastcgi.conf /etc/nginx/conf.d/
 COPY index.html /var/www/html/
 
 # Debug
-RUN file="$(ls -Flat /var/www/html)" && echo $file
+RUN file="$(ls -al /var/www/html)" && echo $file
 
 EXPOSE 80
 

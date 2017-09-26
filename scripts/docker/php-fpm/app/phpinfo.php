@@ -38,7 +38,7 @@ if ($redis->connect($redisHost, $redisPort)) {
 }
 ?>
 
-<h2>memcached test</h2>
+<h2>Memcached test</h2>
 <?php
 $memcachedUser = getenv('MEMCACHED_USER');
 $memcachedPass = getenv('MEMCACHED_PASS');

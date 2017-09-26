@@ -6,9 +6,9 @@ $mysqlPort = getenv('MYSQL_PORT');
 $mysqlName = getenv('MYSQL_NAME');
 $mysqli = new mysqli($mysqlHost, $mysqlUser, $mysqlPass, $mysqlName, $mysqlPort);
 if ($mysqli->connect_error) {
-  die('MySQL connection failure (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error . '<br />');
+  die('MySQL connection failure (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error . '<br /><br />');
 } else {
-	echo 'MySQL connection success... <br />';
+	echo 'MySQL connection success... <br /><br />';
 }
 
 $redisUser = getenv('REDIS_USER');
@@ -18,9 +18,9 @@ $redisPort = getenv('REDIS_PORT');
 $redis = new Redis();
 if ($redis->connect($redisHost, $redisPort)) {
   $redis->auth($redisPass);
-  echo 'Redis connection success... <br />';
+  echo 'Redis connection success... <br /><br />';
 } else {
-	echo 'Redis connection failure... <br />';
+	echo 'Redis connection failure... <br /><br />';
 }
 
 $memcachedUser = getenv('MEMCACHED_USER');
@@ -33,7 +33,7 @@ $memcached->setSaslAuthData($memcachedUser, $memcachedPass);
 $memcached->resetServerList();
 $memcached->addServer($memcachedHost, $memcachedPort);
 if ($memcached->set('Test', 'Test')) {
-  echo 'Memcached connection success... <br />';
+  echo 'Memcached connection success... <br /><br />';
 } else {
-  echo 'Memcached connection success... <br />';
+  echo 'Memcached connection failure... <br /><br />';
 }

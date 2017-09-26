@@ -43,8 +43,16 @@ COPY app/ /var/www/html
 # Install app dependencies
 RUN cd /var/www/html && composer install --no-interaction
 
-# Debug
-RUN file="$(ls -Flat /var/www/html)" && echo $file
+# Debug app file
+RUN file="$(ls -al /var/www/html)" && echo $file
+
+# Configure the read/write volume for a non-root user
+RUN groupadd --gid 1010 www
+RUN useradd --uid 1010 --gid 1010 -m --shell /bin/bash www
+ENV WWW_USER=www
+COPY volume-permissions.sh /sbin/volume-permissions.sh
+RUN chmod 755 /sbin/volume-permissions.sh && /sbin/volume-permissions.sh
+
 
 EXPOSE 9000
 
