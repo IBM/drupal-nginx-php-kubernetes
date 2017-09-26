@@ -47,13 +47,12 @@ RUN cd /var/www/html && composer install --no-interaction
 RUN file="$(ls -al /var/www/html)" && echo $file
 
 # Configure the read/write volume for a non-root user
-RUN groupadd --gid 1010 www
-RUN useradd --uid 1010 --gid 1010 -m --shell /bin/bash www
-ENV WWW_USER=www
-COPY volume-permissions.sh /sbin/volume-permissions.sh
-RUN chmod 755 /sbin/volume-permissions.sh && /sbin/volume-permissions.sh
-
+RUN groupadd --gid 1010 temp_user
+RUN useradd --uid 1010 --gid 1010 -m --shell /bin/bash temp_user
+ENV TEMP_USER=temp_user
+COPY start.sh /root/start.sh
+RUN chmod 755 /root/start.sh
 
 EXPOSE 9000
 
-CMD ["php-fpm"]
+ENTRYPOINT ["/root/start.sh"]
