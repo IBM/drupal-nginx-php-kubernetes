@@ -27,3 +27,16 @@ cd scripts
 
 ## Deploy the container images to the Kubernetes cluster
 Next you'll deploy your images to the cluster. You may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other) if your registry is in a different namespace from the Kubernetes cluster.
+
+```bash
+cd scripts
+./deploy-containers.sh
+```
+
+## Tear down the containers
+If you want to cleanly install the environment, for example to push a new set of container versions, use the following script:
+
+```bash
+cd scripts
+./destroy-containers.sh
+```
