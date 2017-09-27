@@ -16,17 +16,17 @@
 - You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
 - Go to the hamburger navigation again and choose Data & Analytics, and choose Create.
 - You have a choice of two MySQL-as-a-Service providers, Compose and ClearDB. Compose is the preferred option, but ClearDB is quicker to get running with for a PoC.
-- Take note of the credentials, and save them in a `scripts/kubernetes/secrets/service-credentials.txt` file you copy from `scripts/kubernetes/secrets/service-credentials.txt.tpl`.
+- Take note of the credentials, and save them in a `../scripts/kubernetes/secrets/service-credentials.txt` file you copy from `../scripts/kubernetes/secrets/service-credentials.txt.tpl`.
 - The Bluemix Container Service offers a way to autobind credentials, but using a secret from this credentials file gives us the option to use services in another organization and space and/or start it up later as its own pod.
 
 ## Provision and bind a Redis-as-a-Service
 - You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
 - Go to the hamburger navigation again and choose Data & Analytics, and choose Create.
 - You have a choice of two Redis-as-a-Service providers, Compose and Redis Cloud. Compose is the preferred option, but Redis Cloud has more plan options.
-- Take note of the credentials, and save them in `scripts/kubernetes/secrets/service-credentials.txt`.
+- Take note of the credentials, and save them in `../scripts/kubernetes/secrets/service-credentials.txt`.
 
 ## Provision and bind a Memcached-as-a-Service
 - You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
 - Go to the hamburger navigation again and choose Data & Analytics, and choose Create.
 - Choose Memcached from Redis Cloud.
-- Take note of the credentials, and save them in `scripts/kubernetes/secrets/service-credentials.txt`.
+- Take note of the credentials, and save them in `../scripts/kubernetes/secrets/service-credentials.txt`.
