@@ -1,0 +1,110 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: php-cli
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: php-cli
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        -
+          env:
+            -
+              name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: service-credentials
+            -
+              name: MYSQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASS
+                  name: service-credentials
+            -
+              name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_HOST
+                  name: service-credentials
+            -
+              name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PORT
+                  name: service-credentials
+            -
+              name: MYSQL_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_NAME
+                  name: service-credentials
+            -
+              name: REDIS_USER
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_USER
+                  name: service-credentials
+            -
+              name: REDIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASS
+                  name: service-credentials
+            -
+              name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_HOST
+                  name: service-credentials
+            -
+              name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PORT
+                  name: service-credentials
+            -
+              name: MEMCACHED_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_USER
+                  name: service-credentials
+            -
+              name: MEMCACHED_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PASS
+                  name: service-credentials
+            -
+              name: MEMCACHED_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_HOST
+                  name: service-credentials
+            -
+              name: MEMCACHED_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PORT
+                  name: service-credentials
+          image: "registry.ng.bluemix.net/krook/php-cli:latest"
+          name: php-cli
+          volumeMounts:
+            -
+              mountPath: /content/uploads
+              name: user-files-local-storage
+              readOnly: false
+      imagePullSecrets:
+        -
+          name: image-pull
+      volumes:
+        -
+          name: user-files-local-storage
+          persistentVolumeClaim:
+            claimName: user-files-lv-claim

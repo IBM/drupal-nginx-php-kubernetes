@@ -16,8 +16,8 @@ create_data_dir() {
   chmod 777 $MOUNT_PATH
 
   # Create a directory under the shared path owned by non-root user www.
-  su -c "mkdir -p ${MOUNT_PATH}/data" -l $TEMP_USER
-  su -c "chmod -R 777 ${MOUNT_PATH}/data" -l $TEMP_USER
+  su -c "[ ! -d /home/mlzboy/b2c2/shared/db ] && mkdir -p ${MOUNT_PATH}/data" -l $TEMP_USER
+  chmod -R 777 ${MOUNT_PATH}/data
   ls -al ${MOUNT_PATH}
 
   # For security, remove the non-root user from root user group.
@@ -30,4 +30,5 @@ create_data_dir() {
 
 create_data_dir
 
+# Now that volume is usable by non-root user, start up PHP on port 9000
 php-fpm
