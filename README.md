@@ -26,4 +26,4 @@ See the Container Service Kubernetes and Bluemix services (MySQL and Redis) [con
 See the Docker container build and Kubernetes deployment [instructions](docs/DEPLOY-CONTAINERS.md).
 
 # Ongoing development and operations with GitHub commits
-See the ongoing develpment docs [instructions](docs/ONGOING-DEVELOPMENT.md).
+See the ongoing development docs [instructions](docs/ONGOING-DEVELOPMENT.md).
