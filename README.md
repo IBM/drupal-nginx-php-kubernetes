@@ -15,7 +15,7 @@ It covers these baseline features and scenarios:
 - [x] Exposes a load balanced endpoint [`app/create.php`](scripts/docker/php-fpm/app/create.php) that takes an HTTP POST request and routes it through NGINX to the PHP containers, which creates data in the MySQL and Redis databases, caches data from Memcached, and creates a file on the shared file system.
 - [x] Exposes a load balanced endpoint [`app/delete.php`](scripts/docker/php-fpm/app/create.php) that takes an HTTP DELETE request and routes it through NGINX to the PHP containers, which deletes data in the MySQL and Redis databases, clears data from Memcached, and deletes a file from the shared file system.
 - [ ] Builds and redeploys new containers with zero downtime on GitHub push.
-- [x] Provides a script [`scripts/destroy-containers.sh`](scripts/destroy-containers.sh) to cleanly stop and remove the containers and storage volume.
+- [x] Provides a script [`scripts/destroy-containers.sh`](scripts/destroy-containers.sh) to stop and remove the containers (but not the storage volume).
 - [ ] Provides a script [`scripts/destroy-infrastructure.sh`](scripts/setup-infrastructure.sh) that is a placeholder to destroy a Kubernetes cluster and deprovision the MySQL, Redis, and Memcached services from Bluemix.
 
 
