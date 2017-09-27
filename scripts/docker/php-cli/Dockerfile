@@ -1,11 +1,9 @@
 FROM php:5.6-cli
 
-# Set timezone
+# Set timezone, worker name, and index (TODO: where to set this?)
 ENV CONTAINER_TIMEZONE="UTC" \
-    WORKER_INDEX=""
-
-# WORKER_NAME defines the worker script to run
-# e.g. ENV WORKER_NAME send-emails
+    WORKER_NAME="send-emails" \
+    WORKER_INDEX="1"
 
 RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
