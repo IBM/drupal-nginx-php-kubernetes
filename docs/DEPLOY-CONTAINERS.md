@@ -19,22 +19,24 @@ Log into Bluemix and the Container Registry. Make sure your target organization 
 bx plugin install container-registry -r Bluemix
 ```
 
-Then run this script to build the containers and push them to the registry:
+Then run this script to build the containers and push them to your registry:
 ```bash
 cd scripts
 ./build-containers.sh
 ```
 
-
 ## Deploy the container images to the Kubernetes cluster
-bx cs cluster-config
+Next you'll deploy your images to the cluster. You may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other) if your registry is in a different namespace from the Kubernetes cluster.
 
-Set up the imagePullSecret
-bx cr token-add --description "description_here" --non-expiring
-bx cr token-list
-bx cr token-get <token_id_from_above>
-kubectl --namespace default create secret docker-registry image-pull --docker-server="registry.ng.bluemix.net" --docker-username="token" --docker-password="xxx" --docker-email="email_here"
+```bash
+cd scripts
+./deploy-containers.sh
+```
 
-- kubectl get secrets --namespace default
+## Tear down the containers
+If you want to cleanly install the environment, for example to push a new set of container versions, use the following script:
 
-https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other
+```bash
+cd scripts
+./destroy-containers.sh
+```
