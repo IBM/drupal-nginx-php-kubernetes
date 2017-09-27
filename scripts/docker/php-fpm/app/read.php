@@ -14,8 +14,11 @@ if ($redis->get('Cat') == 'Tarball!') {
 }
 
 $keys = $memcached->getAllKeys();
-foreach($keys as $item) {
-  echo $item . '<br />';
+
+if ($keys) {
+  foreach($keys as $item) {
+    echo $item . '<br />';
+  }
 }
 
 echo file_get_contents('/content/uploads/data/file.txt') . '<br />';
