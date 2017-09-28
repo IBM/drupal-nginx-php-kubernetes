@@ -8,7 +8,7 @@
 - It will take time for the cluster to complete provisioning, so go get some coffee.
 
 ## Connect to your Kubernetes cluster from your workstation
-- Click on the Access link to download and configure the `bx` and `kubectl` CLIs.
+- Click on the Access link to download and configure the `bx` and `kubectl` CLIs. Kubectl version >=1.7.6 is required.
 - Run the configuration commands, making sure that the `$KUBECONFIG` variable path is indeed correct (it may not reflect your actual home directory).
 - You can then use `kubectl` or the `kubectl proxy` dashboard web UI that starts on localhost to inspect your Kubernetes environment.
 
