@@ -21,4 +21,4 @@ if ($keys) {
   }
 }
 
-echo file_get_contents('/content/uploads/data/file.txt') . '<br />';
+echo file_get_contents('/var/www/html/sites/file.txt') . '<br />';

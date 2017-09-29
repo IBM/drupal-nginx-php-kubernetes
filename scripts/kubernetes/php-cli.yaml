@@ -97,7 +97,7 @@ spec:
           name: php-cli
           volumeMounts:
             -
-              mountPath: /content/uploads
+              mountPath: /var/www/html
               name: user-files-local-storage
               readOnly: false
       imagePullSecrets:

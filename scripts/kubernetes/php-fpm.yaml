@@ -18,7 +18,7 @@ kind: Deployment
 metadata:
   name: php-fpm
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -115,7 +115,7 @@ spec:
               name: fastcgi
           volumeMounts:
             -
-              mountPath: /content/uploads
+              mountPath: /var/www/html
               name: user-files-local-storage
               readOnly: false
       imagePullSecrets:

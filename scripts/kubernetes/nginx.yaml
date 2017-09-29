@@ -44,7 +44,7 @@ spec:
               name: http
           volumeMounts:
             -
-              mountPath: /content/uploads
+              mountPath: /var/www/html
               name: user-files-local-storage
       imagePullSecrets:
         -

@@ -1,8 +1,7 @@
 FROM nginx
 
-# Set timezone
+# Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
-
 RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
@@ -10,11 +9,11 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY fastcgi.conf /etc/nginx/conf.d/
 
-COPY index.html /var/www/html/
-
-# Debug
-RUN file="$(ls -al /var/www/html)" && echo $file
-
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+# Configure the read/write volume for a non-root user
+COPY index.html /root/html/
+COPY start.sh /root/start.sh
+RUN chmod 755 /root/start.sh
+
+ENTRYPOINT ["/root/start.sh"]
