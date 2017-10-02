@@ -35,7 +35,6 @@ RUN cd /tmp \
 	&& make \
 	&& cp /tmp/php-memcached/modules/memcached.so /usr/local/lib/php/extensions/no-debug-non-zts-20160303/memcached.so \
 	&& docker-php-ext-enable memcached \
-  && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini \
   && ls -la /usr/local/etc/php/conf.d/
 
 # See https://secure.php.net/manual/en/opcache.installation.php
@@ -50,19 +49,22 @@ RUN { \
 
 # Download and verify Drupal
 # https://www.drupal.org/node/3060/release
-# WORKDIR /tmp/
-# ENV DRUPAL_VERSION 8.3.7
-# ENV DRUPAL_MD5 e7b1f382d6bd2b18d4b4aca01d335bc0
-# RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
-#   && echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
-#   && tar -xzvf drupal.tar.gz \
-#   && rm drupal.tar.gz
+WORKDIR /var/www
+ENV DRUPAL_VERSION 8.3.7
+ENV DRUPAL_MD5 e7b1f382d6bd2b18d4b4aca01d335bc0
+RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
+   && echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
+   && tar -xzf drupal.tar.gz \
+   && rm drupal.tar.gz \
+   && rm -fr html \
+   && mv drupal* html \
+   && cp -R /var/www/html/sites /tmp/sites \
+   && cp -R /var/www/html/modules /tmp/modules \
+   && cp -R /var/www/html/themes /tmp/themes 
 
-# COPY start.sh /root/start.sh
-# RUN chmod 755 /root/start.sh
+COPY start.sh /root/start.sh
+RUN chmod 755 /root/start.sh
 
 EXPOSE 9000
 
-CMD ["php-fpm"]
-
-# ENTRYPOINT ["/root/start.sh"]
+ENTRYPOINT ["/root/start.sh"]

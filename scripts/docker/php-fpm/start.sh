@@ -33,11 +33,11 @@ create_data_dir() {
   echo "ls -al before"
   ls -al ${MOUNT_PATH}
 
-  echo "Installing Drupal"
-  cp -R /tmp/drupal*/* ${MOUNT_PATH}
+  #echo "Installing Drupal"
+  #cp -R /tmp/drupal*/* ${MOUNT_PATH}
 
-  echo "Deleting old files"
-  rm -rf /tmp/drupal*
+  #echo "Deleting old files"
+  #rm -rf /tmp/drupal*
 
   # Change permissions on the folders for the non-root user.
   echo "Changing directory permissions"
@@ -46,9 +46,16 @@ create_data_dir() {
   chmod -R 777 ${MOUNT_PATH}/themes
 
   echo "Changing directory owners"
-  chown -R $TEMP_USER ${MOUNT_PATH}/sites $TEMP_USER
-  chown -R $TEMP_USER ${MOUNT_PATH}/modules $TEMP_USER
-  chown -R $TEMP_USER ${MOUNT_PATH}/themes $TEMP_USER
+  echo $TEMP_USER
+  echo ${MOUNT_PATH}/sites
+  chown -R $TEMP_USER ${MOUNT_PATH}/sites
+  chown -R $TEMP_USER ${MOUNT_PATH}/modules
+  chown -R $TEMP_USER ${MOUNT_PATH}/themes
+
+  echo "Copy back Drupal files to the mount point"
+  cp -R /tmp/sites ${MOUNT_PATH}/sites
+  cp -R /tmp/modules ${MOUNT_PATH}/modules
+  cp -R /tmp/themes ${MOUNT_PATH}/themes
 
   echo "ls -al after"
   ls -al ${MOUNT_PATH}
