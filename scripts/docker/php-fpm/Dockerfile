@@ -60,7 +60,8 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
    && mv drupal* html \
    && cp -R /var/www/html/sites /tmp/sites \
    && cp -R /var/www/html/modules /tmp/modules \
-   && cp -R /var/www/html/themes /tmp/themes 
+   && cp -R /var/www/html/themes /tmp/themes \
+   && echo "derp"
 
 COPY start.sh /root/start.sh
 RUN chmod 755 /root/start.sh
