@@ -1,6 +1,9 @@
 ## Provision a Kubernetes cluster on the IBM Bluemix Container Service
 - Create a paid Bluemix account, and log into the Bluemix dashboard.
 - Choose Containers from the left hand hamburger navigation.
+ 
+![](img/1-hamburger.png)
+
 - Click the Create cluster button.
 - Select the Standard type of cluster (this allows for storage volumes) and Create.
 - Going back to the Dashboard from the navigation, you'll see your cluster.
