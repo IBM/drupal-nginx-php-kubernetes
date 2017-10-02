@@ -53,12 +53,16 @@ create_data_dir() {
   chown -R $TEMP_USER ${MOUNT_PATH}/themes
 
   echo "Copy back Drupal files to the mount point"
-  cp -R /tmp/sites ${MOUNT_PATH}/sites
-  cp -R /tmp/modules ${MOUNT_PATH}/modules
-  cp -R /tmp/themes ${MOUNT_PATH}/themes
+  cp -R /tmp/sites/* ${MOUNT_PATH}/sites/
+  cp -R /tmp/modules/* ${MOUNT_PATH}/modules/
+  cp -R /tmp/themes/* ${MOUNT_PATH}/themes/
 
   echo "ls -al after"
   ls -al ${MOUNT_PATH}
+
+  echo "Creating files"
+  # TODO: echo env variables to the settings.php file.
+  cp ${MOUNT_PATH}sites/default/default.settings.php ${MOUNT_PATH}/sites/default/settings.php
 
   # For security, remove the non-root user from root user group.
   echo "Removing user from group"
