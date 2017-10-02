@@ -20,7 +20,7 @@ It covers these baseline features and scenarios:
 
 
 # One time Container Service and Bluemix services setup
-See the Container Service Kubernetes and Bluemix services (MySQL and Redis) [configuration instructions](docs/INITIAL-SETUP.md).
+See the Container Service Kubernetes and Bluemix services (MySQL, Redis, Memcached) [configuration instructions](docs/INITIAL-SETUP.md).
 
 # Building and deploying the first set of containers
 See the Docker container build and Kubernetes deployment [instructions](docs/DEPLOY-CONTAINERS.md).

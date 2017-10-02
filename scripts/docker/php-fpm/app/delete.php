@@ -7,4 +7,4 @@ $redis->flushDb();
 
 $memcached->flush();
 
-unlink('/content/uploads/data/file.txt');
+unlink('/var/www/html/sites/file.txt');

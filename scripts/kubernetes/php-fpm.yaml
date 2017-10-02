@@ -18,7 +18,7 @@ kind: Deployment
 metadata:
   name: php-fpm
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -115,14 +115,30 @@ spec:
               name: fastcgi
           volumeMounts:
             -
-              mountPath: /content/uploads
-              name: user-files-local-storage
+              mountPath: /var/www/html/sites
+              name: sites-local-storage
+              readOnly: false
+            -
+              mountPath: /var/www/html/themes
+              name: themes-local-storage
+              readOnly: false
+            -
+              mountPath: /var/www/html/modules
+              name: modules-local-storage
               readOnly: false
       imagePullSecrets:
         -
           name: image-pull
       volumes:
         -
-          name: user-files-local-storage
+          name: sites-local-storage
           persistentVolumeClaim:
-            claimName: user-files-lv-claim
+            claimName: sites-lv-claim
+        -
+          name: themes-local-storage
+          persistentVolumeClaim:
+            claimName: themes-lv-claim
+        -
+          name: modules-local-storage
+          persistentVolumeClaim:
+            claimName: modules-lv-claim

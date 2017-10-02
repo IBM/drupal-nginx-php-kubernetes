@@ -1,55 +1,67 @@
-FROM php:5.6-fpm
+FROM php:7.1-fpm
 
-# Set timezone
+# Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
-
 RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install curl nano git zlib1g-dev libicu-dev libmemcached-dev -y && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install prerequisite OS packages
+RUN apt-get update && apt-get install -y curl git rsync
 
-# Fetch extensions from PECL
-RUN  mkdir -p /usr/src/php/ext/ \
-  && curl -L https://pecl.php.net/get/memcached-2.2.0.tgz >> /usr/src/php/ext/memcached.tgz \
-  && curl -L https://pecl.php.net/get/redis-3.1.3.tgz >> /usr/src/php/ext/redis.tgz \
-  && tar xvzf /usr/src/php/ext/memcached.tgz -C /usr/src/php/ext/ \
-  && tar xvzf /usr/src/php/ext/redis.tgz -C /usr/src/php/ext/ \
-  && ln -s /usr/src/php/ext/memcached-2.2.0 /usr/src/php/ext/memcached \
-  && ln -s /usr/src/php/ext/redis-3.1.3 /usr/src/php/ext/redis
+# install the PHP extensions we need
+RUN set -ex \
+	&& buildDeps=' \
+		libjpeg62-turbo-dev \
+		libpng12-dev \
+		libpq-dev \
+    zlib1g-dev \
+    libicu-dev \
+    libmemcached-dev \
+	' \
+	&& apt-get install -y --no-install-recommends $buildDeps \
+  && pecl install -o -f redis \
+  && docker-php-ext-enable redis \
+  && ls -la /usr/local/etc/php/conf.d/ \
+	&& docker-php-ext-configure gd \
+		--with-jpeg-dir=/usr \
+		--with-png-dir=/usr \
+	&& docker-php-ext-install -j "$(nproc)" gd mbstring opcache pdo pdo_mysql zip
 
-# Build PHP with the extension source
-RUN docker-php-ext-configure memcached \
- && docker-php-ext-install memcached \
- && docker-php-ext-configure redis --with-zlib-dir=/usr \
- && docker-php-ext-install redis \
- && docker-php-ext-enable opcache \
- && docker-php-ext-install mysqli pdo pdo_mysql mbstring bcmath pcntl intl
+RUN cd /tmp \
+	&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached \
+	&& cd php-memcached \
+	&& phpize \
+	&& ./configure \
+	&& make \
+	&& cp /tmp/php-memcached/modules/memcached.so /usr/local/lib/php/extensions/no-debug-non-zts-20160303/memcached.so \
+	&& docker-php-ext-enable memcached \
+  && ls -la /usr/local/etc/php/conf.d/
 
-# Tidy up
-RUN  apt-get clean autoclean \
-  && apt-get autoremove -y \
-  && rm -rf /var/lib/{apt,dpkg,cache,log}/
+# See https://secure.php.net/manual/en/opcache.installation.php
+RUN { \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=60'; \
+		echo 'opcache.fast_shutdown=1'; \
+		echo 'opcache.enable_cli=1'; \
+	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Add configuration file
-COPY php-fpm.conf /usr/local/etc/php/conf.d/
-RUN echo "memcached.use_sasl = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-memcached.ini
+# Download and verify Drupal
+# https://www.drupal.org/node/3060/release
+WORKDIR /var/www
+ENV DRUPAL_VERSION 8.3.7
+ENV DRUPAL_MD5 e7b1f382d6bd2b18d4b4aca01d335bc0
+RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
+   && echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
+   && tar -xzf drupal.tar.gz \
+   && rm drupal.tar.gz \
+   && rm -fr html \
+   && mv drupal* html \
+   && cp -R /var/www/html/sites /tmp/sites \
+   && cp -R /var/www/html/modules /tmp/modules \
+   && cp -R /var/www/html/themes /tmp/themes 
 
-# Bundle app source
-COPY app/ /var/www/html
-
-# Install app dependencies
-RUN cd /var/www/html && composer install --no-interaction
-
-# Debug app file
-RUN file="$(ls -al /var/www/html)" && echo $file
-
-# Configure the read/write volume for a non-root user
-RUN groupadd --gid 1010 temp_user
-RUN useradd --uid 1010 --gid 1010 -m --shell /bin/bash temp_user
-ENV TEMP_USER=temp_user
 COPY start.sh /root/start.sh
 RUN chmod 755 /root/start.sh
 
