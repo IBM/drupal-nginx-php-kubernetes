@@ -64,6 +64,8 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
    && echo "derp"
 
 COPY start.sh /root/start.sh
+COPY template.settings.php /root/template.settings.php
+
 RUN chmod 755 /root/start.sh
 
 EXPOSE 9000
