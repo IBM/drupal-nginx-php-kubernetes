@@ -35,6 +35,7 @@ kubectl proxy
 Then run this script to build the containers and push them to your registry:
 ```bash
 cd scripts
+sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" build-containers.sh
 ./build-containers.sh
 ```
 
@@ -42,6 +43,7 @@ cd scripts
 Next you'll deploy your images to the cluster. You may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other) if your registry is in a different namespace from the Kubernetes cluster.
 
 ```bash
+sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" kubernetes/*.yaml
 ./deploy-containers.sh
 ```
 
