@@ -7,7 +7,7 @@ Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have be
 - The [`scripts/docker/php-cli/Dockerfile`](../scripts/docker/php-cli/Dockerfile) provides the steps to build a custom PHP CLI image based on the latest public image. It installs prerequisite packages, configures and builds the MySQL, Redis, and Memcached extensions, copies the custom application code over, runs Composer, and sets up read/write access to the storage volume for the PHP-FPM process which does not run as root.
 
 ## Review the Kubernetes container deployment configuration files
-- The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines a 20 GB storage volume that can be mounted by many containers (`ReadWriteMany`). The containers then reference this file in their own configuration files.
+- The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines three 10 GB storage volume that can be mounted by many containers (`ReadWriteMany`). The containers then reference these volumes in their own configuration files.
 - The [`scripts/kubernetes/php-fpm.yaml`](../scripts/kubernetes/php-fpm.yaml) file describes the pod/deployment for the PHP-FPM containers. It specifies how many containers from the given image and tag to start (2, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
 - Similarly The [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml) file describes the pod/deployment for the NGINX containers. It specifies how many containers from the given image and tag to start (1, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
 - Finally, the [`scripts/kubernetes/php-cli.yaml`](../scripts/kubernetes/php-cli.yaml) configures the pool of CLI workers that may be polling a database or queue for messages. It also maps the environment variables and storage volume, but does not expose a service for inbound network access.
@@ -16,7 +16,20 @@ Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have be
 Log into Bluemix and the Container Registry. Make sure your target organization and space is set. If you haven't already installed the Container Registry plugin for the `bx` CLI:
 
 ```bash
+# Configure the plugin if you haven't yet
 bx plugin install container-registry -r Bluemix
+bx login -a https://api.ng.bluemix.net
+bx cs init
+bx cs cluster-config $CLUSTER_NAME
+
+# Configure kubectl
+export KUBECONFIG=/Users/$USER_HOME_DIR/.bluemix/plugins/container-service/clusters/$CLUSTER_NAME/kube-config-$DATA_CENTER-$CLUSTER_NAME.yml
+
+# Confirm cluster is ready
+kubectl get nodes
+
+# Run the dashboard which will be available on http://127.0.0.1:8001/ui
+kubectl proxy
 ```
 
 Then run this script to build the containers and push them to your registry:
