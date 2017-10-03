@@ -20,11 +20,23 @@ Log into Bluemix and the Container Registry. Make sure your target organization 
 bx plugin install container-registry -r Bluemix
 bx login -a https://api.ng.bluemix.net
 bx cs init
-bx cs cluster-config $CLUSTER_NAME
+```
 
+Next, list the clusters already provisioned on Bluemix, and get the Kubenetes configuration information.
+```bash
+bx cs clusters #Find your cluster, and input into next command
+bx cs cluster-config [CLUSTER_NAME]
+```
+
+Copy the `export` line from the previous command to configure kubectl to point to your cluster.
+
+```bash
 # Configure kubectl
 export KUBECONFIG=/Users/$USER_HOME_DIR/.bluemix/plugins/container-service/clusters/$CLUSTER_NAME/kube-config-$DATA_CENTER-$CLUSTER_NAME.yml
+```
 
+Finally, test your connection by interacting with your cluster.
+```bash
 # Confirm cluster is ready
 kubectl get nodes
 
@@ -32,7 +44,8 @@ kubectl get nodes
 kubectl proxy
 ```
 
-Then run this script to build the containers and push them to your registry:
+## Build the container images
+Run this script to build the containers and push them to your registry:
 ```bash
 cd scripts
 sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" build-containers.sh
@@ -46,6 +59,8 @@ Next you'll deploy your images to the cluster. You may have to [create an `image
 sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" kubernetes/*.yaml
 ./deploy-containers.sh
 ```
+
+The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-containers.sh` script. These is the hand-off point between image build/push, and kubernetes deploy. 
 
 ## Tear down the containers
 If you want to cleanly install the environment, for example to push a new set of container versions, use the following script:
