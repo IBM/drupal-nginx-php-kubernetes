@@ -12,7 +12,20 @@ COPY fastcgi.conf /etc/nginx/conf.d/
 EXPOSE 80
 
 # Configure the read/write volume for a non-root user
-COPY index.html /root/html/
+
+# TODO: This really shouldn't be on this image, but we need it for static files
+# Download and verify Drupal
+# https://www.drupal.org/node/3060/release
+WORKDIR /var/www
+ENV DRUPAL_VERSION 8.3.7
+ENV DRUPAL_MD5 e7b1f382d6bd2b18d4b4aca01d335bc0
+RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
+   && echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
+   && tar -xzf drupal.tar.gz \
+   && rm drupal.tar.gz \
+   && rm -fr html \
+   && mv drupal* html
+   
 COPY start.sh /root/start.sh
 RUN chmod 755 /root/start.sh
 

@@ -60,9 +60,13 @@ create_data_dir() {
   echo "ls -al after"
   ls -al ${MOUNT_PATH}
 
-  echo "Creating files"
-  # TODO: echo env variables to the settings.php file.
-  cp ${MOUNT_PATH}sites/default/default.settings.php ${MOUNT_PATH}/sites/default/settings.php
+  echo "Update settings template with env variables"
+  sed -i "s/MYSQL_NAME/${MYSQL_NAME}/g" /root/default.settings.php
+  sed -i "s/MYSQL_USER/${MYSQL_USER}/g" /root/default.settings.php
+  sed -i "s/MYSQL_PASS/${MYSQL_PASS}/g" /root/default.settings.php
+  sed -i "s/MYSQL_HOST/${MYSQL_HOST}/g" /root/default.settings.php
+  sed -i "s/MYSQL_PORT/${MYSQL_PORT}/g" /root/default.settings.php
+  cp /root/default.settings.php ${MOUNT_PATH}/sites/default/settings.php
 
   # For security, remove the non-root user from root user group.
   echo "Removing user from group"
