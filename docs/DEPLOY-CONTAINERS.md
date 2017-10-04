@@ -49,7 +49,7 @@ Run this script to build the containers and push them to your registry:
 ```bash
 cd scripts
 
-// Or use sed to replace "krook" with your registry namespace.
+# Or use sed to replace "krook" with your registry namespace.
 vi build-containers.sh
 
 ./build-containers.sh
@@ -59,10 +59,19 @@ vi build-containers.sh
 Next you'll deploy your images to the cluster. You may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other) if your registry is in a different namespace from the Kubernetes cluster.
 
 ```bash
-// Or use sed to replace "krook" with your registry namespace.
+# Or use sed to replace "krook" with your registry namespace.
 vi kubernetes/nginx.yaml
 vi php-cli.yaml
 vi php-fpm.yaml
+
+# Create image pull token if needed one time. The kubectl command may not like the wrapped lines, so change it all to one line if needed.
+bx cr token-list
+bx cr token-get $TOKEN_ID
+kubectl --namespace default create secret docker-registry image-pull \
+--docker-server="registry.ng.bluemix.net" \
+--docker-username="token" \
+--docker-password="${TOKEN}" \
+--docker-email="${YOUR_EMAIL}"
 
 ./deploy-containers.sh
 ```
