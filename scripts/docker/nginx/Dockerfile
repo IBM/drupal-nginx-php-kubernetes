@@ -5,6 +5,9 @@ ENV CONTAINER_TIMEZONE="UTC"
 RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
+ # Install prerequisite OS packages
+ RUN apt-get update && apt-get install -y curl
+
 RUN rm /etc/nginx/conf.d/default.conf
 
 COPY fastcgi.conf /etc/nginx/conf.d/
@@ -25,7 +28,7 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
    && rm drupal.tar.gz \
    && rm -fr html \
    && mv drupal* html
-   
+
 COPY start.sh /root/start.sh
 RUN chmod 755 /root/start.sh
 

@@ -6,7 +6,7 @@ RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
 # Install prerequisite OS packages
-RUN apt-get update && apt-get install -y curl git rsync
+RUN apt-get update && apt-get install -y curl git
 
 # install the PHP extensions we need
 RUN set -ex \
