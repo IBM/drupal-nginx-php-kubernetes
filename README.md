@@ -5,6 +5,8 @@ This shows several basic concepts for deploying a multi-container deployment of 
 
 The PHP-FPM containers also include a built in Drupal 8.3 package, and mount the three volumes for shared read/write access to `sites`, `modules`, and `themes` directories.
 
+![](docs/img/architecture.png)
+
 # One time Container Service and Bluemix services setup
 See the Container Service Kubernetes and Bluemix services (MySQL, Redis, Memcached) [configuration instructions](docs/INITIAL-SETUP.md).
 
