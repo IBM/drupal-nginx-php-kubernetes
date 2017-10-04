@@ -57,6 +57,7 @@ Create a namespace:
 ```bash
 bx cr namespace-add <my_namespace>
 bx cr namespaces #list namespaces
+bx cr login # To enable pushing images
 ```
 
 Configure scripts with your namespace. You will need to replace "jjdojo" in 
