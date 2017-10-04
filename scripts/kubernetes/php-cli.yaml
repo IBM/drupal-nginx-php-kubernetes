@@ -93,7 +93,7 @@ spec:
                 secretKeyRef:
                   key: MEMCACHED_PORT
                   name: service-credentials
-          image: "registry.ng.bluemix.net/krook/php-cli:latest"
+          image: "registry.ng.bluemix.net/jjdojo/php-cli:latest"
           name: php-cli
           volumeMounts:
             -

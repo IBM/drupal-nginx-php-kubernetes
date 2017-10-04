@@ -61,12 +61,12 @@ create_data_dir() {
   ls -al ${MOUNT_PATH}
 
   echo "Update settings template with env variables"
-  sed -i "s/MYSQL_NAME/${MYSQL_NAME}/g" /root/default.settings.php
-  sed -i "s/MYSQL_USER/${MYSQL_USER}/g" /root/default.settings.php
-  sed -i "s/MYSQL_PASS/${MYSQL_PASS}/g" /root/default.settings.php
-  sed -i "s/MYSQL_HOST/${MYSQL_HOST}/g" /root/default.settings.php
-  sed -i "s/MYSQL_PORT/${MYSQL_PORT}/g" /root/default.settings.php
-  cp /root/default.settings.php ${MOUNT_PATH}/sites/default/settings.php
+  sed -i "s/MYSQL_NAME/${MYSQL_NAME}/g" /root/template.settings.php
+  sed -i "s/MYSQL_USER/${MYSQL_USER}/g" /root/template.settings.php
+  sed -i "s/MYSQL_PASS/${MYSQL_PASS}/g" /root/template.settings.php
+  sed -i "s/MYSQL_HOST/${MYSQL_HOST}/g" /root/template.settings.php
+  sed -i "s/MYSQL_PORT/${MYSQL_PORT}/g" /root/template.settings.php
+  cp /root/template.settings.php ${MOUNT_PATH}/sites/default/settings.php
 
   # For security, remove the non-root user from root user group.
   echo "Removing user from group"

@@ -107,7 +107,7 @@ spec:
                 secretKeyRef:
                   key: MEMCACHED_PORT
                   name: service-credentials
-          image: "registry.ng.bluemix.net/krook/php-fpm:latest"
+          image: "registry.ng.bluemix.net/jjdojo/php-fpm:latest"
           name: php-fpm
           ports:
             -
