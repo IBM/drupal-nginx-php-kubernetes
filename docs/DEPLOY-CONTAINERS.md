@@ -17,7 +17,7 @@ Log into Bluemix and the Container Registry. Make sure your target organization 
 
 ```bash
 # Configure the plugin if you haven't yet
-bx plugin install container-registry -r Bluemix
+bx plugin install container-service -r Bluemix
 bx login -a https://api.ng.bluemix.net
 bx cs init
 ```
@@ -44,26 +44,39 @@ kubectl get nodes
 kubectl proxy
 ```
 
+## Optional: Configure your namespace
+Right now, this POC is hardcoded to the "jodojo" namespace. To avoid overwriting other people's images, you may want create and configure your own namespace.
+
+Install the Bluemix container registry CLI plugin:
+```bash
+bx plugin install container-registry -r Bluemix
+bx login
+```
+
+Create a namespace:
+```bash
+bx cr namespace-add <my_namespace>
+bx cr namespaces #list namespaces
+```
+
+Configure scripts with your namespace. You will need to replace "jjdojo" in 
+- [build-containers.sh](../scripts/build-containers.sh)
+- [nginx.yaml](../scripts/kubernetes/nginx.yaml)
+- [php-cli.yaml](../scripts/kubernetes/php-cli.yaml)
+- [php-fpm.yaml](../scripts/kubernetes/php-fpm.yaml)
+
+Finally, you may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other).
+
 ## Build the container images
 Run this script to build the containers and push them to your registry:
 ```bash
 cd scripts
-
-# Or use sed to replace "jjdojo" with your registry namespace.
-vi build-containers.sh
-
 ./build-containers.sh
 ```
 
 ## Deploy the container images to the Kubernetes cluster
-Next you'll deploy your images to the cluster. You may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other) if your registry is in a different namespace from the Kubernetes cluster.
 
 ```bash
-# Or use sed to replace "jjdojo" with your registry namespace.
-vi kubernetes/nginx.yaml
-vi php-cli.yaml
-vi php-fpm.yaml
-
 # Create image pull token if needed one time. The kubectl command may not like the wrapped lines, so change it all to one line if needed.
 bx cr token-list
 bx cr token-get $TOKEN_ID
