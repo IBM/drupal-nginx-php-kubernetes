@@ -25,7 +25,7 @@ bx cs init
 Next, list the clusters already provisioned on Bluemix, and get the Kubenetes configuration information.
 ```bash
 bx cs clusters #Find your cluster, and input into next command
-bx cs cluster-config [CLUSTER_NAME]
+bx cs cluster-config $CLUSTER_NAME
 ```
 
 Copy the `export` line from the previous command to configure kubectl to point to your cluster.
@@ -48,7 +48,10 @@ kubectl proxy
 Run this script to build the containers and push them to your registry:
 ```bash
 cd scripts
-sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" build-containers.sh
+
+// Or use sed to replace "krook" with your registry namespace.
+vi build-containers.sh
+
 ./build-containers.sh
 ```
 
@@ -56,11 +59,15 @@ sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" build-containers.sh
 Next you'll deploy your images to the cluster. You may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other) if your registry is in a different namespace from the Kubernetes cluster.
 
 ```bash
-sed -i "s/krook/${YOUR_IMAGE_NAMESPACE}/g" kubernetes/*.yaml
+// Or use sed to replace "krook" with your registry namespace.
+vi kubernetes/nginx.yaml
+vi php-cli.yaml
+vi php-fpm.yaml
+
 ./deploy-containers.sh
 ```
 
-The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-containers.sh` script. These is the hand-off point between image build/push, and kubernetes deploy. 
+The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-containers.sh` script. These is the hand-off point between image build/push, and kubernetes deploy.
 
 ## Tear down the containers
 If you want to cleanly install the environment, for example to push a new set of container versions, use the following script:

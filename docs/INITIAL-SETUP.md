@@ -49,10 +49,10 @@
 - Take note of the credentials, and save them in a `scripts/kubernetes/secrets/service-credentials.txt` file you copy from [`scripts/kubernetes/secrets/service-credentials.txt.tpl`](../scripts/kubernetes/secrets/service-credentials.txt.tpl).
 
 For compose, the credentials will be shown right before you create the service.
-![](img/12-compose-credentials.png)
+    ![](img/12-compose-credentials.png)
 
 For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your database and click the "System Information" tab
-![](img/13-cleardb-credentials.png)
+    ![](img/13-cleardb-credentials.png)
 
 - The Bluemix Container Service offers a way to autobind credentials, but using a secret from this credentials file gives us the option to use services in another organization and space and/or start it up later as its own pod.
 
@@ -68,14 +68,14 @@ For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your 
 
 - You have a choice of two Redis-as-a-Service providers, Compose and Redis Cloud. Compose is the preferred option, but Redis Cloud has more plan options.
 
-![](img/10-create-redis-service.png)
+    ![](img/10-create-redis-service.png)
 
 - Take note of the credentials, and save them in `scripts/kubernetes/secrets/service-credentials.txt`.
 
 
 For Compose, the credentials can be found by selecting the service from the dasboard, and clicking "Service Credentials"
 
-![](img/14-redis-credentials.png)
+    ![](img/14-redis-credentials.png)
 
 ## Provision and bind a Memcached-as-a-Service
 - You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
