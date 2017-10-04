@@ -73,9 +73,9 @@ For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your 
 - Take note of the credentials, and save them in `scripts/kubernetes/secrets/service-credentials.txt`.
 
 
-For Compose, the credentials can be found by selecting the service from the dasboard, and clicking "Service Credentials"
+- For Compose, the credentials can be found by selecting the service from the dasboard, and clicking "Service Credentials"
 
-  ![](img/14-redis-credentials.png)
+    ![](img/14-redis-credentials.png)
 
 ## Provision and bind a Memcached-as-a-Service
 - You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
