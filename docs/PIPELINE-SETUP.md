@@ -57,7 +57,7 @@ For the purpose of this POC, we have one repo that contains all of our images an
 
   ![Click on Delivery Pipeline](img/toolchainPage.PNG)
 
-16. Click Add Stage ![Add Stage](img/addStage.PNG)
+16. Click **Add Stage**
 
 17. Make changes to **Input** tab.
   - Give stage a name
