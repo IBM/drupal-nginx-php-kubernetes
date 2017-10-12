@@ -1,4 +1,5 @@
 <?php
+ini_set('xdebug.max_nesting_level', 300);
 
 /**
  * @file
@@ -88,11 +89,11 @@
  */
  $databases['default']['default'] = array(
    'driver' => 'mysql',
-   'database' => 'MYSQL_NAME',
-   'username' => 'MYSQL_USER',
-   'password' => 'MYSQL_PASS',
-   'host' => 'MYSQL_HOST',
-   'port' => 'MYSQL_PORT',
+   'database' => $_ENV['MYSQL_NAME'],
+   'username' => $_ENV['MYSQL_USER'],
+   'password' => $_ENV['MYSQL_PASS'],
+   'host' => $_ENV['MYSQL_HOST'],
+   'port' => $_ENV['MYSQL_PORT'],
  );
 
 /**
@@ -302,7 +303,7 @@ $config_directories = array();
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = 'HASH_SALT';
+$settings['hash_salt'] = $_ENV['HASH_SALT'];
 
 /**
  * Deployment identifier.

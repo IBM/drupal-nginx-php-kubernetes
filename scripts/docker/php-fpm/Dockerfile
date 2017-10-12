@@ -57,12 +57,9 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
    && tar -xzf drupal.tar.gz \
    && rm drupal.tar.gz \
    && rm -fr html \
-   && mv drupal* html \
-   && cp -R /var/www/html/sites /tmp/sites \
-   && cp -R /var/www/html/modules /tmp/modules \
-   && cp -R /var/www/html/themes /tmp/themes 
+   && mv drupal* html
 
-COPY start.sh /root/start.sh
+COPY start.sh /root/
 COPY template.settings.php /root/template.settings.php
 
 RUN chmod 755 /root/start.sh

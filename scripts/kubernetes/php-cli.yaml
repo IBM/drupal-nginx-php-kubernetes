@@ -93,20 +93,18 @@ spec:
                 secretKeyRef:
                   key: MEMCACHED_PORT
                   name: service-credentials
+            -
+              name: HASH_SALT
+              valueFrom:
+                secretKeyRef:
+                  key: HASH_SALT
+                  name: service-credentials
           image: "registry.ng.bluemix.net/jjdojo/php-cli:latest"
           name: php-cli
           volumeMounts:
             -
-              mountPath: /var/www/html/sites
+              mountPath: /var/www/html/sites/default/files
               name: sites-local-storage
-              readOnly: false
-            -
-              mountPath: /var/www/html/themes
-              name: themes-local-storage
-              readOnly: false
-            -
-              mountPath: /var/www/html/modules
-              name: modules-local-storage
               readOnly: false
       imagePullSecrets:
         -
@@ -116,11 +114,3 @@ spec:
           name: sites-local-storage
           persistentVolumeClaim:
             claimName: sites-lv-claim
-        -
-          name: themes-local-storage
-          persistentVolumeClaim:
-            claimName: themes-lv-claim
-        -
-          name: modules-local-storage
-          persistentVolumeClaim:
-            claimName: modules-lv-claim
