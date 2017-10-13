@@ -32,6 +32,7 @@ create_data_dir() {
 
   echo "ls -al before"
   ls -al ${MOUNT_PATH}
+  ls -al ${MOUNT_PATH}/sites/default/
 
   #echo "Installing Drupal"
   #cp -R /tmp/drupal*/* ${MOUNT_PATH}
@@ -41,31 +42,18 @@ create_data_dir() {
 
   # Change permissions on the folders for the non-root user.
   echo "Changing directory permissions"
-  chmod -R 777 ${MOUNT_PATH}/sites
-  chmod -R 777 ${MOUNT_PATH}/modules
-  chmod -R 777 ${MOUNT_PATH}/themes
+  chmod -R 777 ${MOUNT_PATH}/sites/default/files
 
   echo "Changing directory owners"
   echo $TEMP_USER
-  echo ${MOUNT_PATH}/sites
-  chown -R $TEMP_USER ${MOUNT_PATH}/sites
-  chown -R $TEMP_USER ${MOUNT_PATH}/modules
-  chown -R $TEMP_USER ${MOUNT_PATH}/themes
-
-  echo "Copy back Drupal files to the mount point"
-  cp -R /tmp/sites/* ${MOUNT_PATH}/sites/
-  cp -R /tmp/modules/* ${MOUNT_PATH}/modules/
-  cp -R /tmp/themes/* ${MOUNT_PATH}/themes/
+  echo ${MOUNT_PATH}/sites/default/files
+  chown -R $TEMP_USER ${MOUNT_PATH}/sites/default/files
 
   echo "ls -al after"
   ls -al ${MOUNT_PATH}
+  ls -al ${MOUNT_PATH}/sites/default/
 
-  echo "Update settings template with env variables"
-  sed -i "s/MYSQL_NAME/${MYSQL_NAME}/g" /root/template.settings.php
-  sed -i "s/MYSQL_USER/${MYSQL_USER}/g" /root/template.settings.php
-  sed -i "s/MYSQL_PASS/${MYSQL_PASS}/g" /root/template.settings.php
-  sed -i "s/MYSQL_HOST/${MYSQL_HOST}/g" /root/template.settings.php
-  sed -i "s/MYSQL_PORT/${MYSQL_PORT}/g" /root/template.settings.php
+  echo "Update settings template which gets credentials from env variables"
   cp /root/template.settings.php ${MOUNT_PATH}/sites/default/settings.php
 
   # For security, remove the non-root user from root user group.
@@ -80,6 +68,11 @@ create_data_dir() {
 }
 
 create_data_dir
+
+# Set up Composer (Shouldn't be necessary when using the tarball)
+# echo "Install and run Composer"
+# curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# cd ${MOUNT_PATH} && composer install --no-interaction
 
 # Now that volume is usable by non-root user, start up PHP on port 9000
 php-fpm

@@ -44,14 +44,8 @@ spec:
               name: http
           volumeMounts:
             -
-              mountPath: /var/www/html/sites
+              mountPath: /var/www/html/sites/default/files
               name: sites-local-storage
-            -
-              mountPath: /var/www/html/themes
-              name: themes-local-storage
-            -
-              mountPath: /var/www/html/modules
-              name: modules-local-storage
       imagePullSecrets:
         -
           name: image-pull
@@ -60,11 +54,3 @@ spec:
           name: sites-local-storage
           persistentVolumeClaim:
             claimName: sites-lv-claim
-        -
-          name: themes-local-storage
-          persistentVolumeClaim:
-            claimName: themes-lv-claim
-        -
-          name: modules-local-storage
-          persistentVolumeClaim:
-            claimName: modules-lv-claim
