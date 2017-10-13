@@ -8,7 +8,7 @@ RUN rm -f /etc/localtime \
 # Install prerequisite OS packages
 RUN apt-get update && apt-get install -y curl git
 
-# install the PHP extensions we need
+# Install the PHP extensions we need
 RUN set -ex \
 	&& buildDeps=' \
 		libjpeg62-turbo-dev \
