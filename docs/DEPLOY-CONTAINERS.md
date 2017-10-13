@@ -98,7 +98,7 @@ Obtain the available IPs assigned to your cluster (look for "is_public: true")
 kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml
 ```
 
-Set `spec.loadBalancerIP` inside [`scripts/kubernetes/ingress/ingress.yaml`](../scripts/kubernetes/ingress/ingress.yaml)
+Set `spec.loadBalancerIP` inside [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
 
 For example:
 ```bash
