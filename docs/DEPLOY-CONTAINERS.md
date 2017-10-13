@@ -92,6 +92,31 @@ kubectl --namespace default create secret docker-registry image-pull \
 
 The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-containers.sh` script. These is the hand-off point between image build/push, and kubernetes deploy.
 
+## Setup Ingress
+So far, we have configured LoadBalancer as the service type for the nginx service. We can use the Ingress type instead to give us more flexibility with specifying routes from a single endpoint and also us to use a hostname instead of floating IPs to access our application. Detailed docs here: https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps_public_ingress.
+
+1) Remove the `type: LoadBalancer` line from [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
+
+2) Obtain your domain.
+```bash
+bx cs cluster-get <cluster name>
+``` 
+
+3) Edit [`scripts/kubernetes/ingress/ingress.yaml`](../scripts/kubernetes/ingress.yaml) to include your domain.
+
+4) Redeploy your nginx service
+```bash
+kubectl delete service nginx
+kubectl apply -f scripts/kubernetes/nginx.yaml
+```
+
+5) Deploy the ingress service
+```bash
+kubectl apply -f scripts/kubernetes/ingress/ingress.yaml
+```
+
+6) Once ingress is up (may take a minute), access your application via your domain.
+
 ## Tear down the containers
 If you want to cleanly install the environment, for example to push a new set of container versions, use the following script:
 
