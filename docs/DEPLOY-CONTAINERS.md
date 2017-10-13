@@ -97,12 +97,12 @@ So far, we have configured LoadBalancer as the service type for the nginx servic
 
 1) Remove the `type: LoadBalancer` line from [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
 
-2) Obtain your domain.
+2) Obtain your "Ingress subdomain".
 ```bash
 bx cs cluster-get <cluster name>
 ``` 
 
-3) Edit [`scripts/kubernetes/ingress/ingress.yaml`](../scripts/kubernetes/ingress.yaml) to include your domain.
+3) Edit [`scripts/kubernetes/ingress/ingress.yaml`](../scripts/kubernetes/ingress/ingress.yaml) to include your subdomain.
 
 4) Redeploy your nginx service
 ```bash

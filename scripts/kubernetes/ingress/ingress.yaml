@@ -4,7 +4,7 @@ metadata:
   name: nginx-ingress
 spec:
   rules:
-  - host: <domain> #find by running bx cs cluster-get <cluster name>
+  - host: <ingress subdomain> #find by running bx cs cluster-get <cluster name>
     http:
       paths:
       - path: /
