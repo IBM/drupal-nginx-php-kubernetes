@@ -92,7 +92,27 @@ kubectl --namespace default create secret docker-registry image-pull \
 
 The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-containers.sh` script. These is the hand-off point between image build/push, and kubernetes deploy.
 
-## Setup Ingress
+## Specify a non-floating LoadBalancer IP
+Obtain the available IPs assigned to your cluster (look for "is_public: true")
+```bash
+kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml
+```
+
+Set `spec.loadBalancerIP` inside [`scripts/kubernetes/ingress/ingress.yaml`](../scripts/kubernetes/ingress/ingress.yaml)
+
+For example:
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  loadBalancerIP: <ip>
+  ...
+---
+```
+
+## Setup Ingress (replaces LoadBalancer)
 So far, we have configured LoadBalancer as the service type for the nginx service. We can use the Ingress type instead to give us more flexibility with specifying routes from a single endpoint and also us to use a hostname instead of floating IPs to access our application. Detailed docs here: https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps_public_ingress.
 
 1) Remove the `type: LoadBalancer` line from [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
