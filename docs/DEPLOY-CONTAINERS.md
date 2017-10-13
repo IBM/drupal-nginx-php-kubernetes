@@ -7,7 +7,7 @@ Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have be
 - The [`scripts/docker/php-cli/Dockerfile`](../scripts/docker/php-cli/Dockerfile) provides the steps to build a custom PHP CLI image based on the latest public image. It installs prerequisite packages, configures and builds the MySQL, Redis, and Memcached extensions, copies the custom application code over, runs Composer, and sets up read/write access to the storage volume for the PHP-FPM process which does not run as root.
 
 ## Review the Kubernetes container deployment configuration files
-- The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines three 10 GB storage volume that can be mounted by many containers (`ReadWriteMany`). The containers then reference these volumes in their own configuration files.
+- The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines a 10 GB storage volume that can be mounted by many containers (`ReadWriteMany`). The containers then reference these volumes in their own configuration files.
 - The [`scripts/kubernetes/php-fpm.yaml`](../scripts/kubernetes/php-fpm.yaml) file describes the pod/deployment for the PHP-FPM containers. It specifies how many containers from the given image and tag to start (2, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
 - Similarly The [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml) file describes the pod/deployment for the NGINX containers. It specifies how many containers from the given image and tag to start (1, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
 - Finally, the [`scripts/kubernetes/php-cli.yaml`](../scripts/kubernetes/php-cli.yaml) configures the pool of CLI workers that may be polling a database or queue for messages. It also maps the environment variables and storage volume, but does not expose a service for inbound network access.
@@ -22,7 +22,7 @@ bx login -a https://api.ng.bluemix.net
 bx cs init
 ```
 
-Next, list the clusters already provisioned on Bluemix, and get the Kubenetes configuration information.
+Next, list the clusters already provisioned on Bluemix, and get the Kubernetes configuration information.
 ```bash
 bx cs clusters #Find your cluster, and input into next command
 bx cs cluster-config $CLUSTER_NAME
@@ -45,7 +45,7 @@ kubectl proxy
 ```
 
 ## Optional: Configure your namespace
-Right now, this POC is hardcoded to the "jodojo" namespace. To avoid overwriting other people's images, you may want create and configure your own namespace.
+Right now, this POC is hardcoded to the "jjdojo" namespace. To avoid overwriting other people's images, you may want create and configure your own namespace.
 
 Install the Bluemix container registry CLI plugin:
 ```bash
@@ -60,7 +60,7 @@ bx cr namespaces #list namespaces
 bx cr login # To enable pushing images
 ```
 
-Configure scripts with your namespace. You will need to replace "jjdojo" in 
+Configure scripts with your namespace. You will need to replace "jjdojo" in
 - [build-containers.sh](../scripts/build-containers.sh)
 - [nginx.yaml](../scripts/kubernetes/nginx.yaml)
 - [php-cli.yaml](../scripts/kubernetes/php-cli.yaml)
