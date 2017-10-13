@@ -14,8 +14,6 @@ COPY fastcgi.conf /etc/nginx/conf.d/
 
 EXPOSE 80
 
-# Configure the read/write volume for a non-root user
-
 # TODO: This really shouldn't be on this image, but we need it for static files
 # Download and verify Drupal
 # https://www.drupal.org/node/3060/release
