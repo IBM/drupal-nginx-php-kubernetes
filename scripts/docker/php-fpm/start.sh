@@ -8,7 +8,7 @@ TEMP_USER=temp_user
 
 # This is the mount point for the shared volume.
 # By default the mount point is owned by the root user.
-MOUNT_PATH="/var/www/html"
+MOUNT_PATH="/var/www/html/sites/default/files"
 TEMP_USER=${TEMP_USER:-"temp_user"}
 
 # Debug
@@ -32,29 +32,18 @@ create_data_dir() {
 
   echo "ls -al before"
   ls -al ${MOUNT_PATH}
-  ls -al ${MOUNT_PATH}/sites/default/
-
-  #echo "Installing Drupal"
-  #cp -R /tmp/drupal*/* ${MOUNT_PATH}
-
-  #echo "Deleting old files"
-  #rm -rf /tmp/drupal*
 
   # Change permissions on the folders for the non-root user.
   echo "Changing directory permissions"
-  chmod -R 777 ${MOUNT_PATH}/sites/default/files
+  chmod -R 777 ${MOUNT_PATH}
 
   echo "Changing directory owners"
   echo $TEMP_USER
-  echo ${MOUNT_PATH}/sites/default/files
-  chown -R $TEMP_USER ${MOUNT_PATH}/sites/default/files
+  echo ${MOUNT_PATH}
+  chown -R $TEMP_USER ${MOUNT_PATH}
 
   echo "ls -al after"
-  ls -al ${MOUNT_PATH}
-  ls -al ${MOUNT_PATH}/sites/default/
-
-  echo "Update settings template which gets credentials from env variables"
-  cp /root/template.settings.php ${MOUNT_PATH}/sites/default/settings.php
+  ls -al /var/www/html/sites/default/
 
   # For security, remove the non-root user from root user group.
   echo "Removing user from group"

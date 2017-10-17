@@ -1,4 +1,7 @@
-FROM nginx
+ARG NGINX_VERSION=nginx:latest
+ARG DRUPAL_VERSION
+
+FROM ${NGINX_VERSION}
 
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
@@ -15,6 +18,8 @@ COPY fastcgi.conf /etc/nginx/conf.d/
 EXPOSE 80
 
 # TODO: This really shouldn't be on this image, but we need it for static files
+# TODO: Either extract out the static files needed, or put this on a container volume of sorts
+
 # Download and verify Drupal
 # https://www.drupal.org/node/3060/release
 WORKDIR /var/www

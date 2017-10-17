@@ -1,1 +1,1 @@
-php:7.1-cli
+PHP_FPM_VERSION=php:7.1-cli:latest
