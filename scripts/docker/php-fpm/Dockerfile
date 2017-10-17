@@ -60,7 +60,6 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
    && mv drupal* html
 
 COPY start.sh /root/
-COPY template.settings.php /root/template.settings.php
 
 RUN chmod 755 /root/start.sh
 
