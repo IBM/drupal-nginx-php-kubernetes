@@ -1,1 +1,1 @@
-NGINX_VERSION=nginx:latest
+NGINX_VERSION=nginx
