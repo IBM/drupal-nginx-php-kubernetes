@@ -1,4 +1,11 @@
-FROM php:7.1-fpm
+ARG PHP_FPM_VERSION=php:7.1-fpm:latest
+
+FROM ${PHP_FPM_VERSION}
+
+ARG DRUPAL_VERSION
+ARG DRUPAL_MD5
+
+RUN env
 
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
@@ -50,8 +57,6 @@ RUN { \
 # Download and verify Drupal
 # https://www.drupal.org/node/3060/release
 WORKDIR /var/www
-ENV DRUPAL_VERSION 8.3.7
-ENV DRUPAL_MD5 e7b1f382d6bd2b18d4b4aca01d335bc0
 RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
    && echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
    && tar -xzf drupal.tar.gz \
@@ -60,6 +65,7 @@ RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.ta
    && mv drupal* html
 
 COPY start.sh /root/
+ADD tmp/* /var/www/html/
 
 RUN chmod 755 /root/start.sh
 
