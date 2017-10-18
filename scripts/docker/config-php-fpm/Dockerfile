@@ -1,25 +1,18 @@
-ARG PHP_CLI_VERSION=php:7.1-cli:latest
+# This Dockerfile provides a base level of OS packages with PHP-FPM and extensions
 
-FROM ${PHP_CLI_VERSION}
+ARG PHP_FPM_VERSION=7.1-fpm
 
-ARG DRUPAL_VERSION
-ARG DRUPAL_MD5
-
-RUN env
+FROM php:${PHP_FPM_VERSION}
 
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
 RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
- # Worker name and index (TODO: where to set this?)
- ENV WORKER_NAME="send-emails" \
-     WORKER_INDEX="1"
-
 # Install prerequisite OS packages
 RUN apt-get update && apt-get install -y curl git
 
-# install the PHP extensions we need
+# Install the PHP extensions we need
 RUN set -ex \
 	&& buildDeps=' \
 		libjpeg62-turbo-dev \
@@ -58,9 +51,6 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-WORKDIR /root
+EXPOSE 9000
 
-# Copy start script
-COPY app/ /root/
-
-CMD php $WORKER_NAME/$WORKER_NAME.php WORKER_INDEX=$WORKER_INDEX
+CMD ["php-fpm"]
