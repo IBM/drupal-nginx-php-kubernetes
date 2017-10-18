@@ -45,13 +45,13 @@ cd ../docker/php-fpm
 mkdir tmp
 cp -R ../../../code/ tmp/
 docker build \
-  --tag registry.ng.bluemix.net/jjdojo/config-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_FPM_VERSION} \
+  --tag registry.ng.bluemix.net/jjdojo/code-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_FPM_VERSION} \
   --build-arg PHP_FPM_VERSION=${PHP_FPM_VERSION} \
   --build-arg DRUPAL_MD5=${DRUPAL_MD5} \
   --build-arg DRUPAL_VERSION=${DRUPAL_VERSION} \
   --no-cache \
   .
-docker push registry.ng.bluemix.net/jjdojo/config-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_FPM_VERSION}
+docker push registry.ng.bluemix.net/jjdojo/code-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_FPM_VERSION}
 rm -fr tmp
 
 # Move back to ROOT_DIR
@@ -62,13 +62,13 @@ cd ../docker/php-cli
 mkdir tmp
 cp -R ../../../code/ tmp/
 docker build \
-  --tag registry.ng.bluemix.net/jjdojo/config-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_CLI_VERSION} \
+  --tag registry.ng.bluemix.net/jjdojo/code-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_CLI_VERSION} \
   --build-arg PHP_CLI_VERSION=${PHP_CLI_VERSION} \
   --build-arg DRUPAL_MD5=${DRUPAL_MD5} \
   --build-arg DRUPAL_VERSION=${DRUPAL_VERSION} \
   --no-cache \
   .
-docker push registry.ng.bluemix.net/jjdojo/config-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_CLI_VERSION}
+docker push registry.ng.bluemix.net/jjdojo/code-${BUILD_NUMBER}-${DRUPAL_VERSION}-${PHP_CLI_VERSION}
 rm -fr tmp
 
 # Move back to ROOT_DIR
