@@ -1,4 +1,11 @@
-FROM php:7.1-fpm
+ARG PHP_CLI_VERSION=php:7.1-cli:latest
+
+FROM ${PHP_CLI_VERSION}
+
+ARG DRUPAL_VERSION
+ARG DRUPAL_MD5
+
+RUN env
 
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
