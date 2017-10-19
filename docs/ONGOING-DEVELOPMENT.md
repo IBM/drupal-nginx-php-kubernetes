@@ -15,4 +15,9 @@ Now that the Kubernetes cluster is provisioned and you have a set of containers 
 
 
 ## Configuring a DevOps pipeline
-TODO.
+
+- Rolling deployment  
+  - Update deployment (set image to new version)
+    - This will automatically do a rolling deployment
+    - If update fails
+      - Need to do a rollback (rollout undo deployment...)
