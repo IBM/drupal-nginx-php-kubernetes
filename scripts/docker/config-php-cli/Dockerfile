@@ -1,21 +1,22 @@
-ARG PHP_FPM_VERSION=php:7.1-fpm:latest
+# This Dockerfile provides a base level of OS packages with PHP-CLI and extensions
 
-FROM ${PHP_FPM_VERSION}
+ARG PHP_CLI_VERSION=7.1-cli
 
-ARG DRUPAL_VERSION
-ARG DRUPAL_MD5
-
-RUN env
+FROM php:${PHP_CLI_VERSION}
 
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
 RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
+ # Worker name and index (TODO: where to set this?)
+ ENV WORKER_NAME="send-emails" \
+     WORKER_INDEX="1"
+
 # Install prerequisite OS packages
 RUN apt-get update && apt-get install -y curl git
 
-# Install the PHP extensions we need
+# install the PHP extensions we need
 RUN set -ex \
 	&& buildDeps=' \
 		libjpeg62-turbo-dev \
@@ -54,21 +55,9 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Download and verify Drupal
-# https://www.drupal.org/node/3060/release
-WORKDIR /var/www
-RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
-   && echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
-   && tar -xzf drupal.tar.gz \
-   && rm drupal.tar.gz \
-   && rm -fr html \
-   && mv drupal* html
+WORKDIR /root
 
-COPY start.sh /root/
-ADD tmp/* /var/www/html/
+# Copy start script
+COPY noop.php /root/
 
-RUN chmod 755 /root/start.sh
-
-EXPOSE 9000
-
-ENTRYPOINT ["/root/start.sh"]
+CMD [ "php", "/root/noop.php" ]
