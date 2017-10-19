@@ -16,11 +16,17 @@ RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
 
+
+RUN rm -fr /var/www/html
+RUN composer create-project drupal-composer/drupal-project:8.x-dev /var/www/html/ --stability dev --no-interaction
+
+ADD tmp/* /var/www/html/
+
+
 # RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
 COPY start.sh /root/
 RUN chmod +x /root/start.sh
-ADD tmp/* /var/www/html/
 
 EXPOSE 9000
 
