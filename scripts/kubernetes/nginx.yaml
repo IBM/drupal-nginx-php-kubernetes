@@ -38,6 +38,7 @@ spec:
                   - "-s"
                   - quit
           name: nginx
+          imagePullPolicy: IfNotPresent
           ports:
             -
               containerPort: 80

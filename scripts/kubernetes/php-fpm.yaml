@@ -115,6 +115,7 @@ spec:
                   name: service-credentials
           image: "registry.ng.bluemix.net/jjdojo/code-php-fpm:latest"
           name: php-fpm
+          imagePullPolicy: IfNotPresent
           ports:
             -
               containerPort: 9000
