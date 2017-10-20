@@ -101,6 +101,7 @@ spec:
                   name: service-credentials
           image: "registry.ng.bluemix.net/jjdojo/code-php-cli:latest"
           name: php-cli
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             -
               mountPath: /var/www/html/sites/default/files
