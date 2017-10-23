@@ -14,11 +14,11 @@ The first set of three (NGINX, PHP-FPM, and PHP-CLI) provide the underlying web 
 
 The second set of three (NGINX, PHP-FPM, and PHP-CLI) provide image builds specific to Drupal, Drush, and custom code that is pushed to the `code` directory. They are rebuilt when anything in that directory changes.
 
-1. The [`scripts/docker/config-nginx/Dockerfile`](../scripts/docker/config-nginx/Dockerfile) builds on the base image and adds static code to the `/var/www/html` directory.
+1. The [`scripts/docker/code-nginx/Dockerfile`](../scripts/docker/code-nginx/Dockerfile) builds on the base image and adds static code to the `/var/www/html` directory.
 
-2. The [`scripts/docker/config-php-fpm/Dockerfile`](../scripts/docker/config-php-fpm/Dockerfile) installs Drupal via Composer, then copies over custom code. It also mounts the volume needed at runtime through its `start.sh` script.
+2. The [`scripts/docker/code-php-fpm/Dockerfile`](../scripts/docker/code-php-fpm/Dockerfile) installs Drupal via Composer, then copies over custom code. It also mounts the volume needed at runtime through its `start.sh` script.
 
-3. The [`scripts/docker/config-php-cli/Dockerfile`](../scripts/docker/config-php-cli/Dockerfile) installs Drush via Composer, then copies over custom code. It also mounts the volume needed at runtime through its `start.sh` script.
+3. The [`scripts/docker/code-php-cli/Dockerfile`](../scripts/docker/code-php-cli/Dockerfile) installs Drush via Composer, then copies over custom code. It also mounts the volume needed at runtime through its `start.sh` script.
 
 ## Review the Kubernetes container deployment configuration files
 The Kubernetes deployment files instantiate containers based on the `code` images (never just the `config` images).
