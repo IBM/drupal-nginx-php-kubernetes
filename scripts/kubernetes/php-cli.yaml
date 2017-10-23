@@ -99,8 +99,9 @@ spec:
                 secretKeyRef:
                   key: HASH_SALT
                   name: service-credentials
-          image: "registry.ng.bluemix.net/jjdojo/php-cli:latest"
+          image: "registry.ng.bluemix.net/jjdojo/code-php-cli:latest"
           name: php-cli
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             -
               mountPath: /var/www/html/sites/default/files

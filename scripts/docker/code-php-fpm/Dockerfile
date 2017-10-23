@@ -1,25 +1,32 @@
 ARG PHP_FPM_VERSION=latest
 
-FROM registry.ng.bluemix.net/jjdojo/config-php-7.1-fpm:${PHP_FPM_VERSION}
+FROM registry.ng.bluemix.net/jjdojo/config-php-fpm:${PHP_FPM_VERSION}
 
 ARG DRUPAL_VERSION
+ARG DRUPAL_MD5
 
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
 
-COPY composer.json ./
+COPY tmp/composer.json ./
 
-COPY composer.lock ./
+# COPY tmp/composer.lock ./
 
 RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
 
-RUN composer dump-autoload --optimize && \
-	composer run-scripts post-install-cmd
+
+RUN rm -fr /var/www/html
+RUN composer create-project drupal-composer/drupal-project:8.x-dev /var/www/html/ --stability dev --no-interaction
+
+ADD tmp/* /var/www/html/
+
+
+# RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
 COPY start.sh /root/
-ADD tmp/* /var/www/html/
+RUN chmod +x /root/start.sh
 
 EXPOSE 9000
 
