@@ -1,6 +1,7 @@
 ARG PHP_FPM_VERSION=latest
+ARG REGISTRY_NAMESPACE=orod
 
-FROM registry.ng.bluemix.net/jjdojo/config-php-fpm:${PHP_FPM_VERSION}
+FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-fpm:${PHP_FPM_VERSION}
 
 ARG DRUPAL_VERSION
 ARG DRUPAL_MD5

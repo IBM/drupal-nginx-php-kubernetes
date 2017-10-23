@@ -1,6 +1,7 @@
 ARG PHP_CLI_VERSION=latest
+ARG REGISTRY_NAMESPACE=orod
 
-FROM registry.ng.bluemix.net/jjdojo/config-php-cli:${PHP_CLI_VERSION}
+FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-cli:${PHP_CLI_VERSION}
 
 ARG DRUSH_VERSION
 
@@ -13,7 +14,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 
 COPY tmp/composer.json ./
 
-# COPY tmp/composer.lock ./
+# COPY tmp/code/composer.lock ./
 
 RUN composer install --no-scripts --no-autoloader
 
