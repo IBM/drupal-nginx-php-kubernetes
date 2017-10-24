@@ -9,6 +9,15 @@ ARG DRUSH_VERSION
 ENV WORKER_NAME="send-emails" \
    WORKER_INDEX="1"
 
+# Register the COMPOSER_HOME environment variable.
+ENV COMPOSER_HOME=/root/.composer
+
+# Add global binary directory to PATH.
+ENV PATH /root/.composer/vendor/bin:$PATH
+
+# Allow Composer to be run as root.
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN curl -sS https://getcomposer.org/installer | \
    php -- --install-dir=/usr/bin/ --filename=composer
 
@@ -20,22 +29,14 @@ RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
 
-RUN composer create-project drupal-composer/drupal-project:8.x /var/www/drupal/ --stability dev --no-interaction
+RUN composer global require drush/drush:8.x
 
-# The above uses the web subdirectory and default composer.json.
-# To customize before install, you can take the following approach instead:
-#   git clone https://github.com/drupal-composer/drupal-project.git my_site_name_dir
-#   cd my_site_name_dir
-#   vi composer.json to customize
-#   composer install
+ADD tmp/composer.json /root/drush/
+ADD tmp/composer.lock /root/drush/
 
-ADD tmp/composer.json /var/www/drupal/
-ADD tmp/composer.lock /var/www/drupal/
+ADD tmp/drush/ /root/drush/
 
-ADD tmp/drush/ /var/www/drupal/drush/
+WORKDIR /root/drush/
 
-WORKDIR /var/www/drupal/drush/
-
-CMD ls -Flat
-
+# Change this to be a Drush command?
 CMD php $WORKER_NAME/$WORKER_NAME.php WORKER_INDEX=$WORKER_INDEX
