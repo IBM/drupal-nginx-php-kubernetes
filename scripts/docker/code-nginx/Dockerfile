@@ -5,7 +5,32 @@ ARG REGISTRY_NAMESPACE=orod
 
 FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-nginx:${NGINX_VERSION}
 
-ADD tmp/* /var/www/html/
+# Install prerequisite OS packages
+RUN apt-get update && apt-get install -y php7.0-cli php7.0-xml php-mbstring zip git
+
+# --- We do this to add static files, but we should look at an alternative approach.
+
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
+
+COPY tmp/composer.json ./
+
+# COPY tmp/composer.lock ./
+
+RUN composer install --no-scripts --no-autoloader
+
+COPY . ./
+
+RUN composer create-project drupal-composer/drupal-project:8.x-dev /var/www/drupal/ --stability dev --no-interaction
+
+ADD tmp/modules/ /var/www/drupal/web/modules/
+ADD tmp/profiles/ /var/www/drupal/web/profiles/
+ADD tmp/sites/ /var/www/drupal/web/sites/
+ADD tmp/themes/ /var/www/drupal/web/themes/
+
+# --- We do the above to add static files, but we should look at an alternative approach.
+
+WORKDIR /var/www/drupal/web
 
 EXPOSE 80
 

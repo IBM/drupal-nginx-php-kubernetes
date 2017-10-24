@@ -101,10 +101,10 @@ spec:
                   name: service-credentials
           image: "registry.ng.bluemix.net/orod/code-php-cli:latest"
           name: php-cli
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always # Set to IfNotPresent to improve performance at the expense of caching.
           volumeMounts:
             -
-              mountPath: /var/www/html/sites/default/files
+              mountPath: /var/www/drupal/web/sites/default/files
               name: sites-local-storage
               readOnly: false
       imagePullSecrets:

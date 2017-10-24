@@ -20,12 +20,22 @@ RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
 
-# RUN composer dump-autoload --optimize && composer run-script post-install-cmd
+RUN composer create-project drupal-composer/drupal-project:8.x /var/www/drupal/ --stability dev --no-interaction
 
-WORKDIR /root
+# The above uses the web subdirectory and default composer.json.
+# To customize before install, you can take the following approach instead:
+#   git clone https://github.com/drupal-composer/drupal-project.git my_site_name_dir
+#   cd my_site_name_dir
+#   vi composer.json to customize
+#   composer install
 
-ADD tmp/* ./
+ADD tmp/composer.json /var/www/drupal/
+ADD tmp/composer.lock /var/www/drupal/
 
-# TODO: Run composer install
+ADD tmp/drush/ /var/www/drupal/drush/
+
+WORKDIR /var/www/drupal/drush/
+
+CMD ls -Flat
 
 CMD php $WORKER_NAME/$WORKER_NAME.php WORKER_INDEX=$WORKER_INDEX

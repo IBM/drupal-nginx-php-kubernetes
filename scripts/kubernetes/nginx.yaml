@@ -38,14 +38,14 @@ spec:
                   - "-s"
                   - quit
           name: nginx
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always # Set to IfNotPresent to improve performance at the expense of caching.
           ports:
             -
               containerPort: 80
               name: http
           volumeMounts:
             -
-              mountPath: /var/www/html/sites/default/files
+              mountPath: /var/www/drupal/web/sites/default/files
               name: sites-local-storage
       imagePullSecrets:
         -
