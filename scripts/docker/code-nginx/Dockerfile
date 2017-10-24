@@ -5,6 +5,9 @@ ARG REGISTRY_NAMESPACE=orod
 
 FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-nginx:${NGINX_VERSION}
 
+# Allow Composer to be run as root.
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
 # Install prerequisite OS packages
 RUN apt-get update && apt-get install -y php7.0-cli php7.0-xml php-mbstring zip git
 

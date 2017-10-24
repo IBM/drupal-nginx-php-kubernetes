@@ -6,6 +6,9 @@ FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-fpm:${PHP_FPM_VERS
 ARG DRUPAL_VERSION
 ARG DRUPAL_MD5
 
+# Allow Composer to be run as root.
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
 
