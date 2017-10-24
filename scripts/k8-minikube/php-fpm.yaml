@@ -1,0 +1,135 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-fpm
+spec:
+  ports:
+    -
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: php-fpm
+    tier: backend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: php-fpm
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: php-fpm
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        -
+          env:
+            -
+              name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: service-credentials
+            -
+              name: MYSQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASS
+                  name: service-credentials
+            -
+              name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_HOST
+                  name: service-credentials
+            -
+              name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PORT
+                  name: service-credentials
+            -
+              name: MYSQL_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_NAME
+                  name: service-credentials
+            -
+              name: REDIS_USER
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_USER
+                  name: service-credentials
+            -
+              name: REDIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASS
+                  name: service-credentials
+            -
+              name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_HOST
+                  name: service-credentials
+            -
+              name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PORT
+                  name: service-credentials
+            -
+              name: MEMCACHED_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_USER
+                  name: service-credentials
+            -
+              name: MEMCACHED_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PASS
+                  name: service-credentials
+            -
+              name: MEMCACHED_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_HOST
+                  name: service-credentials
+            -
+              name: MEMCACHED_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PORT
+                  name: service-credentials
+            -
+              name: HASH_SALT
+              valueFrom:
+                secretKeyRef:
+                  key: HASH_SALT
+                  name: service-credentials
+          image: "registry.ng.bluemix.net/jjdojo/code-php-fpm:latest"
+          name: php-fpm
+          imagePullPolicy: IfNotPresent
+          ports:
+            -
+              containerPort: 9000
+              name: fastcgi
+          volumeMounts:
+            -
+              mountPath: /www
+              name: sites-local-storage
+              readOnly: false
+      imagePullSecrets:
+        -
+          name: image-pull
+      volumes:
+        -
+          name: sites-local-storage
+          persistentVolumeClaim:
+            claimName: local-sites-claim
