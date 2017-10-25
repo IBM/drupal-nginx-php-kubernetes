@@ -201,3 +201,28 @@ We get a proper (successful) response from the PHP-FPM process:
     Expires: Thu, 01 Jan 1970 00:00:00 GMT
     Cache-Control: no-cache, no-store, must-revalidate, max-age=0
 
+Test status page:
+
+    pongroot@php-fpm-3522852564-mk4tx:/www# SCRIPT_NAME=/status \
+    > SCRIPT_FILENAME=/status \
+    > REQUEST_METHOD=GET \
+    > cgi-fcgi -bind -connect 127.0.0.1:9000
+    X-Powered-By: PHP/7.1.10
+    Expires: Thu, 01 Jan 1970 00:00:00 GMT
+    Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+    Content-type: text/plain;charset=UTF-8
+    
+    pool:                 www
+    process manager:      dynamic
+    start time:           25/Oct/2017:08:14:56 +0000
+    start since:          877
+    accepted conn:        2
+    listen queue:         0
+    max listen queue:     0
+    listen queue len:     128
+    idle processes:       1
+    active processes:     1
+    total processes:      2
+    max active processes: 1
+    max children reached: 0
+    slow requests:        0
