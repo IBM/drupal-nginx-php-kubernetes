@@ -145,3 +145,17 @@ then copy files into the mounted host volume.
 
     cp -R /usr/local/etc/ /www/nginx-php-container-cluster/k8-minikube/build/php-fpm/config
 
+Rebuild the images
+
+    build/build-base-images.sh
+
+Relaunch the local cluster
+
+    ./recreate.sh
+
+Verify new config files
+
+    ./bash-php-fpm.sh
+    root@php-fpm-3522852564-mk4tx:/www# cat /usr/local/etc/README.txt
+    This is proof that we copied our customized PHP-FPM configs back to the image.
+
