@@ -36,11 +36,11 @@ echo "Drupal install done"
 # Copy files over the Drupal install non-destructively
 rsync -auv /tmp/var/www/drupal/drush/composer.json /var/www/drupal/drush/composer.json
 rsync -auv /tmp/var/www/drupal/drush/composer.lock /var/www/drupal/drush/composer.lock
-rsync -auv /tmp/var/www/drupal/drush /var/www/drupal/drush
-rsync -auv /tmp/var/www/drupal/modules /var/www/drupal/modules
-rsync -auv /tmp/var/www/drupal/profiles /var/www/drupal/profiles
-rsync -auv /tmp/var/www/drupal/sites /var/www/drupal/sites
-rsync -auv /tmp/var/www/drupal/themes /var/www/drupal/themes
+rsync -auv /tmp/var/www/drupal/drush/ /var/www/drupal/drush
+rsync -auv /tmp/var/www/drupal/modules/ /var/www/drupal/modules
+rsync -auv /tmp/var/www/drupal/profiles/ /var/www/drupal/profiles
+rsync -auv /tmp/var/www/drupal/sites/ /var/www/drupal/sites
+rsync -auv /tmp/var/www/drupal/themes/ /var/www/drupal/themes
 
 # The above uses the web subdirectory and default composer.json.
 # To customize before install, you can take the following approach instead:
