@@ -2,22 +2,30 @@
 
 FROM registry.ng.bluemix.net/jjdojo/php-fpm:latest
 
+# Add global binary directory to PATH.
+ENV PATH /composer/vendor/bin:$PATH
+
+# Allow Composer to be run as root.
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
 RUN curl -sS https://getcomposer.org/installer | \
    php -- --install-dir=/usr/bin/ --filename=composer
 
-COPY composer.json /root/composer.json
-COPY tmp/composer.lock /root/composer.json
+WORKDIR /root
 
-# RUN composer install --no-scripts --no-autoloader
-RUN composer install
+#COPY composer.json /root/composer.json
+#COPY composer.lock /root/composer.json
+#
+## RUN composer install --no-scripts --no-autoloader
+#RUN composer install
 
 # Dump autoloader, without optimizations.
 # Optimizations remove debugging capabilities.
-RUN composer dump-autoload
+#RUN composer dump-autoload
 
 # RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
-WORKDIR /root
+RUN composer require drush/drush:8.x
 
 # Copy start script
 COPY noop.php /root/
