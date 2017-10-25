@@ -134,3 +134,14 @@ PHP Configs are in
 Default Pool Config is in
 
     /usr/local/etc/php-fpm.d
+
+### Sync community image files back with the POC
+
+Exec bash into the PHP-FPM image,
+
+    kubectl exec -i -t $(kubectl get pod -l "app=php-fpm" -o jsonpath='{.items[0].metadata.name}') -- bash
+
+then copy files into the mounted host volume.
+
+    cp -R /usr/local/etc/ /www/nginx-php-container-cluster/k8-minikube/build/php-fpm/config
+
