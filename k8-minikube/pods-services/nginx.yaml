@@ -66,15 +66,25 @@ spec:
               name: sites-local-storage
               subPath: nginx-php-container-cluster/k8-minikube/build/nginx/fastcgi_params
 
+            - mountPath: /www-data
+              name: shared-volume
+              readOnly: false
+
           env:
             -
               name: WEB_ROOT
               value: /www
+
       imagePullSecrets:
         -
           name: image-pull
+
       volumes:
         -
           name: sites-local-storage
           persistentVolumeClaim:
             claimName: local-sites-claim
+
+        # Ephemeral tmpfs (ramdisk) volume for sharing code.
+        - name: shared-volume
+          emptyDir: {}

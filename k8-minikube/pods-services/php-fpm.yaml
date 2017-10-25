@@ -123,16 +123,28 @@ spec:
             -
               containerPort: 9000
               name: fastcgi
+
           volumeMounts:
             -
               mountPath: /www
               name: sites-local-storage
               readOnly: false
+
+            -
+              mountPath: /www-data
+              name: shared-volume
+              readOnly: false
+
       imagePullSecrets:
         -
           name: image-pull
+
       volumes:
         -
           name: sites-local-storage
           persistentVolumeClaim:
             claimName: local-sites-claim
+
+        # Ephemeral tmpfs (ramdisk) volume for sharing code.
+        - name: shared-volume
+          emptyDir: {}

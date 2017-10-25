@@ -105,11 +105,17 @@ spec:
           image: "registry.ng.bluemix.net/alexanderallen/php-cli:latest"
           name: php-cli
           imagePullPolicy: IfNotPresent
+
           volumeMounts:
-            -
-              mountPath: /www
+
+            - mountPath: /www
               name: sites-local-storage
               readOnly: false
+
+            - mountPath: /www-data
+              name: shared-volume
+              readOnly: false
+
       imagePullSecrets:
         -
           name: image-pull
@@ -118,3 +124,7 @@ spec:
           name: sites-local-storage
           persistentVolumeClaim:
             claimName: local-sites-claim
+
+        # Ephemeral tmpfs (ramdisk) volume for sharing code.
+        - name: shared-volume
+          emptyDir: {}
