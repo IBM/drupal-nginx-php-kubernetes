@@ -8,6 +8,15 @@ the POC.
 The purpose of this exercise is to demonstrate alternate Docker build workflows
 (mainly).
 
+### Image PUSHes to IBM Container Registry
+
+There is no image pushing happening at this moment for all the Dockerfiles in
+built in the k8-minikube directory. All these builds are local-only.
+
+The custom (dumbed-down) build script that I created for building my Dockerfiles
+does not have docker push enable (i.e., not pushing to IBM Container Registry atm).
+
+
 ### Modifications
 
 - Simplified build from config- and code- matrix to three base images: nginx,
