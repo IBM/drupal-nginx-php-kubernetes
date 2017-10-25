@@ -2,47 +2,23 @@
 set -e
 
 # Inspect all the files in config and extract into env variables
-set -o allexport
-for file in ../../code/*.txt
-do
-  source $file
-done
-for file in ../../config/*.txt
-do
-  source $file
-done
-set +o allexport
 
 BUILD_NUMBER=$( date +%s )
-
-echo $DRUPAL_VERSION
-echo $DRUPAL_MD5
-echo $DRUSH_VERSION
-echo $NGINX_VERSION     # Override from args
-echo $PHP_FPM_VERSION   # Override from args
-echo $PHP_CLI_VERSION   # Override from args
 
 # Build each image and push
 ROOT_DIR=`pwd`
 
-# Log into the Bluemix Container Registry
-bx cr login
-
 # Build the NGINX image (configure Fast CGI)
-cd ../docker/code-nginx
-if [ -d tmp ]; then
-  rm -fr tmp
-fi
-mkdir tmp
-cp -R ../../../code/ tmp/
+
+# rallen: The nginx image should have no code whatsoever in it.
+# Whatever user code nginx sees should be on a volume, not on the docker image.
+
+cd code-nginx
 docker build \
   --tag registry.ng.bluemix.net/jjdojo/code-nginx:${BUILD_NUMBER} \
   --tag registry.ng.bluemix.net/jjdojo/code-nginx:latest \
-  --build-arg NGINX_VERSION=${NGINX_VERSION} \
+  --build-arg NGINX_VERSION=1.13.5 \
   .
-# --no-cache \
-docker push registry.ng.bluemix.net/jjdojo/code-nginx:latest
-rm -fr tmp
 
 # Move back to ROOT_DIR
 cd $ROOT_DIR
