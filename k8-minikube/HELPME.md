@@ -393,6 +393,24 @@ Then reloading revisiting a test page seems to work. Also doing:
     minikube service nginx --url
 
 
+### Hunt Down Nginx Configs and Copy Back to our Build directory
+
+    └─[$]> ./bash-nginx.sh
+    
+    root@nginx-1045159386-lsdqt:/# cd /etc/nginx/
+    
+    root@nginx-1045159386-lsdqt:/etc/nginx# ls
+    conf.d	fastcgi_params	koi-utf  koi-win  mime.types  modules  nginx.conf  scgi_params	uwsgi_params  win-utf    
+
+    # Copy default nginx.conf
+    root@nginx-1045159386-lsdqt:/etc/nginx# cp nginx.conf /www/nginx-php-container-cluster/k8-minikube/build/nginx/
+
+    # Copy other configs.
+    root@nginx-1045159386-lsdqt:/etc/nginx# cp fastcgi_params /www/nginx-php-container-cluster/k8-minikube/build/nginx/
+
+Then add then back via the Nginx Dockerfile.
+
+
 ---
 
 The End!

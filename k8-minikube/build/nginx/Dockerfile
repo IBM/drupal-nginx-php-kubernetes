@@ -15,7 +15,10 @@ RUN apt-get update && apt-get install -y curl iputils-ping libfcgi0ldbl vim
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY fastcgi.conf /etc/nginx/conf.d/
+# Copy Nginx configs.
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY fastcgi_params /etc/nginx/fastcgi_params
+COPY fastcgi.conf /etc/nginx/conf.d/fastcgi.conf
 
 EXPOSE 80
 
