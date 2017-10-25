@@ -53,4 +53,6 @@ RUN { \
 
 EXPOSE 9000
 
+WORKDIR $WEB_ROOT
+
 CMD ["php-fpm"]
