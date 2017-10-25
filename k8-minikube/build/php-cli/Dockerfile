@@ -1,6 +1,6 @@
 # This Dockerfile provides a base level of OS packages with PHP-CLI and extensions
 
-FROM php:7.1-cli
+FROM registry.ng.bluemix.net/jjdojo/php-fpm:latest
 
 ARG PHP_CLI_VERSION=7.1-cli
 
