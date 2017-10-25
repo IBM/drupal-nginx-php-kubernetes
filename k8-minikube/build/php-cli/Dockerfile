@@ -2,8 +2,11 @@
 
 FROM registry.ng.bluemix.net/alexanderallen/php-fpm:latest
 
+# Specify $COMPOSER_HOME.
+ENV COMPOSER_HOME /.root
+
 # Add global binary directory to PATH.
-ENV PATH /composer/vendor/bin:$PATH
+ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
 # Allow Composer to be run as root.
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -11,7 +14,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -sS https://getcomposer.org/installer | \
    php -- --install-dir=/usr/bin/ --filename=composer
 
-WORKDIR /root
+WORKDIR $COMPOSER_HOME
 
 #COPY composer.json /root/composer.json
 #COPY composer.lock /root/composer.json
