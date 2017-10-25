@@ -3,18 +3,15 @@ set -x
 
 ROOT_DIR=`pwd`
 
-echo "Building config images... "
-(
-  cd nginx
-  docker build --tag registry.ng.bluemix.net/jjdojo/nginx:latest .
-)
-(
-  cd php-fpm
-  docker build --tag registry.ng.bluemix.net/jjdojo/php-fpm:latest .
-)
-(
-  cd config-php-cli
-  docker build --tag registry.ng.bluemix.net/jjdojo/php-cli:latest .
-)
+echo "Building base images... "
+
+cd nginx
+docker build --tag registry.ng.bluemix.net/jjdojo/nginx:latest .
+
+cd $ROOT_DIR/php-fpm
+docker build --tag registry.ng.bluemix.net/jjdojo/php-fpm:latest .
+
+cd $ROOT_DIR/php-cli
+docker build --tag registry.ng.bluemix.net/jjdojo/php-cli:latest .
 
 echo "Build complete."
