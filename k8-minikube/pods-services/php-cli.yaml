@@ -16,6 +16,9 @@ spec:
         -
           env:
             -
+              name: WEB_ROOT
+              value: /www
+            -
               name: MYSQL_USER
               valueFrom:
                 secretKeyRef:

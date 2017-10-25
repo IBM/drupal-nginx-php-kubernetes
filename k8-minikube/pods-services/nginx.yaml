@@ -47,6 +47,10 @@ spec:
             -
               mountPath: /www
               name: sites-local-storage
+          env:
+            -
+              name: WEB_ROOT
+              value: /www
       imagePullSecrets:
         -
           name: image-pull
