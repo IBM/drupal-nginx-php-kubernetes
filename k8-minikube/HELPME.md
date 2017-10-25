@@ -283,6 +283,63 @@ A few things to note:
   from the `nginx.yaml` service definition, making it reachable from the other
   pods/containers !
 
+### DEVELOPMENT: HOT CONFIGS (using subPath)
+
+You can mount configuration files into Kubernetes using K8 for development,
+similar to what you can do with docker-compose, using the the sub-path volume,
+for example.
+
+This in one such example "hot config" file in the `nginx.yaml` container
+definition:
+
+            # Mount "hot" file from host for development.
+            # The "mountPath" is the target location.
+            - mountPath: /etc/nginx/conf.d/fastcgi.conf
+              name: sites-local-storage
+              # The "sub-path" param is the source location.
+              # The source sub path is located in the /www volume (~/Sites on the host).
+              subPath: nginx-php-container-cluster/k8-minikube/build/nginx/fastcgi.conf
+
+Instead of having to re-build one image, or all images depending where your
+config file rests in your Dockerfiles, you can skip the rebuilding process
+altogether for development purposes.
+
+How it works is that you mount the (otherwise static) configuration file from
+your host directly into the container, update the config file at your heart's
+content, then restart the container.
+
+Without this development configuration, you'd have to:
+
+- Edit your config file.
+- Rebuild your dockerfile(s) - takes a while.
+- Destroy all your containers (and typically the whole cluster) - 20 seconds.
+- Re-launch the whole cluster - add a minute for all the services to come online.
+- Visit your service and restest the file.
+
+You'll take hours debugging like that, just for hunting down a single-liner fix
+in some config file.
+
+How would you like instead:
+
+- Edit your config file.
+- Exec bash into the container using that config file.
+- Kill the container.
+- Kubernetes automatically restarts the container for you (given proper restart policy).
+- Your new file is automatically used ... Profit!!!
+
+The whole process takes only about 20 seconds, no rebuilding neccesary!
+
+Break down:
+
+- I modify `nginx-php-container-cluster/k8-minikube/build/nginx/fastcgi.conf` on
+  my favorite editor (on the host desktop, OSX/Windows).
+- `./bash-nginx.sh` login to the container.
+- kill 1 (container dies).
+- DONE - do your testing.
+
+What this does is that it uses the config file directly from your host, and
+overrides the one on the container's image, allowing for faster development cycles.
+
 ---
 
 The End!
