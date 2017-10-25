@@ -346,6 +346,30 @@ Break down:
 What this does is that it uses the config file directly from your host, and
 overrides the one on the container's image, allowing for faster development cycles.
 
+### Restarting a pod/container
+
+Instead of logging into the container and killing it with `kill 1`, then waiting
+for the Kubernetes controller to automatically restart it, you can do:
+
+    # Recreate the pod without changing it's name.
+    kubectl replace --force -f pods-services/nginx.yaml
+    
+    # Show nginx endpoint, automatically shows up when ready.
+    minikube service nginx --url
+
+I've placed this restart sequence in:
+
+    nginx-php-container-cluster/k8-minikube/recreate.sh
+
+Example:
+
+    └─[$]> ./restart-nginx.sh
+    service "nginx" deleted
+    deployment "nginx" deleted
+    service "nginx" replaced
+    deployment "nginx" replaced
+    http://192.168.99.100:30567
+
 ---
 
 The End!
