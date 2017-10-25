@@ -23,6 +23,9 @@ minikube service nginx --url
 # Open default browser to Nginx
 minikube service nginx
 
+# Pop open the local dashboard.
+minikube dashboard
+
 # Double check docker status, should show minikube containers.
 # docker ps
 
