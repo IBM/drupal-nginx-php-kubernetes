@@ -346,6 +346,10 @@ Break down:
 What this does is that it uses the config file directly from your host, and
 overrides the one on the container's image, allowing for faster development cycles.
 
+Reference:
+
+- https://kubernetes.io/docs/concepts/storage/volumes/#using-subpath
+
 ### Restarting a pod/container
 
 Instead of logging into the container and killing it with `kill 1`, then waiting
@@ -369,6 +373,25 @@ Example:
     service "nginx" replaced
     deployment "nginx" replaced
     http://192.168.99.100:30567
+
+Reference:
+
+- https://kubernetes-v1-4.github.io/docs/user-guide/kubectl/kubectl_replace/
+
+### PHP-FPM Gateway Timeout (HTTP 504) issue (given by Nginx)
+
+Deleting the pod
+
+    kubectl delete pod $(kubectl get pod -l "app=nginx" -o jsonpath='{.items[0].metadata.name}')
+
+Then reloading revisiting a test page seems to work. Also doing:
+
+    # Recreate the pod without changing it's name.
+    kubectl replace --force -f pods-services/nginx.yaml
+    
+    # Show nginx endpoint, automatically shows up when ready.
+    minikube service nginx --url
+
 
 ---
 
