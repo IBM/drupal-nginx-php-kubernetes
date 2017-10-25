@@ -18,7 +18,7 @@ kind: Deployment
 metadata:
   name: php-fpm
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:

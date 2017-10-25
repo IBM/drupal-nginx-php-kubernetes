@@ -1,7 +1,7 @@
 # NGINX and PHP-FPM Container Cluster on IBM Bluemix
-Demonstration of a set of NGINX and PHP containers deployed to the IBM Bluemix Container Service to support multiple Drupal 8 sites.
+Demonstration of a set of NGINX and PHP containers deployed to the IBM Bluemix Container Service to support multiple web sites on a single Drupal 8 instance.
 
-These containers mount a persistent volume for sites (which change after build time) and connect to MySQL, Redis, and Memcached services from the Bluemix catalog (not self-hosted containers inside the same cluster).
+These containers mount a persistent volume for sites (which change after build time) and connect to MySQL, Redis, and Memcached services from the Bluemix catalog (not self-hosted containers inside the same cluster). They also mount a persistent volume to share an instance of Drupal and Drush.
 
 This shows several basic concepts for deploying a multi-container deployment of NGINX and PHP cluster to Kubernetes and exposing them as services. Alternative approaches might use Helm or more sophisticated build and deploy approaches that deploy on commit to a GitHub repo.
 

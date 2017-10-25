@@ -30,17 +30,17 @@ echo "Composer install done"
 
 # Install Drupal if not already here
 composer create-project drupal-composer/drupal-project:8.x /var/www/drupaltmp/ --stability dev --no-interaction
-rsync -auv /var/www/drupaltmp/ /var/www/drupal
+rsync -avz --ignore-existing /var/www/drupaltmp/ /var/www/drupal
 echo "Drupal install done"
 
 # Copy files over the Drupal install non-destructively
-rsync -auv /tmp/var/www/drupal/drush/composer.json /var/www/drupal/drush/composer.json
-rsync -auv /tmp/var/www/drupal/drush/composer.lock /var/www/drupal/drush/composer.lock
-rsync -auv /tmp/var/www/drupal/drush/ /var/www/drupal/drush
-rsync -auv /tmp/var/www/drupal/modules/ /var/www/drupal/modules
-rsync -auv /tmp/var/www/drupal/profiles/ /var/www/drupal/profiles
-rsync -auv /tmp/var/www/drupal/sites/ /var/www/drupal/sites
-rsync -auv /tmp/var/www/drupal/themes/ /var/www/drupal/themes
+rsync -avz --ignore-existing /tmp/var/www/drupal/drush/composer.json /var/www/drupal/drush/composer.json
+rsync -avz --ignore-existing /tmp/var/www/drupal/drush/composer.lock /var/www/drupal/drush/composer.lock
+rsync -avz --ignore-existing /tmp/var/www/drupal/drush/ /var/www/drupal/drush
+rsync -avz --ignore-existing /tmp/var/www/drupal/modules/ /var/www/drupal/modules
+rsync -avz --ignore-existing /tmp/var/www/drupal/profiles/ /var/www/drupal/profiles
+rsync -avz --ignore-existing /tmp/var/www/drupal/sites/ /var/www/drupal/sites
+rsync -avz --ignore-existing /tmp/var/www/drupal/themes/ /var/www/drupal/themes
 
 # The above uses the web subdirectory and default composer.json.
 # To customize before install, you can take the following approach instead:
