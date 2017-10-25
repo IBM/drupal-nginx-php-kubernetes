@@ -39,6 +39,11 @@ does not have docker push enable (i.e., not pushing to IBM Container Registry at
 - NO "CUSTOM" POC code is being used atm, because the assumption is that this code
   will be coming from an external repo (per @chris comments).
 
+Other modifications (cont.d')
+
+- Image builds are being done on the alexanderallen namespace instead of jjdojo
+  to avoid any conflicts with current POC images present on the cloud or locally.
+
 ### Code Image (sidecar, volume?)
 
 The PHP-FPM, PHP-CLI, and Nginx images have no reason to constantly change, and
