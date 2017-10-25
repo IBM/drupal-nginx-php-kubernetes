@@ -1,12 +1,16 @@
 FROM registry.ng.bluemix.net/jjdojo/config-php-fpm:latest
 
+# Install Composer.
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
 
-COPY tmp/composer.json ./
+ENV COMPOSER_HOME /root
 
-# COPY tmp/composer.lock ./
+# Copy composer manifest.
+COPY composer.json $COMPOSER_HOME/composer.json
+COPY composer.lock $COMPOSER_HOME/composer.lock
 
+# Install composer.json contents.
 RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
