@@ -73,6 +73,33 @@ no need to specify those in our Dockerfiles, unless we plan to modify those
 upstream values, which we are not doing ATM (and there's no need to either, at
 least for now).
 
+### Community Image Configuration Files
+
+I have tracked down the location of the PHP-FPM configuration files in the
+community images, and copied them back to my POC.
+
+When you launch the PHP-FPM container for the first time, you don't know what is
+configuring what and where, unless you read the Dockerfile on http://docker.hub.
+
+I think that copying those configuration files to the same repository that
+builds our custom Dockerfiles gives more visibility of what's the current
+configuration being used (for example, the community image won't even have vim
+included). By having these conf files "locally", it's easier to read them.
+
+I've also added the `COPY` instruction to copy those configuration files back
+into PHP-FPM image. What this means is that using this pattern we can more
+visibly fine-tune the PHP-FPM configuration, without populating the Dockerfile
+with customization instructions (they can be done in the configuration files
+directly). It's less error prone, easier to debug, and provides more control.
+The downside is that you won't inherit any "hotfixes" done to those upstream
+config files.
+
+In my personal POC I used this approach to enable the /status and /ping pages on
+the PHP-FPM container, for example, and successfully test connectivity between
+the NGINX and PHP-FPM containers.
+
+I've documented the workflow on how to do this on the HELPME.md document.
+
 ---
 
 Updated 10/25, Wednesday, Oct. 2017 (rallen)
