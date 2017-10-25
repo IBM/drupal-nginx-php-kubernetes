@@ -26,6 +26,5 @@ ADD tmp/* /var/www/html/
 
 COPY start.sh /root/
 
-EXPOSE 9000
 
 ENTRYPOINT ["/root/start.sh"]
