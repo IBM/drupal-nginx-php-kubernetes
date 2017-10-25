@@ -122,3 +122,15 @@ There will be some default extension configuration in:
 
 And that about sums it up for a break down of all the configuration in the
 PHP-FPM image.
+
+---
+
+TL;DR: In a Nutshell
+
+PHP Configs are in
+
+    /usr/local/etc/
+
+Default Pool Config is in
+
+    /usr/local/etc/php-fpm.d
