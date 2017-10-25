@@ -36,6 +36,8 @@ does not have docker push enable (i.e., not pushing to IBM Container Registry at
   how to automatically find the container name in the cluster and "exec" bash
   into it for quick debugging (it is a bash one-liner command).
 - Updated the build scripts (simplified into `build-base-images.sh`).
+- NO "CUSTOM" POC code is being used atm, because the assumption is that this code
+  will be coming from an external repo (per @chris comments).
 
 ### Code Image (sidecar, volume?)
 
