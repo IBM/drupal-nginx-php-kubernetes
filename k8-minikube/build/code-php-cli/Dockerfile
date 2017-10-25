@@ -1,4 +1,4 @@
-FROM registry.ng.bluemix.net/jjdojo/config-php-cli:latest
+FROM registry.ng.bluemix.net/jjdojo/config-php-fpm:latest
 
 ARG PHP_CLI_VERSION=latest
 
