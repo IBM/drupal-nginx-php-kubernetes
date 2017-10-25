@@ -135,6 +135,15 @@ spec:
               name: shared-volume
               readOnly: false
 
+        # PHP-CLI sidecar container.
+        - image: "registry.ng.bluemix.net/alexanderallen/php-cli:latest"
+          name: php-cli-sidecar
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /www-data
+              name: shared-volume
+              readOnly: false
+
       imagePullSecrets:
         -
           name: image-pull
