@@ -200,10 +200,12 @@ We get a proper (successful) response from the PHP-FPM process:
     Content-type: text/plain;charset=UTF-8
     Expires: Thu, 01 Jan 1970 00:00:00 GMT
     Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+    
+    pong
 
 Test status page:
 
-    pongroot@php-fpm-3522852564-mk4tx:/www# SCRIPT_NAME=/status \
+    root@php-fpm-3522852564-mk4tx:/www# SCRIPT_NAME=/status \
     > SCRIPT_FILENAME=/status \
     > REQUEST_METHOD=GET \
     > cgi-fcgi -bind -connect 127.0.0.1:9000
