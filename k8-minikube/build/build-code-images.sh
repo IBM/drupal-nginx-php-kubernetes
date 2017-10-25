@@ -26,9 +26,6 @@ cd $ROOT_DIR/code-php-fpm
 docker build \
   --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:${BUILD_NUMBER} \
   --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:latest \
-  --build-arg PHP_FPM_VERSION=${PHP_FPM_VERSION} \
-  --build-arg DRUPAL_MD5=${DRUPAL_MD5} \
-  --build-arg DRUPAL_VERSION=${DRUPAL_VERSION} \
   .
 
 # Build the PHP-CLI image (base image, inject code, run composer)
@@ -36,7 +33,6 @@ cd $ROOT_DIR/code-php-cli
 docker build \
   --tag registry.ng.bluemix.net/jjdojo/code-php-cli:${BUILD_NUMBER} \
   --tag registry.ng.bluemix.net/jjdojo/code-php-cli:latest \
-  --build-arg PHP_CLI_VERSION=${PHP_CLI_VERSION} \
   .
 
 # Move back to ROOT_DIR
