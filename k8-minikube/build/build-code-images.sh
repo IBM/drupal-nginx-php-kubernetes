@@ -23,10 +23,11 @@ docker build \
 # Build the PHP-FPM image (base image, inject code, run composer)
 cd $ROOT_DIR/code-php-fpm
 
-docker build \
-  --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:${BUILD_NUMBER} \
-  --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:latest \
-  .
+# TODO: There's really nothing to build on the code php image.
+#docker build \
+#  --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:${BUILD_NUMBER} \
+#  --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:latest \
+#  .
 
 # Build the PHP-CLI image (base image, inject code, run composer)
 cd $ROOT_DIR/code-php-cli
