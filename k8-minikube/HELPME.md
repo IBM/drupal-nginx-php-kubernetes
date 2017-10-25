@@ -159,3 +159,45 @@ Verify new config files
     root@php-fpm-3522852564-mk4tx:/www# cat /usr/local/etc/README.txt
     This is proof that we copied our customized PHP-FPM configs back to the image.
 
+
+### Enabling and testing status page in PHP-FPM
+
+Reference:
+
+- https://easyengine.io/tutorials/php/directly-connect-php-fpm/
+- https://easyengine.io/tutorials/php/fpm-status-page/
+
+Modify customized config files:
+
+    nginx-php-container-cluster/k8-minikube/build/php-fpm/config/etc/php-fpm.d/www.conf
+
+Enable (uncomment) in pool config `www.conf`:
+
+    pm.status_path = /status
+    ping.path = /ping
+    ping.response = pong
+
+Rebuild images (`build-base-images.sh`), relaunch cluster (`recreate.sh`), login
+to PHP-FPM container (`bash-php-fpm.sh`), then type status command to verify
+PHP-FPM is listening on port 9000:
+
+    # Log in to php-fpm container
+    ./bash-php-fpm.sh ...
+    
+    # Launch test command:
+    SCRIPT_NAME=/ping \
+    SCRIPT_FILENAME=/ping \
+    REQUEST_METHOD=GET \
+    cgi-fcgi -bind -connect 127.0.0.1:9000
+
+We get a proper (successful) response from the PHP-FPM process:
+
+    root@php-fpm-3522852564-mk4tx:/www# SCRIPT_NAME=/ping \
+    > SCRIPT_FILENAME=/ping \
+    > REQUEST_METHOD=GET \
+    > cgi-fcgi -bind -connect 127.0.0.1:9000
+    X-Powered-By: PHP/7.1.10
+    Content-type: text/plain;charset=UTF-8
+    Expires: Thu, 01 Jan 1970 00:00:00 GMT
+    Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+
