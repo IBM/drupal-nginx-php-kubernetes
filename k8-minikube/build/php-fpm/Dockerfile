@@ -51,8 +51,5 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-EXPOSE 9000
+WORKDIR /www
 
-WORKDIR $WEB_ROOT
-
-CMD ["php-fpm"]
