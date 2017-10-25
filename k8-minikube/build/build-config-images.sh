@@ -9,7 +9,7 @@ echo "Building config images... "
   docker build --tag registry.ng.bluemix.net/jjdojo/nginx:latest .
 )
 (
-  cd config-php-fpm
+  cd php-fpm
   docker build --tag registry.ng.bluemix.net/jjdojo/php-fpm:latest .
 )
 (
