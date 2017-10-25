@@ -104,7 +104,7 @@ spec:
           imagePullPolicy: IfNotPresent
           volumeMounts:
             -
-              mountPath: /var/www/html/sites/default/files
+              mountPath: /www
               name: sites-local-storage
               readOnly: false
       imagePullSecrets:
