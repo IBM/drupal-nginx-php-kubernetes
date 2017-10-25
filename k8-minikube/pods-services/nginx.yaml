@@ -56,6 +56,16 @@ spec:
               # The source sub path is located in the /www volume (~/Sites on the host).
               subPath: nginx-php-container-cluster/k8-minikube/build/nginx/fastcgi.conf
 
+            # Development.
+            - mountPath: /etc/nginx/nginx.conf
+              name: sites-local-storage
+              subPath: nginx-php-container-cluster/k8-minikube/build/nginx/nginx.conf
+
+            # Development.
+            - mountPath: /etc/nginx/fastcgi_params
+              name: sites-local-storage
+              subPath: nginx-php-container-cluster/k8-minikube/build/nginx/fastcgi_params
+
           env:
             -
               name: WEB_ROOT
