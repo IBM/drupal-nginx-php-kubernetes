@@ -82,6 +82,9 @@ no need to specify those in our Dockerfiles, unless we plan to modify those
 upstream values, which we are not doing ATM (and there's no need to either, at
 least for now).
 
+I've successfully launched the PHP-FPM container and started that same process
+using just the upstream `CMD` et al instructions.
+
 ### Community Image Configuration Files
 
 I have tracked down the location of the PHP-FPM configuration files in the
