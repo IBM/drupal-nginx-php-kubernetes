@@ -410,6 +410,36 @@ Then reloading revisiting a test page seems to work. Also doing:
 
 Then add then back via the Nginx Dockerfile.
 
+### I need to connect to an individual container
+
+- Specify the pod name as an argument after exec.
+- Specify the container name using the `-c <container-name>` argument.
+
+Command:
+
+    kubectl exec -i -t $(kubectl get pod -l "app=php-fpm" -o jsonpath='{.items[0].metadata.name}') -c php-cli-sidecar-phpfpm -- bash
+
+### PLS HELP ME WITH JSONPATH TEMPLATES
+
+Documentation:
+
+- https://kubernetes.io/docs/user-guide/jsonpath/
+- https://kubernetes.io/docs/tasks/access-application-cluster/list-all-running-container-images/
+
+Test your jsonpath in one of these:
+
+- https://jsonpath.herokuapp.com/
+- https://jsonpath.curiousconcept.com/
+- http://jsonpath.com/
+
+I need help getting the container name in a multi-tenant pod:
+
+    # Jsonpath:
+    .items[0].spec.containers[?(@.name=="php-cli-sidecar-phpfpm")].name
+
+    # Results:    
+    └─[$]> kubectl get pod -l "app=php-fpm" -o jsonpath='{.items[0].spec.containers[?(@.name=="php-cli-sidecar-phpfpm")].name}'
+    php-cli-sidecar-phpfpm
 
 ---
 
