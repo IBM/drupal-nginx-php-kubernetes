@@ -228,3 +228,61 @@ Test status page:
     max active processes: 1
     max children reached: 0
     slow requests:        0
+
+---
+
+NOW TEST PHP-FPM CONNECTION FROM NGINX:
+
+    cd ~/Sites/nginx-php-container-cluster/k8-minikube
+    └─[$]> ./bash-nginx.sh
+    root@nginx-3049359248-b6m35:/#
+    
+    # Test PHP-FPM /status page from Nginx container.
+
+    root@nginx-3049359248-b6m35:/# SCRIPT_NAME=/status SCRIPT_FILENAME=/status REQUEST_METHOD=GET cgi-fcgi -bind -connect php-fpm:9000
+    X-Powered-By: PHP/7.1.10
+    Expires: Thu, 01 Jan 1970 00:00:00 GMT
+    Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+    Content-type: text/plain;charset=UTF-8
+
+    pool:                 www
+    process manager:      dynamic
+    start time:           25/Oct/2017:08:14:56 +0000
+    start since:          1149
+    accepted conn:        8
+    listen queue:         0
+    max listen queue:     0
+    listen queue len:     128
+    idle processes:       1
+    active processes:     1
+    total processes:      2
+    max active processes: 1
+    max children reached: 0
+    slow requests:        0
+    
+    # Test PHP-FPM /ping page from Nginx container.
+
+    root@nginx-3049359248-b6m35:/# SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect php-fpm:9000
+    X-Powered-By: PHP/7.1.10
+    Content-type: text/plain;charset=UTF-8
+    Expires: Thu, 01 Jan 1970 00:00:00 GMT
+    Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+    
+    pong
+
+And that's a successful response from the PHP-FPM container when called from
+Nginx!!!
+
+A few things to note:
+
+- The service name is obviously NOT 127.0.0.1:9000 (localhost)...
+- That's because PHP-FPM is not running on the Nginx container...
+- The service name of PHP-FPM is `php-fpm`.
+- Notice how (NICE?) it is of Kubernetes to automatically configure DNS
+  internally for us within the cluster, and that the hostname `php-fpm` is taken
+  from the `nginx.yaml` service definition, making it reachable from the other
+  pods/containers !
+
+---
+
+The End!
