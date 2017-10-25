@@ -1,10 +1,5 @@
 FROM registry.ng.bluemix.net/jjdojo/config-php-fpm:latest
 
-ARG PHP_FPM_VERSION=latest
-
-ARG DRUPAL_VERSION
-ARG DRUPAL_MD5
-
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
 
