@@ -56,6 +56,23 @@ separate. This means that:
 - There is no need to have drush and composer in the PHP-FPM image, because the
   PHP-FPM container will never use drush and composer.
 
+### Community Images Dockerfile Instructions
+
+There are some instructions in the upstream Docker files we're using for PHP-FPM
+and NGINX that we are duplicating (with the same exact values) in our downstream
+images.
+
+I've removed these duplicate instructions, such as `EXPOSE 9000`, because IMO
+they create the sense that the upstream images are not setting those, when in
+fact they are.
+
+The same thing applies to launching the PHP-FPM process. The Docker community
+image we're using for PHP-FPM already has the `CMD` and `ENTRYPOINT`
+instructions that start the process with the values we need, therefore there's
+no need to specify those in our Dockerfiles, unless we plan to modify those
+upstream values, which we are not doing ATM (and there's no need to either, at
+least for now).
+
 ---
 
 Updated 10/25, Wednesday, Oct. 2017 (rallen)
