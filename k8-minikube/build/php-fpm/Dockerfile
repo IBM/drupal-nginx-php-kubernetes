@@ -51,5 +51,8 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
+# Copy customized community configuration back into the image.
+COPY config/etc /usr/local/etc
+
 WORKDIR /www
 
