@@ -56,11 +56,12 @@ b) app image
 
 Using app image conversation:
 
-> * 10/25/17, 5:18:40 PM] Christopher Oden: 1. build the application code into a
-databox > * 10/25/17, 5:18:49 PM] Christopher Oden: 2. add that databox to the pod
-> * 10/25/17, 5:19:10 PM] Christopher Oden: 3. copy the data to a shared ephemeral
-volume mounted into the pod > * 10/25/17, 5:19:22 PM] Christopher Oden: and
-building the app code - we can use a multi stage docker build
+> * 10/25/17, 5:18:40 PM] Christopher Oden: 1. build the application code into a databox.
+> * 10/25/17, 5:18:49 PM] Christopher Oden: 2. add that databox to the pod
+> * 10/25/17, 5:19:10 PM] Christopher Oden: 3. copy the data to a shared
+>   ephemeral volume mounted into the pod
+> * 10/25/17, 5:19:22 PM] Christopher Oden: and building the app code - we can
+ use a multi stage docker build
 > * 10/25/17, 5:19:29 PM] Christopher Oden: to avoid having composer in teh
 databox
 > * 10/25/17, 5:18:26 PM] R. Allen: so I'd do the sidecar first, since that the simplest (without worrying about fate/resources)
@@ -70,6 +71,13 @@ databox
 > * 10/25/17, 5:18:44 PM] R. Allen: the init config is a bit more complex ; )
 > * 10/25/17, 5:18:18 PM] Christopher Oden: sure
 > * 10/25/17, 5:18:20 PM] Christopher Oden: that’s fine
+
+Reference:
+
+- http://container42.com/2014/11/18/data-only-container-madness/
+- https://stackoverflow.com/questions/30538210/how-to-mimic-volumes-from-in-kubernetes
+- https://dev-stash.jjconsumer.com/projects/CTECH/repos/rancher-services/browse/templates/ctech-application/5/docker-compose.yml#34
+
 
 ### Job controller to share and update code
 
