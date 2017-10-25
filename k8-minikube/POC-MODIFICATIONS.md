@@ -44,6 +44,33 @@ Other modifications (cont.d')
 - Image builds are being done on the alexanderallen namespace instead of jjdojo
   to avoid any conflicts with current POC images present on the cloud or locally.
 
+### Things This Other POC Does Not Have
+
+There are some extremely useful and important things present in the current IBM
+POC that my own POC lacks, and does not try to emulate.
+
+Some Kubernetes components are endemic to the cloud provider that they're
+running on. Some examples of things the IBM POC provides that are IBM specific
+and would never work on Minikube, or any other provider for that matter (Google
+Container Environment, Amazon AWS, Azure, etc.):
+
+- Volumes and Volume Claims: These are provider specific and neccesary.
+- Storage volume initialization scripts (i.e., code-php-fpm/start.sh).
+- Networking: LoadBalancer works on differently in each provider, and is not
+  even supported by MiniKube, MiniKube has to restort to use NodePort instead of
+  LoadBalancer, AWS requires different configuration, etc.
+- Provider plugin configuration and usage: The IBM POC has done a really nice
+  job of documenting how to setup and use the different `bx` components.
+- Secrets: This POC is not using setting up any, and piggy-backing on any
+  secrets configuration done in the IBM BlueMix POC (recycling them in the
+  various container manifests).
+- Decoupled configuration: This sub-POC a lot, if not most of IBM BlueMix's
+  variables that are used in the Dockerfile build process for simplification,
+  not soemthing you would really want to do in real life.
+- Provider-specific scripts: The IBM BlueMix POC has plenty of awesome devops
+  scripts to automate all the things build and deploy, this POC has 1/10 of that
+  effort.
+
 ### Code Image (sidecar, volume?)
 
 The PHP-FPM, PHP-CLI, and Nginx images have no reason to constantly change, and
