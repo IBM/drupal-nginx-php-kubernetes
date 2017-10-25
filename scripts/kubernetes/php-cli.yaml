@@ -106,7 +106,9 @@ spec:
             -
               mountPath: /var/www/drupal/web/sites/default/files
               name: sites-local-storage
-              readOnly: false
+            -
+              mountPath: /var/www/drupal
+              name: drupal-local-storage
       imagePullSecrets:
         -
           name: image-pull
@@ -115,3 +117,7 @@ spec:
           name: sites-local-storage
           persistentVolumeClaim:
             claimName: sites-lv-claim
+        -
+          name: drupal-local-storage
+          persistentVolumeClaim:
+            claimName: drupal-lv-claim

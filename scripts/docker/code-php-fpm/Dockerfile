@@ -6,50 +6,17 @@ FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-fpm:${PHP_FPM_VERS
 ARG DRUPAL_VERSION
 ARG DRUPAL_MD5
 
-# Allow Composer to be run as root.
-ENV COMPOSER_ALLOW_SUPERUSER 1
+# Copy files into this Docker image, and recopy them to the mount at runtime in start.sh
+RUN mkdir -p /tmp/var/www/drupal/
+ADD tmp/composer.json /tmp/var/www/drupal/
+ADD tmp/composer.lock /tmp/var/www/drupal/
+ADD tmp/drush/ /tmp/var/www/drupal/drush/
+ADD tmp/modules/ /tmp/var/www/drupal/web/modules/
+ADD tmp/profiles/ /tmp/var/www/drupal/web/profiles/
+ADD tmp/sites/ /tmp/var/www/drupal/web/sites/
+ADD tmp/themes/ /tmp/var/www/drupal/web/themes/
 
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/bin/ --filename=composer
-
-COPY tmp/composer.json ./
-
-# COPY tmp/composer.lock ./
-
-RUN composer install --no-scripts --no-autoloader
-
-COPY . ./
-
-RUN composer create-project drupal-composer/drupal-project:8.x /var/www/drupal/ --stability dev --no-interaction
-
-# The above uses the web subdirectory and default composer.json.
-# To customize before install, you can take the following approach instead:
-#   git clone https://github.com/drupal-composer/drupal-project.git my_site_name_dir
-#   cd my_site_name_dir
-#   vi composer.json to customize
-#   composer install
-
-ADD tmp/composer.json /var/www/drupal/
-ADD tmp/composer.lock /var/www/drupal/
-
-ADD tmp/drush/ /var/www/drupal/drush/
-
-ADD tmp/modules/ /var/www/drupal/web/modules/
-ADD tmp/profiles/ /var/www/drupal/web/profiles/
-ADD tmp/sites/ /var/www/drupal/web/sites/
-ADD tmp/themes/ /var/www/drupal/web/themes/
-
-# One way to do the initial setup.
-# cd /var/www/drupal/web
-# ../vendor/drush/drush/drush site-install standard \
-#   --db-url=mysql://DBUSERNAME:DBPASSWORD@localhost/some_db \
-#   --account-mail="admin@example.com" \
-#   --account-name=admin \
-#   --account-pass=some_admin_password \
-#   --site-mail="admin@example.com" \
-#   --site-name="Site-Install"
-
-
+RUN mkdir -p /var/www/drupal/web
 WORKDIR /var/www/drupal/web
 
 COPY start.sh /root/

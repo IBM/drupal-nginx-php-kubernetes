@@ -39,4 +39,5 @@ ADD tmp/drush/ /root/drush/
 WORKDIR /root/drush/
 
 # Change this to be a Drush command?
+# This container is more here to just exec into rather than run something headless
 CMD php $WORKER_NAME/$WORKER_NAME.php WORKER_INDEX=$WORKER_INDEX
