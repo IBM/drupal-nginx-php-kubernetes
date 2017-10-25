@@ -1,4 +1,10 @@
 
+### Resources
+
+For mere mortals - transitioning from Docker Compose to Kubectl
+https://kubernetes.io/docs/user-guide/docker-cli-to-kubectl/
+
+
 ### Tail the logs for a container
 
 Get the name:
