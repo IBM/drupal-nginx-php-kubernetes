@@ -5,7 +5,7 @@ ROOT_DIR=`pwd`
 
 echo "Building config images... "
 (
-  cd config-nginx
+  cd nginx
   docker build --tag registry.ng.bluemix.net/jjdojo/nginx:latest .
 )
 (
