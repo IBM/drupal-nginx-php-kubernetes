@@ -2,8 +2,6 @@
 
 FROM registry.ng.bluemix.net/jjdojo/php-fpm:latest
 
-ARG PHP_CLI_VERSION=7.1-cli
-
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
 RUN rm -f /etc/localtime \
