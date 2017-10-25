@@ -13,7 +13,7 @@ RUN rm -f /etc/localtime \
 # Install prerequisite OS packages
 RUN apt-get update && apt-get install -y curl iputils-ping libfcgi0ldbl vim
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.bak
 
 # Copy Nginx configs.
 COPY nginx.conf /etc/nginx/nginx.conf
