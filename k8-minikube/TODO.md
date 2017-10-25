@@ -50,6 +50,27 @@ b) app image
 - how does the nginx and php-fpm pods see the app image
 - how do they access the app image's contents
 
+---
+
+4:30-5:30pm Wed, October 25 @rallen, @coden
+
+Using app image conversation:
+
+> * 10/25/17, 5:18:40 PM] Christopher Oden: 1. build the application code into a
+databox > * 10/25/17, 5:18:49 PM] Christopher Oden: 2. add that databox to the pod
+> * 10/25/17, 5:19:10 PM] Christopher Oden: 3. copy the data to a shared ephemeral
+volume mounted into the pod > * 10/25/17, 5:19:22 PM] Christopher Oden: and
+building the app code - we can use a multi stage docker build
+> * 10/25/17, 5:19:29 PM] Christopher Oden: to avoid having composer in teh
+databox
+> * 10/25/17, 5:18:26 PM] R. Allen: so I'd do the sidecar first, since that the simplest (without worrying about fate/resources)
+> * 10/25/17, 5:18:27 PM] R. Allen: prove it
+> * 10/25/17, 5:18:33 PM] R. Allen: if it's good (to you)
+> * 10/25/17, 5:18:37 PM] R. Allen: then move it to an init
+> * 10/25/17, 5:18:44 PM] R. Allen: the init config is a bit more complex ; )
+> * 10/25/17, 5:18:18 PM] Christopher Oden: sure
+> * 10/25/17, 5:18:20 PM] Christopher Oden: that’s fine
+
 ### Job controller to share and update code
 
 - Mount emptydir? Shared across all containers.
