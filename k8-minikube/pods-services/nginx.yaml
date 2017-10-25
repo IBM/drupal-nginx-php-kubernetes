@@ -47,6 +47,15 @@ spec:
             -
               mountPath: /www
               name: sites-local-storage
+
+            # Mount "hot" file from host for development.
+            # The "mountPath" is the target location.
+            - mountPath: /etc/nginx/conf.d/fastcgi.conf
+              name: sites-local-storage
+              # The "sub-path" param is the source location.
+              # The source sub path is located in the /www volume (~/Sites on the host).
+              subPath: nginx-php-container-cluster/k8-minikube/build/nginx/fastcgi.conf
+
           env:
             -
               name: WEB_ROOT
