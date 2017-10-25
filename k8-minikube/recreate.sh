@@ -9,9 +9,11 @@ set +x
 eval $(minikube docker-env)
 
 # Delete everything.
+echo "Deleting all the things!"
 kubectl delete deployment,service,rs --all
 
 # Recreate all services.
+echo "Re-creating services"
 kubectl apply -f volumes -f pods-services
 
 # Show system status.
