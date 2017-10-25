@@ -6,7 +6,9 @@ modifications are meant to be ported back to the main POC, rather it's a POC to
 the POC.
 
 The purpose of this exercise is to demonstrate alternate Docker build workflows
-(mainly).
+(mainly), as well as provide a working example of how to develop against
+Kubernetes using a local, single-cluster Minikube environment for faster
+prototyping and without impacting any cloud resources.
 
 ### Image PUSHes to IBM Container Registry
 
