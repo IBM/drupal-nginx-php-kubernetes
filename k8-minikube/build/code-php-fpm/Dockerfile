@@ -26,7 +26,6 @@ ADD tmp/* /var/www/html/
 # RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
 COPY start.sh /root/
-RUN chmod +x /root/start.sh
 
 EXPOSE 9000
 
