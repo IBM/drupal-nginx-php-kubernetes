@@ -1,6 +1,6 @@
 # This Dockerfile provides a base level of OS packages with PHP-CLI and extensions
 
-FROM registry.ng.bluemix.net/jjdojo/php-fpm:latest
+FROM registry.ng.bluemix.net/alexanderallen/php-fpm:latest
 
 # Add global binary directory to PATH.
 ENV PATH /composer/vendor/bin:$PATH

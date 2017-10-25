@@ -1,4 +1,4 @@
-FROM registry.ng.bluemix.net/jjdojo/config-php-fpm:latest
+FROM registry.ng.bluemix.net/alexanderallen/config-php-fpm:latest
 
 # Install Composer.
 RUN curl -sS https://getcomposer.org/installer | \
