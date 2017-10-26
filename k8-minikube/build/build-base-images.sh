@@ -14,4 +14,7 @@ docker build --tag registry.ng.bluemix.net/alexanderallen/php-fpm:latest .
 cd $ROOT_DIR/php-cli
 docker build --tag registry.ng.bluemix.net/alexanderallen/php-cli:latest .
 
+cd $ROOT_DIR/app-image
+docker build --tag registry.ng.bluemix.net/alexanderallen/app-image:latest .
+
 echo "Build complete."
