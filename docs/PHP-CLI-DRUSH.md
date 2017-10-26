@@ -1,4 +1,4 @@
-## Manging Drupal clusters
+## Managing Drupal clusters
 You can use the PHP-CLI container to execute regular `bash` commands or `drush` commands against the deployed system.
 
 ## Execute arbitrary commands
