@@ -35,8 +35,10 @@ ADD tmp/composer.json /root/drush/
 ADD tmp/composer.lock /root/drush/
 
 ADD tmp/drush/ /root/drush/
+RUN mkdir /root/backups/
 
 WORKDIR /root/drush/
 
 # Change this to be a Drush command?
+# This container is more here to just exec into rather than run something headless
 CMD php $WORKER_NAME/$WORKER_NAME.php WORKER_INDEX=$WORKER_INDEX
