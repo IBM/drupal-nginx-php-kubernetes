@@ -21,5 +21,7 @@ RUN \
 # RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
 COPY start.sh /root/
+COPY app-sync.sh /root/app-sync.sh
 
-# CMD [ rsync / copy /app into /www-data && exit 1 ]
+# Assuming this is using the PV/PVC.
+CMD app-sync.sh
