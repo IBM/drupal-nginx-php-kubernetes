@@ -5,7 +5,12 @@
 # Candidate pattern: sidecar container.
 # https://github.com/kubernetes/git-sync
 
+# Reference:
+# - https://getcomposer.org/doc/03-cli.md#create-project
+
 FROM registry.ng.bluemix.net/alexanderallen/php-cli:latest
+
+# todo: find and check in composer.lock for application.
 
 # Install Drupal app.
 RUN \
@@ -16,7 +21,8 @@ RUN \
     drupal-composer/drupal-project:8.x-dev \
     /app/ \
     --stability dev \
-    --no-interaction
+    --no-interaction \
+    --no-progress
 
 # RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
