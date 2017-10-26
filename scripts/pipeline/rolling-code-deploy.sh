@@ -16,7 +16,13 @@ kubectl create secret generic service-credentials --from-env-file=../kubernetes/
 kubectl apply -f ../kubernetes
 
 # Confirm everything looks good
-kubectl describe deployment php-fpm
-kubectl describe service php-fpm
-kubectl describe deployment nginx
-kubectl describe service nginx
+
+kubectl describe deployment php-fpm-stg
+kubectl describe service php-fpm-stg
+kubectl describe deployment nginx-stg
+kubectl describe service nginx-stg
+
+kubectl describe deployment php-fpm-prd
+kubectl describe service php-fpm-prd
+kubectl describe deployment nginx-prd
+kubectl describe service nginx-prd

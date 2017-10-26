@@ -35,6 +35,9 @@ ADD tmp/themes/ /var/www/drupal/web/themes/
 
 WORKDIR /var/www/drupal/web
 
+COPY start.sh /root/
+RUN chmod +x /root/start.sh
+
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/root/start.sh"]
