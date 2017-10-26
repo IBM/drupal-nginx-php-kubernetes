@@ -8,3 +8,5 @@ You can use the PHP-CLI container to execute regular `bash` commands or `drush` 
 
 ## Execute Drush commands
 - As above, you can exec into the PHP-CLI container and run `drush` commands as needed.
+- For example `drush sql-cli --db-url="mysql://${MYSQL_USER}:${MYSQL_PASS}@${MYSQL_HOST}/${MYSQL_NAME}"`
+- For example `drush sql-dump --db-url="mysql://${MYSQL_USER}:${MYSQL_PASS}@${MYSQL_HOST}/${MYSQL_NAME}" > /root/backups/drush-backup.sql`
