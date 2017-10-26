@@ -1,6 +1,49 @@
 #!/bin/bash
 set -e
 
+# Install Composer
+COMPOSER_ALLOW_SUPERUSER=1
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+cp /tmp/var/www/drupal/composer.json .
+composer install --no-scripts --no-autoloader
+echo "Composer install done"
+
+# TODO: What we shoud not do (to avoid brute overwriting):
+# if [ ! -d /var/www/drupal/web ]; then
+  # Install Drupal (it will complain about a non-empty directory)
+  composer create-project drupal-composer/drupal-project:8.x /var/www/drupaltmp/ --stability dev --no-interaction
+
+  # TODO: What we should do (if performance was better):
+  # rsync -avz --ignore-existing /var/www/drupaltmp/ /var/www/drupal
+
+  rm -fr /var/www/drupal || true
+  cp -R /var/www/drupaltmp/* /var/www/drupal/
+# fi
+
+echo "Drupal install done"
+
+# Copy files over the Drupal install non-destructively
+
+# TODO: What we should do (if performance was better):
+# rsync -avz --ignore-existing /tmp/var/www/drupal/drush/composer.json /var/www/drupal/drush/composer.json
+# rsync -avz --ignore-existing /tmp/var/www/drupal/drush/composer.lock /var/www/drupal/drush/composer.lock
+# rsync -avz --ignore-existing /tmp/var/www/drupal/drush/ /var/www/drupal/drush
+# rsync -avz --ignore-existing /tmp/var/www/drupal/modules/ /var/www/drupal/modules
+# rsync -avz --ignore-existing /tmp/var/www/drupal/profiles/ /var/www/drupal/profiles
+# rsync -avz --ignore-existing /tmp/var/www/drupal/sites/ /var/www/drupal/sites
+# rsync -avz --ignore-existing /tmp/var/www/drupal/themes/ /var/www/drupal/themes
+
+# TODO: What we shoud not do (to avoid overwriting):
+cp -R /tmp/var/www/drupal/drush/composer.json /var/www/drupal/drush/composer.json
+cp -R /tmp/var/www/drupal/drush/composer.lock /var/www/drupal/drush/composer.lock
+cp -R /tmp/var/www/drupal/drush/ /var/www/drupal/drush
+cp -R /tmp/var/www/drupal/modules/ /var/www/drupal/modules
+cp -R /tmp/var/www/drupal/profiles/ /var/www/drupal/profiles
+cp -R /tmp/var/www/drupal/sites/ /var/www/drupal/sites
+cp -R /tmp/var/www/drupal/themes/ /var/www/drupal/themes
+
+echo "Custom install done"
+
 # Now that the volume is mounted, change owner and make it read/write
 # TODO: Modify to only allow Drush and root to modify
 chown www-data:www-data /var/www/drupal
@@ -20,27 +63,6 @@ chown www-data:www-data /var/www/drupal/config/sync
 chmod -R 777 /var/www/drupal/config/sync
 ls -Flat /var/www/drupal/config/sync
 echo "Config perms done"
-
-# Install Composer
-COMPOSER_ALLOW_SUPERUSER=1
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
-cp /tmp/var/www/drupal/composer.json .
-composer install --no-scripts --no-autoloader
-echo "Composer install done"
-
-# Install Drupal if not already here
-composer create-project drupal-composer/drupal-project:8.x /var/www/drupaltmp/ --stability dev --no-interaction
-rsync -avz --ignore-existing /var/www/drupaltmp/ /var/www/drupal
-echo "Drupal install done"
-
-# Copy files over the Drupal install non-destructively
-rsync -avz --ignore-existing /tmp/var/www/drupal/drush/composer.json /var/www/drupal/drush/composer.json
-rsync -avz --ignore-existing /tmp/var/www/drupal/drush/composer.lock /var/www/drupal/drush/composer.lock
-rsync -avz --ignore-existing /tmp/var/www/drupal/drush/ /var/www/drupal/drush
-rsync -avz --ignore-existing /tmp/var/www/drupal/modules/ /var/www/drupal/modules
-rsync -avz --ignore-existing /tmp/var/www/drupal/profiles/ /var/www/drupal/profiles
-rsync -avz --ignore-existing /tmp/var/www/drupal/sites/ /var/www/drupal/sites
-rsync -avz --ignore-existing /tmp/var/www/drupal/themes/ /var/www/drupal/themes
 
 # The above uses the web subdirectory and default composer.json.
 # To customize before install, you can take the following approach instead:

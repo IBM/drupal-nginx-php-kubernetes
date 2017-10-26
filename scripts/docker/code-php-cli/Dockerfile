@@ -35,6 +35,7 @@ ADD tmp/composer.json /root/drush/
 ADD tmp/composer.lock /root/drush/
 
 ADD tmp/drush/ /root/drush/
+RUN mkdir /root/backups/
 
 WORKDIR /root/drush/
 

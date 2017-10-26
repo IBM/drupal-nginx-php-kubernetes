@@ -14,7 +14,7 @@ RUN rm -f /etc/localtime \
      WORKER_INDEX="1"
 
 # Install prerequisite OS packages
-RUN apt-get update && apt-get install -y curl git
+RUN apt-get update && apt-get install -y curl git mysql-client
 
 # install the PHP extensions we need
 RUN set -ex \

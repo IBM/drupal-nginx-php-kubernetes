@@ -1,4 +1,4 @@
 #!/bin/bash
 set -x
 
-kubectl delete deployment,service,rs --all
+kubectl delete deployment,service,rs,pvc --all
