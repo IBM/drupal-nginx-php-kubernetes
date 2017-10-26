@@ -30,4 +30,4 @@ COPY start.sh /root/
 COPY app-sync.sh /root/app-sync.sh
 
 # Assuming this is using the PV/PVC.
-CMD app-sync.sh
+CMD /root/app-sync.sh
