@@ -9,9 +9,12 @@ FROM registry.ng.bluemix.net/alexanderallen/php-cli:latest
 
 # Install Drupal app.
 RUN \
-  composer create-project \
+  # Create app directory.
+  mkdir /app \
+  # Install Drupal to app directory.
+  && composer create-project \
     drupal-composer/drupal-project:8.x-dev \
-    /www-data/ \
+    /app/ \
     --stability dev \
     --no-interaction
 
@@ -19,4 +22,4 @@ RUN \
 
 COPY start.sh /root/
 
-
+# CMD [ rsync / copy /app into /www-data && exit 1 ]
