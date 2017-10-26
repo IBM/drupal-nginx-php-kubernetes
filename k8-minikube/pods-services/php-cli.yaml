@@ -116,6 +116,31 @@ spec:
               name: shared-volume
               readOnly: false
 
+        - image: "registry.ng.bluemix.net/alexanderallen/app-image:latest"
+          name: app-sidecar
+          imagePullPolicy: IfNotPresent
+          env:
+            # Location inside the application image containing desired code.
+            - name: RSYNC_SOURCE
+              value: /app
+            # Shared volume where to copy the data to (could be emptyDir, PV/NFS, etc.).
+            - name: RSYNC_DEST
+              value: /www/app
+          volumeMounts:
+
+            - mountPath: /www
+              name: sites-local-storage
+              readOnly: false
+
+            - mountPath: /www-data
+              name: shared-volume
+              readOnly: false
+
+            # Development.
+            - mountPath: /root/app-sync.sh
+              name: sites-local-storage
+              subPath: nginx-php-container-cluster/k8-minikube/build/app-image/app-sync.sh
+
       imagePullSecrets:
         -
           name: image-pull
