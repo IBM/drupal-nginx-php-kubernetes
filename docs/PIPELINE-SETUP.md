@@ -96,7 +96,7 @@ For the purpose of this POC, we have one repo that contains all of our images an
 
   ```bash
   #!/bin/bash
-  . scripts/pipeline/deployScript
+  . scripts/pipeline/deployScript.sh
   ```
   ![Deploy Job](img/deployJob.PNG)
 

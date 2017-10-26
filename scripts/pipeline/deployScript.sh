@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# TODO
-# Need to find way to grab previous tags as ENV variables
-# Add ability to rollback on failed deployment
-
 echo "Starting deploy stage"
 
 cd scripts
