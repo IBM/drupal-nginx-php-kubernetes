@@ -1,30 +1,22 @@
-FROM registry.ng.bluemix.net/alexanderallen/config-php-fpm:latest
+# Example application container.
+# Extends from the PHP-CLI image so that it can use tools such as Composer.
+# Otherwise Busybox would be a candidate source image.
 
-# Install Composer.
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/bin/ --filename=composer
+# Candidate pattern: sidecar container.
+# https://github.com/kubernetes/git-sync
 
-ENV COMPOSER_HOME /root
+FROM registry.ng.bluemix.net/alexanderallen/php-cli:latest
 
-# Copy composer manifest.
-COPY composer.json $COMPOSER_HOME/composer.json
-COPY composer.lock $COMPOSER_HOME/composer.lock
-
-# Install composer.json contents.
-RUN composer install --no-scripts --no-autoloader
-
-COPY . ./
-
-
-RUN rm -fr /var/www/html
-RUN composer create-project drupal-composer/drupal-project:8.x-dev /var/www/html/ --stability dev --no-interaction
-
-ADD tmp/* /var/www/html/
-
+# Install Drupal app.
+RUN \
+  composer create-project \
+    drupal-composer/drupal-project:8.x-dev \
+    /www-data/ \
+    --stability dev \
+    --no-interaction
 
 # RUN composer dump-autoload --optimize && composer run-script post-install-cmd
 
 COPY start.sh /root/
 
 
-ENTRYPOINT ["/root/start.sh"]
