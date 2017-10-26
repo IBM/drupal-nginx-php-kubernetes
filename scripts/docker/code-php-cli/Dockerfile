@@ -34,7 +34,13 @@ RUN composer global require drush/drush:8.x
 ADD tmp/composer.json /root/drush/
 ADD tmp/composer.lock /root/drush/
 
+# Add Drush specific scripts
 ADD tmp/drush/ /root/drush/
+
+# Add database connection info
+ADD tmp/sites/default/ /root/drush/sites/default/
+
+# Prep a backup directory
 RUN mkdir /root/backups/
 
 WORKDIR /root/drush/
