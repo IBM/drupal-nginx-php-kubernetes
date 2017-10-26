@@ -87,6 +87,13 @@ spec:
         - image: "registry.ng.bluemix.net/alexanderallen/app-image:latest"
           name: app-sidecar
           imagePullPolicy: IfNotPresent
+          env:
+            # Location inside the application image containing desired code.
+            - name: RSYNC_SOURCE
+              value: /app
+            # Shared volume where to copy the data to (could be emptyDir, PV/NFS, etc.).
+            - name: RSYNC_DEST
+              value: /www-data/app
           volumeMounts:
 
             - mountPath: /www
