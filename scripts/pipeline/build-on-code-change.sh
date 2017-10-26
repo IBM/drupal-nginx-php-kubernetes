@@ -58,6 +58,7 @@ docker build \
   --tag registry.ng.bluemix.net/orod/code-php-fpm:latest \
   --build-arg DRUPAL_MD5=${DRUPAL_MD5} \
   --build-arg DRUPAL_VERSION=${DRUPAL_VERSION} \
+  --no-cache \
   .
 docker push registry.ng.bluemix.net/orod/code-php-fpm:latest
 rm -fr tmp

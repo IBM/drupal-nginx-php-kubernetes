@@ -9,6 +9,15 @@ ARG DRUSH_VERSION
 ENV WORKER_NAME="send-emails" \
    WORKER_INDEX="1"
 
+# Register the COMPOSER_HOME environment variable.
+ENV COMPOSER_HOME=/root/.composer
+
+# Add global binary directory to PATH.
+ENV PATH /root/.composer/vendor/bin:$PATH
+
+# Allow Composer to be run as root.
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN curl -sS https://getcomposer.org/installer | \
    php -- --install-dir=/usr/bin/ --filename=composer
 
@@ -20,12 +29,16 @@ RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
 
-# RUN composer dump-autoload --optimize && composer run-script post-install-cmd
+RUN composer global require drush/drush:8.x
 
-WORKDIR /root
+ADD tmp/composer.json /root/drush/
+ADD tmp/composer.lock /root/drush/
 
-ADD tmp/* ./
+ADD tmp/drush/ /root/drush/
+RUN mkdir /root/backups/
 
-# TODO: Run composer install
+WORKDIR /root/drush/
 
+# Change this to be a Drush command?
+# This container is more here to just exec into rather than run something headless
 CMD php $WORKER_NAME/$WORKER_NAME.php WORKER_INDEX=$WORKER_INDEX
