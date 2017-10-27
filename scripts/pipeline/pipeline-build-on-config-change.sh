@@ -32,6 +32,7 @@ UPCASE_IMAGE=${IMAGE^^}
 cd ../docker/config-$IMAGE
 bx cr build \
   --tag registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-${IMAGE}:${VERSION} \
+  --tag registry.ng.bluemix.net/orod/config-${IMAGE}:latest \
   --build-arg ${UPCASE_IMAGE//-/_}_VERSION=${VERSION} \
   .
 # --no-cache \
