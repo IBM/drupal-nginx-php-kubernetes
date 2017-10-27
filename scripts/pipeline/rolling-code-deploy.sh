@@ -13,7 +13,17 @@ kubectl create secret generic service-credentials --from-env-file=../kubernetes/
 # - Create the shared persistent volume
 # - Create the deployment replication controllers for NGINX and PHP-FPM
 # - Create the services for the NGINX and PHP-FPM deployment
-kubectl apply -f ../kubernetes
+# kubectl apply -f ../kubernetes
+
+kubectl apply -f ../kubernetes/persistent-volumes.yaml
+kubectl apply -f ../kubernetes/php-cli.yaml
+
+kubectl apply -f ../kubernetes/php-fpm-stg.yaml
+# kubectl apply -f ../kubernetes/nginx-stg.yaml
+
+kubectl apply -f ../kubernetes/php-fpm-prd.yaml
+kubectl apply -f ../kubernetes/nginx-prd.yaml
+
 
 # Confirm everything looks good
 
