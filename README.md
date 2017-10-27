@@ -5,20 +5,25 @@ These containers mount a persistent volume for sites (which change after build t
 
 This shows several basic concepts for deploying a multi-container deployment of NGINX and PHP cluster to Kubernetes and exposing them as services. Alternative approaches might use Helm or more sophisticated build and deploy approaches that deploy on commit to a GitHub repo.
 
-This project also shows key features of the IBM Cloud platform:
+# Features of the IBM Cloud platform highlighted
 - A secure, high-performance, IBM Container Service cluster (based on Kubernetes) with advanced network and storage configuration options.
 - Integration with managed MySQL, Redis, and Memcached Databases-as-a-service provided through the Bluemix service catalog.
 - Multiple levels of security for Docker images stored in the IBM Container Registry, including automatic scanning by the IBM Vulnerability Advisor.
 - Automatic build and deploy workflows with IBM DevOps Services.
 
+# Logical overview diagram
+There are two separate Drupal installations that are deployed onto the container cluster. One to represent a "staging" environment and one to represent a "production" environment. Each has its own dedicated services and volume mounts. A CLI container can run `drush` or scripts such as `transfer-files.sh` and `transfer-data.sh` on those environments to synchronize them..
+
 
 ![](docs/img/architecture.png)
 
-# One time Container Service and Bluemix services setup
+# Setup the proof of concept
+
+## One time Container Service and Bluemix services setup
 See the Container Service Kubernetes and Bluemix services (MySQL, Redis, Memcached) [configuration instructions](docs/INITIAL-SETUP.md).
 
-# Building and deploying the first set of containers
+## Building and deploying the first set of containers
 See the Docker container build and Kubernetes deployment [instructions](docs/DEPLOY-CONTAINERS.md).
 
-# Ongoing development and operations with GitHub commits
+## Ongoing development and operations with GitHub commits
 See the ongoing development [instructions](docs/ONGOING-DEVELOPMENT.md). And the work in progress DevOps [pipeline docs](docs/PIPELINE-SETUP.md).
