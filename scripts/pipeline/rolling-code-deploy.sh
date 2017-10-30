@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 # If needed first:
 # kubectl delete deployment,service,rs,pvc --all
@@ -18,8 +18,8 @@ kubectl create secret generic service-credentials --from-env-file=../kubernetes/
 kubectl apply -f ../kubernetes/persistent-volumes.yaml
 kubectl apply -f ../kubernetes/php-cli.yaml
 
-# kubectl apply -f ../kubernetes/php-fpm-stg.yaml
-# kubectl apply -f ../kubernetes/nginx-stg.yaml
+kubectl apply -f ../kubernetes/php-fpm-stg.yaml
+kubectl apply -f ../kubernetes/nginx-stg.yaml
 
 kubectl apply -f ../kubernetes/php-fpm-prd.yaml
 kubectl apply -f ../kubernetes/nginx-prd.yaml
