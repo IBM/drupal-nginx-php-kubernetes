@@ -8,10 +8,10 @@ In contrast to other cloud-native approaches - like Platform-as-a-Service with H
 ## What this Proof of Concept shows
 This PoC shows how one might migrate a traditional web-server, application-server, and database-server based application into a container-based model that depends on cloud services in order to speed application development by reducing time spent on managing servers across a large deployment target environment.
 
-1. [Functional Drupal site running on the IBM Cloud](#functional-drupal-site-running-on-the-ibm-cloud)
-2. [Clearly defined and easy to implement process for pushing code updates](#clearly-defined-and-easy-to-implement-process-for-pushing-code-updates)
-3. [Synchronize or migrate one database to another database](#synchronize-or-migrate-one-database-to-another-database)
-4. [Taking advantage of a continous integration pipeline](#taking-advantage-of-a-continous-integration-pipeline)
+1. [1-Functional Drupal site running on the IBM Cloud](#functional-drupal-site-running-on-the-ibm-cloud)
+2. [2-Clearly defined and easy to implement process for pushing code updates](#clearly-defined-and-easy-to-implement-process-for-pushing-code-updates)
+3. [3-Synchronize or migrate one database to another database](#synchronize-or-migrate-one-database-to-another-database)
+4. [4-Taking advantage of a continous integration pipeline](#taking-advantage-of-a-continous-integration-pipeline)
 
 ## 1. Functional Drupal site running on the IBM Cloud
 A managed Kubernetes cluster from the IBM Cloud Container Service provides the fabric on which to install a set of NGINX and PHP-FPM containers that run Drupal.
