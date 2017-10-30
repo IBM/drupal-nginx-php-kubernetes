@@ -36,6 +36,7 @@ ADD tmp/composer.lock /root/drush/
 
 # Add Drush specific scripts
 ADD tmp/drush/ /root/drush/
+RUN chmod +x /root/drush/*.sh
 
 # Add database connection info
 ADD tmp/sites/default/ /root/drush/sites/default/

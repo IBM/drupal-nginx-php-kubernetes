@@ -4,6 +4,7 @@
 # If needed first:
 # kubectl delete deployment,service,rs,pvc --all
 kubectl delete deployment,service,rs --all
+sleep 5
 
 # Create service credentials as a secret
 kubectl delete secret service-credentials

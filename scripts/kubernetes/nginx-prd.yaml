@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: nginx-prd
 spec:
+  loadBalancerIP: xxx.xxx.xxx.xxx # Change to public from kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml 
   ports:
     -
       port: 80
