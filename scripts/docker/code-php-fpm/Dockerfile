@@ -6,8 +6,14 @@ FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-fpm:${PHP_FPM_VERS
 ARG DRUPAL_VERSION
 ARG DRUPAL_MD5
 
+# Register the COMPOSER_HOME environment variable.
+ENV COMPOSER_HOME=/root/.composer
+
+# Add global binary directory to PATH.
+ENV PATH /root/.composer/vendor/bin:$PATH
+
 # Allow Composer to be run as root.
-ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
@@ -49,6 +55,8 @@ ADD tmp/themes/ /var/www/drupal/web/themes/
 #   --site-mail="admin@example.com" \
 #   --site-name="Site-Install"
 
+# Install drush
+RUN composer global require drush/drush:8.x
 
 WORKDIR /var/www/drupal/web
 
