@@ -34,13 +34,13 @@ if [ -d tmp ]; then
   rm -fr tmp
 fi
 mkdir tmp
-cp -R ../../../code/ tmp/
+cp -R ../../../code/* tmp/
 docker build \
-  --tag registry.ng.bluemix.net/jjdojo/code-nginx:${BUILD_NUMBER} \
-  --tag registry.ng.bluemix.net/jjdojo/code-nginx:latest \
+  --tag registry.ng.bluemix.net/orod/code-nginx:${BUILD_NUMBER} \
+  --tag registry.ng.bluemix.net/orod/code-nginx:latest \
   .
 # --no-cache \
-docker push registry.ng.bluemix.net/jjdojo/code-nginx:latest
+docker push registry.ng.bluemix.net/orod/code-nginx:latest
 rm -fr tmp
 
 # Move back to ROOT_DIR
@@ -52,14 +52,15 @@ if [ -d tmp ]; then
   rm -fr tmp
 fi
 mkdir tmp
-cp -R ../../../code/ tmp/
+cp -R ../../../code/* tmp/
 docker build \
-  --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:${BUILD_NUMBER} \
-  --tag registry.ng.bluemix.net/jjdojo/code-php-fpm:latest \
+  --tag registry.ng.bluemix.net/orod/code-php-fpm:${BUILD_NUMBER} \
+  --tag registry.ng.bluemix.net/orod/code-php-fpm:latest \
   --build-arg DRUPAL_MD5=${DRUPAL_MD5} \
   --build-arg DRUPAL_VERSION=${DRUPAL_VERSION} \
+  --no-cache \
   .
-docker push registry.ng.bluemix.net/jjdojo/code-php-fpm:latest
+docker push registry.ng.bluemix.net/orod/code-php-fpm:latest
 rm -fr tmp
 
 # Move back to ROOT_DIR
@@ -71,13 +72,13 @@ if [ -d tmp ]; then
   rm -fr tmp
 fi
 mkdir tmp
-cp -R ../../../code/ tmp/
+cp -R ../../../code/* tmp/
 docker build \
-  --tag registry.ng.bluemix.net/jjdojo/code-php-cli:${BUILD_NUMBER} \
-  --tag registry.ng.bluemix.net/jjdojo/code-php-cli:latest \
-  --build-arg DRUPAL_VERSION=${DRUSH_VERSION} \
+  --tag registry.ng.bluemix.net/orod/code-php-cli:${BUILD_NUMBER} \
+  --tag registry.ng.bluemix.net/orod/code-php-cli:latest \
+  --build-arg DRUSH_VERSION=${DRUSH_VERSION} \
   .
-docker push registry.ng.bluemix.net/jjdojo/code-php-cli:latest
+docker push registry.ng.bluemix.net/orod/code-php-cli:latest
 rm -fr tmp
 
 # Move back to ROOT_DIR

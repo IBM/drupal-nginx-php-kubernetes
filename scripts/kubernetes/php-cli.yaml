@@ -16,102 +16,188 @@ spec:
         -
           env:
             -
-              name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_USER
-                  name: service-credentials
-            -
-              name: MYSQL_PASS
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_PASS
-                  name: service-credentials
-            -
-              name: MYSQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_HOST
-                  name: service-credentials
-            -
-              name: MYSQL_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_PORT
-                  name: service-credentials
-            -
-              name: MYSQL_NAME
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_NAME
-                  name: service-credentials
-            -
-              name: REDIS_USER
-              valueFrom:
-                secretKeyRef:
-                  key: REDIS_USER
-                  name: service-credentials
-            -
-              name: REDIS_PASS
-              valueFrom:
-                secretKeyRef:
-                  key: REDIS_PASS
-                  name: service-credentials
-            -
-              name: REDIS_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: REDIS_HOST
-                  name: service-credentials
-            -
-              name: REDIS_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: REDIS_PORT
-                  name: service-credentials
-            -
-              name: MEMCACHED_USER
-              valueFrom:
-                secretKeyRef:
-                  key: MEMCACHED_USER
-                  name: service-credentials
-            -
-              name: MEMCACHED_PASS
-              valueFrom:
-                secretKeyRef:
-                  key: MEMCACHED_PASS
-                  name: service-credentials
-            -
-              name: MEMCACHED_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: MEMCACHED_HOST
-                  name: service-credentials
-            -
-              name: MEMCACHED_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: MEMCACHED_PORT
-                  name: service-credentials
-            -
               name: HASH_SALT
               valueFrom:
                 secretKeyRef:
                   key: HASH_SALT
                   name: service-credentials
-          image: "registry.ng.bluemix.net/jjdojo/code-php-cli:latest"
+            -
+              name: MYSQL_USER_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER_STG
+                  name: service-credentials
+            -
+              name: MYSQL_PASS_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASS_STG
+                  name: service-credentials
+            -
+              name: MYSQL_HOST_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_HOST_STG
+                  name: service-credentials
+            -
+              name: MYSQL_PORT_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PORT_STG
+                  name: service-credentials
+            -
+              name: MYSQL_NAME_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_NAME_STG
+                  name: service-credentials
+            -
+              name: REDIS_USER_STG
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_USER_STG
+                  name: service-credentials
+            -
+              name: REDIS_PASS_STG
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASS_STG
+                  name: service-credentials
+            -
+              name: REDIS_HOST_STG
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_HOST_STG
+                  name: service-credentials
+            -
+              name: REDIS_PORT_STG
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PORT_STG
+                  name: service-credentials
+            -
+              name: MEMCACHED_USER_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_USER_STG
+                  name: service-credentials
+            -
+              name: MEMCACHED_PASS_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PASS_STG
+                  name: service-credentials
+            -
+              name: MEMCACHED_HOST_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_HOST_STG
+                  name: service-credentials
+            -
+              name: MEMCACHED_PORT_STG
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PORT_STG
+                  name: service-credentials
+            -
+              name: MYSQL_USER_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER_PRD
+                  name: service-credentials
+            -
+              name: MYSQL_PASS_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASS_PRD
+                  name: service-credentials
+            -
+              name: MYSQL_HOST_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_HOST_PRD
+                  name: service-credentials
+            -
+              name: MYSQL_PORT_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PORT_PRD
+                  name: service-credentials
+            -
+              name: MYSQL_NAME_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_NAME_PRD
+                  name: service-credentials
+            -
+              name: REDIS_USER_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_USER_PRD
+                  name: service-credentials
+            -
+              name: REDIS_PASS_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASS_PRD
+                  name: service-credentials
+            -
+              name: REDIS_HOST_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_HOST_PRD
+                  name: service-credentials
+            -
+              name: REDIS_PORT_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PORT_PRD
+                  name: service-credentials
+            -
+              name: MEMCACHED_USER_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_USER_PRD
+                  name: service-credentials
+            -
+              name: MEMCACHED_PASS_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PASS_PRD
+                  name: service-credentials
+            -
+              name: MEMCACHED_HOST_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_HOST_PRD
+                  name: service-credentials
+            -
+              name: MEMCACHED_PORT_PRD
+              valueFrom:
+                secretKeyRef:
+                  key: MEMCACHED_PORT_PRD
+                  name: service-credentials
+          image: "registry.ng.bluemix.net/orod/code-php-cli:latest"
           name: php-cli
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always # Set to IfNotPresent to improve performance at the expense of caching.
           volumeMounts:
             -
-              mountPath: /www
-              name: sites-local-storage
+              mountPath: /var/www/drupal/web/sites/default/files-stg
+              name: sites-stg-local-storage
+              readOnly: false
+            -
+              mountPath: /var/www/drupal/web/sites/default/files-prd
+              name: sites-prd-local-storage
               readOnly: false
       imagePullSecrets:
         -
           name: image-pull
       volumes:
         -
-          name: sites-local-storage
+          name: sites-stg-local-storage
           persistentVolumeClaim:
-            claimName: sites-lv-claim
+            claimName: sites-stg-lv-claim
+        -
+          name: sites-prd-local-storage
+          persistentVolumeClaim:
+            claimName: sites-prd-lv-claim

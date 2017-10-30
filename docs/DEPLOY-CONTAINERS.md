@@ -1,16 +1,34 @@
 ## Building and deploying the initial set of containers
-Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have been provisioned, it's time to start a set of containers (pods) on the worker nodes. We do this through a set of declarative YAML files, which define not only the containers to start, but the storage and network configuration.
+Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have been provisioned, it's time to start a set of containers (pods) on the worker nodes. We do this through a set of declarative YAML files, which define not only the containers to start, but the storage and network configuration that they depend on.
 
 ## Review the Docker build files
-- The [`scripts/docker/nginx/Dockerfile`](../scripts/docker/nginx/Dockerfile) provides the steps to build a custom NGINX image based on the latest public image. It adds a configuration file that delegates PHP file requests to the load balanced pool of PHP-FPM containers, adds a static HTML page that it will serve itself, and starts up on port 80.
-- The [`scripts/docker/php-fpm/Dockerfile`](../scripts/docker/php-fpm/Dockerfile) provides the steps to build a custom PHP-FPM image based on the latest public image. It installs prerequisite packages, configures and builds the MySQL, Redis, and Memcached extensions, copies the custom application code over, runs Composer, sets up read/write access to the storage volume for the PHP-FPM process which does not run as root, and starts up on port 9000.
-- The [`scripts/docker/php-cli/Dockerfile`](../scripts/docker/php-cli/Dockerfile) provides the steps to build a custom PHP CLI image based on the latest public image. It installs prerequisite packages, configures and builds the MySQL, Redis, and Memcached extensions, copies the custom application code over, runs Composer, and sets up read/write access to the storage volume for the PHP-FPM process which does not run as root.
+There are 6 Docker images, 3 for base configuration and 3 custom code which build upon the base configuration.
+
+The first set of three (NGINX, PHP-FPM, and PHP-CLI) provide the underlying web server and PHP environment needed by Drupal. These are rebuilt based on new version numbers provided in text files in the `config` directory, which in turn triggers a rebuild of the second set of three `code` images.
+
+1. The [`scripts/docker/config-nginx/Dockerfile`](../scripts/docker/config-nginx/Dockerfile) provides a base level of NGINX configured to delegate PHP requests to PHP-FPM.
+
+2. The [`scripts/docker/config-php-fpm/Dockerfile`](../scripts/docker/config-php-fpm/Dockerfile) provides a base level of operating system packages with PHP-FPM and extensions.
+
+3. The [`scripts/docker/config-php-cli/Dockerfile`](../scripts/docker/config-php-cli/Dockerfile) provides a base level of OS packages with PHP-CLI and extensions.
+
+The second set of three (NGINX, PHP-FPM, and PHP-CLI) provide image builds specific to Drupal, Drush, and custom code that is pushed to the `code` directory. They are rebuilt when anything in that directory changes.
+
+1. The [`scripts/docker/code-nginx/Dockerfile`](../scripts/docker/code-nginx/Dockerfile) builds on the base image and adds static code to the `/var/www/html` directory.
+
+2. The [`scripts/docker/code-php-fpm/Dockerfile`](../scripts/docker/code-php-fpm/Dockerfile) installs Drupal via Composer, then copies over custom code. It also mounts the volume needed at runtime through its `start.sh` script.
+
+3. The [`scripts/docker/code-php-cli/Dockerfile`](../scripts/docker/code-php-cli/Dockerfile) installs Drush via Composer, then copies over custom code. It also mounts the volume needed at runtime through its `start.sh` script.
 
 ## Review the Kubernetes container deployment configuration files
-- The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines a 10 GB storage volume that can be mounted by many containers (`ReadWriteMany`). The containers then reference these volumes in their own configuration files.
-- The [`scripts/kubernetes/php-fpm.yaml`](../scripts/kubernetes/php-fpm.yaml) file describes the pod/deployment for the PHP-FPM containers. It specifies how many containers from the given image and tag to start (2, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
-- Similarly The [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml) file describes the pod/deployment for the NGINX containers. It specifies how many containers from the given image and tag to start (1, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
-- Finally, the [`scripts/kubernetes/php-cli.yaml`](../scripts/kubernetes/php-cli.yaml) configures the pool of CLI workers that may be polling a database or queue for messages. It also maps the environment variables and storage volume, but does not expose a service for inbound network access.
+The Kubernetes deployment files instantiate containers based on the `code` images (never just the `config` images).
+
+We set up two container clusters, one for a "staging" environment and one for a "Production" environment. They share the same base Docker images.
+
+- The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines two 10 GB storage volumes (one for staging, one for production) that can be mounted by many containers (`ReadWriteMany`). The containers then reference these volumes in their own configuration files.
+- The [`scripts/kubernetes/php-fpm-stg.yaml`](../scripts/kubernetes/php-fpm-stg.yaml) and [`scripts/kubernetes/php-fpm-prd.yaml`](../scripts/kubernetes/php-fpm-prd.yaml) files describe the pod/deployment for the PHP-FPM containers in each environment. They specify how many containers from the given image and tag to start, what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
+- Similarly, the [`scripts/kubernetes/nginx-stg.yaml`](../scripts/kubernetes/nginx-stg.yaml) and [`scripts/kubernetes/nginx-prd.yaml`](../scripts/kubernetes/nginx-prd.yaml) files describe the pod/deployment for the NGINX containers. They specify how many containers from the given image and tag to start (1, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
+- Finally, the [`scripts/kubernetes/php-cli.yaml`](../scripts/kubernetes/php-cli.yaml) configures the single shared CLI container that is used to manage files and data from both environments and synchronize data ([`code/drush/transfer-data.sh`](../code/drush/transfer-data.sh)) and files (([`code/drush/transfer-files.sh`](../code/drush/transfer-files.sh))) from production to staging.
 
 ## Build container images and push to the private registry
 Log into Bluemix and the Container Registry. Make sure your target organization and space is set. If you haven't already installed the Container Registry plugin for the `bx` CLI:
@@ -24,7 +42,7 @@ bx cs init
 
 Next, list the clusters already provisioned on Bluemix, and get the Kubernetes configuration information.
 ```bash
-bx cs clusters #Find your cluster, and input into next command
+bx cs clusters # Find your cluster, and input into next command
 bx cs cluster-config $CLUSTER_NAME
 ```
 
@@ -40,12 +58,12 @@ Finally, test your connection by interacting with your cluster.
 # Confirm cluster is ready
 kubectl get nodes
 
-# Run the dashboard which will be available on http://127.0.0.1:8001/ui
+# Run the visual dashboard which will be available on http://127.0.0.1:8001/ui
 kubectl proxy
 ```
 
 ## Optional: Configure your namespace
-Right now, this POC is hardcoded to the "jjdojo" namespace. To avoid overwriting other people's images, you may want create and configure your own namespace.
+Right now, this POC is hardcoded to the "orod" image registry namespace. To avoid overwriting other people's images, you may want create and configure your own namespace.
 
 Install the Bluemix container registry CLI plugin:
 ```bash
@@ -55,24 +73,26 @@ bx login
 
 Create a namespace:
 ```bash
-bx cr namespace-add <my_namespace>
-bx cr namespaces #list namespaces
+bx cr namespace-add $MY_NAMESPACE
+bx cr namespaces # List namespaces
 bx cr login # To enable pushing images
 ```
 
-Configure scripts with your namespace. You will need to replace "jjdojo" in
+Configure scripts with your namespace. You will need to replace "orod" in
 - [build-containers.sh](../scripts/build-containers.sh)
-- [nginx.yaml](../scripts/kubernetes/nginx.yaml)
 - [php-cli.yaml](../scripts/kubernetes/php-cli.yaml)
-- [php-fpm.yaml](../scripts/kubernetes/php-fpm.yaml)
+- [nginx-stg.yaml](../scripts/kubernetes/nginx-stg.yaml)
+- [php-fpm-stg.yaml](../scripts/kubernetes/php-fpm-stg.yaml)
+- [nginx-prd.yaml](../scripts/kubernetes/nginx-prd.yaml)
+- [php-fpm-prd.yaml](../scripts/kubernetes/php-fpm-prd.yaml)
 
 Finally, you may have to [create an `imagePull` token](https://console.bluemix.net/docs/containers/cs_cluster.html#bx_registry_other).
 
 ## Build the container images
 Run this script to build the containers and push them to your registry:
 ```bash
-cd scripts
-./build-containers.sh
+cd scripts/pipeline
+./build-on-config-change.sh
 ```
 
 ## Deploy the container images to the Kubernetes cluster
@@ -87,10 +107,10 @@ kubectl --namespace default create secret docker-registry image-pull \
 --docker-password="${TOKEN}" \
 --docker-email="${YOUR_EMAIL}"
 
-./deploy-containers.sh
+./rolling-code-deploy.sh
 ```
 
-The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-containers.sh` script. These is the hand-off point between image build/push, and kubernetes deploy.
+The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-on-config-change.sh` script. These is the hand-off point between image build/push, and Kubernetes deploy.
 
 ## Specify a non-floating LoadBalancer IP
 Obtain the available IPs assigned to your cluster (look for "is_public: true")
@@ -98,14 +118,14 @@ Obtain the available IPs assigned to your cluster (look for "is_public: true")
 kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml
 ```
 
-Set `spec.loadBalancerIP` inside [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
+Set `spec.loadBalancerIP` inside [`scripts/kubernetes/nginx-prd.yaml`](../scripts/kubernetes/nginx-prd.yaml)
 
 For example:
 ```bash
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: nginx-prd
 spec:
   loadBalancerIP: <ip>
   ...
@@ -113,21 +133,21 @@ spec:
 ```
 
 ## Setup Ingress (replaces LoadBalancer)
-So far, we have configured LoadBalancer as the service type for the nginx service. We can use the Ingress type instead to give us more flexibility with specifying routes from a single endpoint and also us to use a hostname instead of floating IPs to access our application. Detailed docs here: https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps_public_ingress.
+So far, we have configured LoadBalancer as the service type for the nginx-prd service. We can use the Ingress type instead to give us more flexibility with specifying routes from a single endpoint and also us to use a hostname instead of floating IPs to access our application. Detailed docs here: https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps_public_ingress.
 
 1) Remove the `type: LoadBalancer` line from [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
 
 2) Obtain your "Ingress subdomain".
 ```bash
-bx cs cluster-get <cluster name>
-``` 
+bx cs cluster-get $CLUSTER_NAME
+```
 
 3) Edit [`scripts/kubernetes/ingress/ingress.yaml`](../scripts/kubernetes/ingress/ingress.yaml) to include your subdomain.
 
-4) Redeploy your nginx service
+4) Redeploy your nginx-prd service
 ```bash
-kubectl delete service nginx
-kubectl apply -f scripts/kubernetes/nginx.yaml
+kubectl delete service nginx-prd
+kubectl apply -f scripts/kubernetes/nginx-prd.yaml
 ```
 
 5) Deploy the ingress service
@@ -141,5 +161,6 @@ kubectl apply -f scripts/kubernetes/ingress/ingress.yaml
 If you want to cleanly install the environment, for example to push a new set of container versions, use the following script:
 
 ```bash
-./destroy-containers.sh
+cd scripts/pipeline
+./rolling-code-deploy.sh
 ```

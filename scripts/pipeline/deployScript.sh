@@ -1,59 +1,32 @@
 #!/bin/bash
 
-# TODO
-# Need to find way to grab previous tags as ENV variables
-# Add ability to rollback on failed deployment
-
-
 echo "Starting deploy stage"
 
-CONFIG_DEPLOY=$(grep "CONFIG_DEPLOY" build.properties|cut -d'=' -f2)
-CODE_DEPLOY=$(grep "CODE_DEPLOY" build.properties|cut -d'=' -f2)
+cd scripts
 
-echo "$CONFIG_DEPLOY"
-echo "$CODE_DEPLOY"
+#Pulling image details
+IMAGE=$(grep "IMAGE=" pipeline/build.properties|cut -d'=' -f2)
+REGISTRY_URL=$(grep "REGISTRY_URL" pipeline/build.properties|cut -d'=' -f2)
+REGISTRY_NAMESPACE=$(grep "REGISTRY_NAMESPACE" pipeline/build.properties|cut -d'=' -f2)
 
-#Applying configs
-cd scripts/
+if kubectl get deployments | grep "${IMAGE}" ; then
 
-if [ "$CONFIG_DEPLOY" = true ] ; then
+  #Applying configs
 
-  kubectl set image deployment/config-nginx config-nginx="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/config-nginx:latest"
-  kubectl rollout status deployment/nginx
+  kubectl set image deployment/${IMAGE} ${IMAGE}="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-${IMAGE}:latest"
+  echo $?
 
-  kubectl set image deployment/config-php-fpm config-php-fpm="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/config-php-fpm:latest"
-  kubectl rollout status deployment/nginx
-
-  kubectl set image deployment/config-php-cli config-php-cli="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/config-php-cli:latest"
-  kubectl rollout status deployment/nginx
-
-  kubectl set image deployment/code-nginx code-nginx="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-nginx:latest"
-  kubectl rollout status deployment/code-nginx
-
-  kubectl set image deployment/code-php-fpm code-php-fpm="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-php-fpm:latest"
-  kubectl rollout status deployment/code-php-fpm
-
-  kubectl set image deployment/code-php-cli code-php-cli="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-php-cli:latest"
-  kubectl rollout status deployment/code-php-cli
+  kubectl rollout status deployment/${IMAGE}
+  echo $?
 
   kubectl get pods
-
-elif [ "$CODE_DEPLOY" = true ] ; then
-
-  kubectl set image deployment/code-nginx code-nginx="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-nginx:latest"
-  kubectl rollout status deployment/code-nginx
-
-  kubectl set image deployment/code-php-fpm code-php-fpm="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-php-fpm:latest"
-  kubectl rollout status deployment/code-php-fpm
-
-  kubectl set image deployment/code-php-cli code-php-cli="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-php-cli:latest"
-  kubectl rollout status deployment/code-php-cli
-
-  kubectl get pods
-
 
 else
 
-  echo "No deployments needed"
+  kubectl apply -f kubernetes/${IMAGE}.yaml
+
+  echo $?
+
+  kubectl get pods
 
 fi

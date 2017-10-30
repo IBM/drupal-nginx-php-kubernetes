@@ -1,15 +1,15 @@
 # Toolchain Introduction
 
-This toolchain will enable your containers to automatically build and push to a registry as well as deploy to a kubernetes cluster hosted on Bluemix. This toolchain will be comprised of multiple pipelines, one for each major component of the cluster. Ideally there would be four different layers in build/deploy process:
+This toolchain will enable your containers to automatically build and push to a registry as well as deploy to a Kubernetes cluster hosted on Bluemix. This toolchain will be comprised of multiple pipelines, one for each major component of the cluster. Ideally there would be four different layers in build/deploy process:
 
-  1. Build nginx/PHP builds
+  1. Build NGINX/PHP container images
   2. Drupal build layer
-  3. Custom J&J basic custom code
+  3. Custom base code
   4. Brand/region specific code
 
 Each of these layers could come from a different repository and could be built and deployed when code is pushed.
 
-For the purpose of this POC, we have one repo that contains all of our images and custom code. Our finished toolchain will appear as follows:
+For the purpose of this P0C, we have one repo that contains all of our images and custom code. Our finished toolchain will appear as follows:
 
   ![Completed Toolchain](img/completedToolchain.PNG)
 
@@ -20,7 +20,7 @@ For the purpose of this POC, we have one repo that contains all of our images an
   ![Bluemix Menu](img/bluemixMenu.PNG)
 
 2. Click on Toolchains on the left pane
-3. Click Create Toolchian
+3. Click Create Toolchain
 4. Scroll down to Other Templates and select **Build Your Own Toolchain**
 
   ![Build your own template](img/customTemplate.PNG)
@@ -96,7 +96,7 @@ For the purpose of this POC, we have one repo that contains all of our images an
 
   ```bash
   #!/bin/bash
-  . scripts/pipeline/deployScript
+  . scripts/pipeline/deployScript.sh
   ```
   ![Deploy Job](img/deployJob.PNG)
 

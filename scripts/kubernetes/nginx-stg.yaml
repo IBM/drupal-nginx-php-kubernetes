@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-stg
+spec:
+  ports:
+    -
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: nginx-stg
+    tier: frontend
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-stg
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-stg
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        -
+          env:
+            -
+              name: ENV
+              value: "stg"
+          image: "registry.ng.bluemix.net/orod/code-nginx:latest"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /usr/sbin/nginx
+                  - "-s"
+                  - quit
+          name: nginx-stg
+          imagePullPolicy: Always # Set to IfNotPresent to improve performance at the expense of caching.
+          ports:
+            -
+              containerPort: 80
+              name: http
+          volumeMounts:
+            -
+              mountPath: /var/www/drupal/web/sites/default/files
+              name: sites-local-storage
+      imagePullSecrets:
+        -
+          name: image-pull
+      volumes:
+        -
+          name: sites-local-storage
+          persistentVolumeClaim:
+            claimName: sites-stg-lv-claim
