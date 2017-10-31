@@ -1,8 +1,8 @@
 # This Dockerfile provides a base level of OS packages with PHP-FPM and extensions
 
-ARG PHP_FPM_VERSION=7.1-fpm
+FROM php:7.1-fpm
 
-FROM php:${PHP_FPM_VERSION}
+ARG PHP_FPM_VERSION=7.1-fpm
 
 # Set consistent timezone
 ENV CONTAINER_TIMEZONE="UTC"
@@ -10,7 +10,7 @@ RUN rm -f /etc/localtime \
  && ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime
 
 # Install prerequisite OS packages
-RUN apt-get update && apt-get install -y curl git mysql-client
+RUN apt-get update && apt-get install -y curl git vim libfcgi0ldbl
 
 # Install the PHP extensions we need
 RUN set -ex \
@@ -51,6 +51,8 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-EXPOSE 9000
+# Copy customized community configuration back into the image.
+COPY config/etc /usr/local/etc
 
-CMD ["php-fpm"]
+WORKDIR /www
+

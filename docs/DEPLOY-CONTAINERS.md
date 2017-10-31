@@ -1,5 +1,5 @@
 ## Building and deploying the initial set of containers
-Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have been provisioned, it's time to start a set of containers (pods) on the worker nodes. We do this through a set of declarative YAML files, which define not only the containers to start, but the storage and network configuration that they depend on.
+Now that the Kubernetes cluster and MySQL, Redis, and Memcached services have been provisioned, it's time to start a set of containers (pods) on the Kubernetes worker nodes. We do this through a set of declarative YAML files, which define not only the containers to start, but the storage and network configuration that they depend on.
 
 ## Review the Docker build files
 There are 6 Docker images, 3 for base configuration and 3 custom code which build upon the base configuration.
@@ -23,11 +23,11 @@ The second set of three (NGINX, PHP-FPM, and PHP-CLI) provide image builds speci
 ## Review the Kubernetes container deployment configuration files
 The Kubernetes deployment files instantiate containers based on the `code` images (never just the `config` images).
 
-We set up two container clusters, one for a "staging" environment and one for a "Production" environment. They share the same base Docker images.
+We set up two container clusters, one for a "Staging" environment and one for a "Production" environment. They share the same base Docker images.
 
 - The [`scripts/kubernetes/persistent-volumes.yaml`](../scripts/kubernetes/persistent-volumes.yaml) files defines two 10 GB storage volumes (one for staging, one for production) that can be mounted by many containers (`ReadWriteMany`). The containers then reference these volumes in their own configuration files.
 - The [`scripts/kubernetes/php-fpm-stg.yaml`](../scripts/kubernetes/php-fpm-stg.yaml) and [`scripts/kubernetes/php-fpm-prd.yaml`](../scripts/kubernetes/php-fpm-prd.yaml) files describe the pod/deployment for the PHP-FPM containers in each environment. They specify how many containers from the given image and tag to start, what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
-- Similarly, the [`scripts/kubernetes/nginx-stg.yaml`](../scripts/kubernetes/nginx-stg.yaml) and [`scripts/kubernetes/nginx-prd.yaml`](../scripts/kubernetes/nginx-prd.yaml) files describe the pod/deployment for the NGINX containers. They specify how many containers from the given image and tag to start (1, for now), what port to listen on, the environment variables that map to the service credentials, and where to mount the storage volume.
+- Similarly, the [`scripts/kubernetes/nginx-stg.yaml`](../scripts/kubernetes/nginx-stg.yaml) and [`scripts/kubernetes/nginx-prd.yaml`](../scripts/kubernetes/nginx-prd.yaml) files describe the pod/deployment for the NGINX containers. They specify how many containers from the given image and tag to start (1, for now), what port to listen on, what IP address to bind to, the environment variables that map to the service credentials, and where to mount the storage volume.
 - Finally, the [`scripts/kubernetes/php-cli.yaml`](../scripts/kubernetes/php-cli.yaml) configures the single shared CLI container that is used to manage files and data from both environments and synchronize data ([`code/drush/transfer-data.sh`](../code/drush/transfer-data.sh)) and files (([`code/drush/transfer-files.sh`](../code/drush/transfer-files.sh))) from production to staging.
 
 ## Build container images and push to the private registry
@@ -98,7 +98,7 @@ cd scripts/pipeline
 ## Deploy the container images to the Kubernetes cluster
 
 ```bash
-# Create image pull token if needed one time. The kubectl command may not like the wrapped lines, so change it all to one line if needed.
+# Create an image pull token for the given registry. The kubectl command may not like the wrapped lines, so change it all to one line if needed.
 bx cr token-list
 bx cr token-get $TOKEN_ID
 kubectl --namespace default create secret docker-registry image-pull \
@@ -110,7 +110,7 @@ kubectl --namespace default create secret docker-registry image-pull \
 ./rolling-code-deploy.sh
 ```
 
-The yaml files in this directory reference in same image names (including the name of our registry namespace) as in the `build-on-config-change.sh` script. These is the hand-off point between image build/push, and Kubernetes deploy.
+The YAML files in this directory reference the same image names (including the name of our registry namespace) as in the `build-on-config-change.sh` script. These is the hand-off point between image build/push, and Kubernetes deploy.
 
 ## Specify a non-floating LoadBalancer IP
 Obtain the available IPs assigned to your cluster (look for "is_public: true")
@@ -118,7 +118,7 @@ Obtain the available IPs assigned to your cluster (look for "is_public: true")
 kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml
 ```
 
-Set `spec.loadBalancerIP` inside [`scripts/kubernetes/nginx-prd.yaml`](../scripts/kubernetes/nginx-prd.yaml)
+Set an IP address for Staging and Production in the `spec.loadBalancerIP` value inside [`scripts/kubernetes/nginx-prd.yaml`](../scripts/kubernetes/nginx-prd.yaml) and [`scripts/kubernetes/nginx-stg.yaml`](../scripts/kubernetes/nginx-stg.yaml).
 
 For example:
 ```bash
@@ -127,7 +127,7 @@ kind: Service
 metadata:
   name: nginx-prd
 spec:
-  loadBalancerIP: <ip>
+  loadBalancerIP: $IP
   ...
 ---
 ```
@@ -135,7 +135,7 @@ spec:
 ## Setup Ingress (replaces LoadBalancer)
 So far, we have configured LoadBalancer as the service type for the nginx-prd service. We can use the Ingress type instead to give us more flexibility with specifying routes from a single endpoint and also us to use a hostname instead of floating IPs to access our application. Detailed docs here: https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps_public_ingress.
 
-1) Remove the `type: LoadBalancer` line from [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx.yaml)
+1) Remove the `type: LoadBalancer` line from [`scripts/kubernetes/nginx.yaml`](../scripts/kubernetes/nginx-prd.yaml)
 
 2) Obtain your "Ingress subdomain".
 ```bash

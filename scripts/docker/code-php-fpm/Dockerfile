@@ -39,6 +39,7 @@ ADD tmp/composer.json /var/www/drupal/
 ADD tmp/composer.lock /var/www/drupal/
 
 ADD tmp/drush/ /var/www/drupal/drush/
+RUN chmod +x /var/www/drupal/drush/*.sh
 
 ADD tmp/modules/ /var/www/drupal/web/modules/
 ADD tmp/profiles/ /var/www/drupal/web/profiles/

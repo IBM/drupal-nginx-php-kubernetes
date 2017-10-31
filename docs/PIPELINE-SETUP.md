@@ -1,15 +1,19 @@
 # Toolchain Introduction
 
-This toolchain will enable your containers to automatically build and push to a registry as well as deploy to a Kubernetes cluster hosted on Bluemix. This toolchain will be comprised of multiple pipelines, one for each major component of the cluster. Ideally there would be four different layers in build/deploy process:
+This toolchain will enable your containers to automatically build and push to a registry as well as deploy to a kubernetes cluster hosted on Bluemix. This toolchain will be comprised of multiple pipelines, one for each major component of the cluster. The process will be composed of the following steps:
 
-  1. Build NGINX/PHP container images
-  2. Drupal build layer
-  3. Custom base code
-  4. Brand/region specific code
+  1. Push code to repository
+  2. Check to see what directories have been changed
+    - If config directory has been changed, rebuild base images and code layer
+    - If code directory has been changed, only build the code layer
+  3. Build images
+  4. Test images with Vulnerability Advisor.
+  5. Deploy to staging environment
+  6. Deploy to production environment
 
 Each of these layers could come from a different repository and could be built and deployed when code is pushed.
 
-For the purpose of this P0C, we have one repo that contains all of our images and custom code. Our finished toolchain will appear as follows:
+For the purpose of this POC, we have one repo that contains all of our images and custom code. Our finished toolchain will appear as follows:
 
   ![Completed Toolchain](img/completedToolchain.PNG)
 
@@ -20,7 +24,7 @@ For the purpose of this P0C, we have one repo that contains all of our images an
   ![Bluemix Menu](img/bluemixMenu.PNG)
 
 2. Click on Toolchains on the left pane
-3. Click Create Toolchain
+3. Click Create Toolchian
 4. Scroll down to Other Templates and select **Build Your Own Toolchain**
 
   ![Build your own template](img/customTemplate.PNG)
@@ -76,19 +80,32 @@ For the purpose of this P0C, we have one repo that contains all of our images an
 
   - In the *Build Script* section enter the following:
     ```bash
-    #!/bin/bash
     echo "Calling the build script"
-    . scripts/pipeline/buildImage.sh
+    cd scripts/pipeline
+    . ./buildImage.sh
     ```
   - Leave the rest as it is and click on **Save** at the bottom of the stage.
 
-19. Once you are back on the pipeline page, click **Add Stage** again. Now we need to add our deploy stage.
+19. Next, create another stage and name it **Test**. In this stage you can run any custom test scripts or use the built-in Vulnerability Advisor.
 
-20. Name the stage and make sure the input is coming from the previous build stage as seen below.
+20. Click on the jobs tab, add a new job, and select **Test**.
+
+21. Under *Tester Type*, select **Vulnerability Advisor**
+  - Under *API Key* slect the key for your org or enter a new one
+  - Under *Bluemix Container Registry Namespace* enter your Namespace
+  - Select the *Docker Image Name* and *Docker Image Tag* that you want to test.
+  - Add any additional testing scripts in the *Test Script* area.
+  - When done, click *Save*
+
+  ![Test Stage](img/testStage.PNG)
+
+22. Once you are back on the pipeline page, click **Add Stage** again. Now we need to add our stage for deploying to the staging environemnt.
+
+23. Name the stage **Staging** and make sure the input is coming from the previous build stage as seen below.
 
   ![Deploy stage input](img/deployInput.PNG)
 
-21. Next, click on the **Jobs** tab and click **Add job** and select **Deploy**.
+24. Next, click on the **Jobs** tab and click **Add job** and select **Deploy**.
   - For *Deployer Type* select **kubernetes**
   - Enter your API Key under *API Key*
   - Select the cluster that you would like to deploy to.
@@ -96,29 +113,56 @@ For the purpose of this P0C, we have one repo that contains all of our images an
 
   ```bash
   #!/bin/bash
-  . scripts/pipeline/deployScript.sh
+
+  . scripts/pipeline/pipelineDeployScripts/nginx-deploy.sh
   ```
   ![Deploy Job](img/deployJob.PNG)
 
+  - Next we need to add an environment variable to tell the script which environment we are deploying to. Click on the *Environment Properties* tab.
+
+  - Click *Add Property*, select *Text Property*, and under name enter **ENVIRONMENT** and under *Value* enter **stg**.
+
+  ![Stg environment variable](img/EnvVar.PNG)
+
   - When done, click on **Save**
 
-22. We should now have two stages in our nginx pipeline. This pipeline will handle the building and deploying of the nginx container. We now need to add pipelines for our other containers. Click on the toolchain name at the top left of the page to take you back to the toolchain page.
+25. Next, we need to create another deployment stage but this time we will deploy to the production environment. Repeat steps **22 - 24** but this time, name the stage **Production**, and for the environment property, enter **prd**. The deploy script for both environments will be the same.
+
+26. We should now have four stages in our nginx pipeline. This pipeline will handle the building, testing, and deploying of the nginx container in two different environments. We now need to add pipelines for our other containers. Click on the toolchain name at the top left of the page to take you back to the toolchain page.
 
   ![Finished pipeline](img/finishedPipeline.PNG)
 
-23. Follow steps **14 - 22** to create pipelines for the other images while making sure to change the image names for the respective pipeline as well as making sure that the registry namespace and targeted cluster remains the same.
+27. Follow steps **14 - 25** to create pipelines for the other images while making sure to change the image names for the respective pipeline as well as making sure that the registry namespace and targeted cluster remains the same. Be sure to change the deploy script for each pipeline as follows:
 
-24. After repeating the steps, your toolchain should look like the following:
+  ---
+  - **Note that php-cli does not need to be deployed into both environments**
+  - For php-cli:
+  ```bash
+  #!/bin/bash
 
-  ![three pipelines](img/threePipelines.PNG)
+  . scripts/pipeline/pipelineDeployScripts/php-cli-deploy.sh
 
-25. Next, we need to add the step to build the persistent volumes. Create one more pipeline and name it **Persistent Volumes**
+  ```
 
-26. Click on it to configure the pipeline and add a new stage.
+  ---
+  - For php-fpm:
+  ```bash
+  #!/bin/bash
 
-27. Add a new **Deploy** job, for *Deployer Type* select **Kubernetes**, enter your API Key, and select your target cluster.
+  . scripts/pipeline/pipelineDeployScripts/php-fpm-deploy.sh
 
-28. For the in the *Deploy Script* section, enter the following:
+  ```
+
+  ---
+
+
+28. Next, we need to add the step to build the persistent volumes. Create one more pipeline and name it **Persistent Volumes**
+
+29. Click on it to configure the pipeline and add a new stage.
+
+30. Add a new **Deploy** job, for *Deployer Type* select **Kubernetes**, enter your API Key, and select your target cluster.
+
+31. For the in the *Deploy Script* section, enter the following:
   ```bash
   #!/bin/bash
   kubectl apply -f scripts/kubernetes/persistent-volumes.yaml
@@ -126,7 +170,52 @@ For the purpose of this P0C, we have one repo that contains all of our images an
 
   ![Persistent Volume Deploy](img/persistentVolumeDeploy.PNG)
 
-29. When done, click **Save**. Click on the toolchain name at the top left to go back to the toolchain page.
+29. When done, click **Save**.
+
+30. Now we just need to add one last pipeline that will allow us to manually run scripts to transfer files and data between environments. Click on the toolchain name at the top left to go back to the toolchain page.
+
+31. Click *Add a Tool*
+  - Select **Delivery Pipeline**
+  - Name the pipeline **Data Sync**
+  - Once the pipeline has been created, click on it to configure the stages.
+
+32. Name the stage **Transfer Files**
+  - On the *Input* tab, change the *Stage Trigger* to *Run jobs only when this stage is run manually*
+
+33. Click on the *Jobs* tab
+  - Click *Add Job* and select *Deploy*
+  - Name the job **Transfer Files**
+  - Set the *Deployer Type* to **Kubernetes**
+  - Verify the *API Key*, *Target*, and *Kubernetes Cluster*
+  - For the *Deploy Script* enter the following:
+    ```bash
+    #!/bin/bash
+
+    echo $(kubectl get pod -l "app=php-cli" -o jsonpath='{.items[0].metadata.name}')
+
+    kubectl exec $(kubectl get pod -l "app=php-cli" -o jsonpath='{.items[0].metadata.name}') /root/drush/transfer-files.sh
+
+    ```
+    - Click *Save*
+34. Add another stage
+  - Name the stage **Transfer Data**
+  - Click on the *Input* tab and set the *Stage Trigger* to **Run jobs only when this stage is run manually**
+
+35. Click on the *Jobs* tab
+- Click *Add Job* and select *Deploy*
+- Name the job **Transfer Data**
+- Set the *Deployer Type* to **Kubernetes**
+- Verify the *API Key*, *Target*, and *Kubernetes Cluster*
+- For the *Deploy Script* enter the following:
+  ```bash
+  #!/bin/bash
+
+  echo $(kubectl get pod -l "app=php-cli" -o jsonpath='{.items[0].metadata.name}')
+
+  kubectl exec $(kubectl get pod -l "app=php-cli" -o jsonpath='{.items[0].metadata.name}') /root/drush/transfer-data.sh
+
+  ```
+  - Click *Save*
 
 30. Our toolchain is now configured and should look similar to the image below:
 
