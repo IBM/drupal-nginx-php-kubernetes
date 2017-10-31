@@ -179,7 +179,7 @@ For the purpose of this POC, we have one repo that contains all of our images an
   - Name the pipeline **Data Sync**
   - Once the pipeline has been created, click on it to configure the stages.
 
-32. Name the stage **Transfer Files**
+32. Click *Add Stage* and name the stage **Transfer Files**
   - On the *Input* tab, change the *Stage Trigger* to *Run jobs only when this stage is run manually*
 
 33. Click on the *Jobs* tab
