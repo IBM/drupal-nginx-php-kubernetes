@@ -5,7 +5,7 @@ These containers mount a persistent volume for sites (which change after build a
 
 After deployment, Drupal developers (who are the end users of the cluster) can manage site lifecycle by delivering configuration or code changes to specific folders ([config](/tree/master/config), [code](/tree/master/code)) in this repository. Commits trigger fresh rebuild and deploys in an [IBM Continuous Delivery](https://console.bluemix.net/catalog/services/continuous-delivery/?taxonomyNavigation=services&cm_mc_uid=36647820015315082453960&cm_mc_sid_50200000=1509381998&env_id=ibm%3Ayp%3Aus-south) pipeline.
 
-## What makes the
+## What makes the IBM Cloud different from other Kubernetes providers
 - A secure, high-performance, [IBM Container Service cluster](https://console.bluemix.net/docs/containers/cs_planning.html#cs_planning) (based on Kubernetes) with advanced network and storage configuration options.
 - Integration with managed MySQL, Redis, and Memcached Databases-as-a-service provided through the Bluemix service catalog.
 - [Multiple levels of security](https://console.bluemix.net/docs/containers/cs_security.html#cs_security) for Docker images stored in the IBM Container Registry, including automatic scanning by the [IBM Vulnerability Advisor](https://www.ibm.com/blogs/bluemix/2017/03/assessing-security-risk-containers-vulnerability-advisor/).
