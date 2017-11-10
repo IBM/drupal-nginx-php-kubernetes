@@ -8,20 +8,20 @@ set -x
 # 1. Prepare required CLIs and plugins
 # 1.1. Download and install kubectl CLI
 #   https://kubernetes.io/docs/tasks/kubectl/install/
-# 1.2. Download and install the Bluemix CLI
+# 1.2. Download and install the IBM Cloud CLI
 #   http://clis.ng.bluemix.net/ui/home.html
 #
-# 1.3. Add the bluemix plugins repo
+# 1.3. Add the IBM Cloud plugins repo
 #   bx plugin repo-add bluemix https://plugins.ng.bluemix.net
 #
 # 1.4. Add the container service plugin
 #   bx plugin install container-service -r bluemix
 
 # 2. Setup a cluster
-# 2.1. Point Bluemix CLI to production API
+# 2.1. Point IBM Cloud CLI to production API
 #   bx api api.ng.bluemix.net
 #
-# 2.2. Login to bluemix (use --sso if federated)
+# 2.2. Login to IBM Cloud (use --sso if federated)
 #   bx login
 #
 # 2.3. Wait for the cluster to be ready

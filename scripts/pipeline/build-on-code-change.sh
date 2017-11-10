@@ -25,7 +25,7 @@ echo $PHP_CLI_VERSION   # Override from args
 # Build each image and push
 ROOT_DIR=`pwd`
 
-# Log into the Bluemix Container Registry
+# Log into the IBM Cloud Container Registry
 bx cr login
 
 # Build the NGINX image (configure Fast CGI)

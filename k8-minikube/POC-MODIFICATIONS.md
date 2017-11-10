@@ -30,9 +30,9 @@ does not have docker push enable (i.e., not pushing to IBM Container Registry at
 - Enabled the /status and /ping pages in the PHP-FPM process to test
   communication between containers. This is not something you would obviously
   have enabled in prod, but it is extremely useful here.
-- Successfully tested communcation between NGINX and PHP-FPM using the /status
+- Successfully tested communication between NGINX and PHP-FPM using the /status
   and /ping PHP-FPM pages.
-- Created two bash scripties, `bash-nginx.sh` and `bash-php-fpm.sh` that show
+- Created two bash scripts, `bash-nginx.sh` and `bash-php-fpm.sh` that show
   how to automatically find the container name in the cluster and "exec" bash
   into it for quick debugging (it is a bash one-liner command).
 - Updated the build scripts (simplified into `build-base-images.sh`).
@@ -54,20 +54,20 @@ running on. Some examples of things the IBM POC provides that are IBM specific
 and would never work on Minikube, or any other provider for that matter (Google
 Container Environment, Amazon AWS, Azure, etc.):
 
-- Volumes and Volume Claims: These are provider specific and neccesary.
+- Volumes and Volume Claims: These are provider specific and necessary.
 - Storage volume initialization scripts (i.e., code-php-fpm/start.sh).
 - Networking: LoadBalancer works on differently in each provider, and is not
-  even supported by MiniKube, MiniKube has to restort to use NodePort instead of
+  even supported by MiniKube, MiniKube has to resort to use NodePort instead of
   LoadBalancer, AWS requires different configuration, etc.
 - Provider plugin configuration and usage: The IBM POC has done a really nice
   job of documenting how to setup and use the different `bx` components.
 - Secrets: This POC is not using setting up any, and piggy-backing on any
-  secrets configuration done in the IBM BlueMix POC (recycling them in the
+  secrets configuration done in the IBM Cloud POC (recycling them in the
   various container manifests).
-- Decoupled configuration: This sub-POC a lot, if not most of IBM BlueMix's
+- Decoupled configuration: This sub-POC a lot, if not most of IBM Cloud's
   variables that are used in the Dockerfile build process for simplification,
-  not soemthing you would really want to do in real life.
-- Provider-specific scripts: The IBM BlueMix POC has plenty of awesome devops
+  not something you would really want to do in real life.
+- Provider-specific scripts: The IBM Cloud POC has plenty of awesome devops
   scripts to automate all the things build and deploy, this POC has 1/10 of that
   effort.
 

@@ -31,7 +31,7 @@ We set up two container clusters, one for a "Staging" environment and one for a 
 - Finally, the [`scripts/kubernetes/php-cli.yaml`](../scripts/kubernetes/php-cli.yaml) configures the single shared CLI container that is used to manage files and data from both environments and synchronize data ([`code/drush/transfer-data.sh`](../code/drush/transfer-data.sh)) and files (([`code/drush/transfer-files.sh`](../code/drush/transfer-files.sh))) from production to staging.
 
 ## Build container images and push to the private registry
-Log into Bluemix and the Container Registry. Make sure your target organization and space is set. If you haven't already installed the Container Registry plugin for the `bx` CLI:
+Log into IBM Cloud and the Container Registry. Make sure your target organization and space is set. If you haven't already installed the Container Registry plugin for the `bx` CLI:
 
 ```bash
 # Configure the plugin if you haven't yet
@@ -40,7 +40,7 @@ bx login -a https://api.ng.bluemix.net
 bx cs init
 ```
 
-Next, list the clusters already provisioned on Bluemix, and get the Kubernetes configuration information.
+Next, list the clusters already provisioned on IBM Cloud, and get the Kubernetes configuration information.
 ```bash
 bx cs clusters # Find your cluster, and input into next command
 bx cs cluster-config $CLUSTER_NAME
@@ -65,7 +65,7 @@ kubectl proxy
 ## Optional: Configure your namespace
 Right now, this POC is hardcoded to the "orod" image registry namespace. To avoid overwriting other people's images, you may want create and configure your own namespace.
 
-Install the Bluemix container registry CLI plugin:
+Install the IBM Cloud container registry CLI plugin:
 ```bash
 bx plugin install container-registry -r Bluemix
 bx login

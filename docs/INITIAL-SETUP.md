@@ -1,5 +1,5 @@
-## Provision a Kubernetes cluster on the IBM Bluemix Container Service
-- Create a paid Bluemix account, and log into the Bluemix dashboard.
+## Provision a Kubernetes cluster on the IBM Cloud Container Service
+- Create a paid IBM Cloud account, and log into the dashboard.
 - Choose Containers from the left hand hamburger navigation.
 
     ![](img/1-hamburger.png)
@@ -54,7 +54,7 @@ For Compose, the credentials will be shown right before you create the service.
 For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your database and click the "System Information" tab
     ![](img/13-cleardb-credentials.png)
 
-- The Bluemix Container Service offers a way to autobind credentials, but using a secret from this credentials file gives us the option to use services in another organization and space and/or start it up later as its own pod.
+- The IBM Cloud Container Service offers a way to autobind credentials, but using a secret from this credentials file gives us the option to use services in another organization and space and/or start it up later as its own pod.
 
 - Repeat these steps to create a second database and make sure you have entries for both in the `scripts/kubernetes/secrets/service-credentials.txt` file.
 
