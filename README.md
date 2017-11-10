@@ -1,9 +1,9 @@
-# NGINX, PHP-FPM, and Drupal deployment on the IBM Cloud
-This project shows how to deploy a [Drupal 8](https://www.drupal.org/docs/8/) environment on a cluster of NGINX and PHP containers using the [IBM Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) and several Cloud catalog services.
+# Drupal 8 on the IBM Cloud (based on NGINX, PHP-FPM)
+This project shows how to deploy a [Drupal 8](https://www.drupal.org/docs/8/) environment on a cluster of NGINX and PHP containers using the [IBM Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) and several IBM Cloud catalog services.
 
-These containers mount a persistent volume for sites (which change after build and deployment time) and connect to [MySQL, Redis, and Memcached services from the IBM Cloud catalog](https://console.bluemix.net/catalog/?env_id=ibm%3Ayp%3Aus-south&category=data) (not self-hosted containers inside the same cluster).
+These containers mount a persistent volume for sites (which change after build and deployment time with user generated content) and connect to [MySQL, Redis, and Memcached services from the IBM Cloud catalog](https://console.bluemix.net/catalog/?env_id=ibm%3Ayp%3Aus-south&category=data) (not self-hosted containers inside the same cluster).
 
-After deployment, Drupal developers (who are the end users of the cluster) can manage site lifecycle by delivering configuration or code changes to specific folders ([config](/tree/master/config), [code](/tree/master/code)) in this repository. Commits trigger fresh rebuild and deploys in an [IBM Continuous Delivery](https://console.bluemix.net/catalog/services/continuous-delivery/?taxonomyNavigation=services&cm_mc_uid=36647820015315082453960&cm_mc_sid_50200000=1509381998&env_id=ibm%3Ayp%3Aus-south) pipeline.
+After deployment, Drupal developers (who are the end users of the cluster) can manage site lifecycle by delivering configuration or code changes to specific folders ([config](/tree/master/config), [code](/tree/master/code)) in this repository. Commits trigger fresh rebuild and deploys in an [IBM Continuous Delivery](https://console.bluemix.net/catalog/services/continuous-delivery/?taxonomyNavigation=services&cm_mc_uid=36647820015315082453960&cm_mc_sid_50200000=1509381998&env_id=ibm%3Ayp%3Aus-south) pipeline. Production data can also be synchronized back to the staging environment using file and data migration scripts. 
 
 ## What makes the IBM Cloud different from other Kubernetes providers
 - A secure, high-performance, [IBM Container Service cluster](https://console.bluemix.net/docs/containers/cs_planning.html#cs_planning) (based on Kubernetes) with advanced network and storage configuration options.
