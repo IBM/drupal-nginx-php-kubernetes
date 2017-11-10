@@ -7,7 +7,7 @@ After deployment, Drupal developers (who are the end users of the cluster) can m
 
 ## What makes the IBM Cloud different from other Kubernetes providers
 - A secure, high-performance, [IBM Container Service cluster](https://console.bluemix.net/docs/containers/cs_planning.html#cs_planning) (based on Kubernetes) with advanced network and storage configuration options.
-- Integration with managed MySQL, Redis, and Memcached Databases-as-a-service provided through the Bluemix service catalog.
+- Integration with managed MySQL, Redis, and Memcached Databases-as-a-service provided through the IBM Cloud service catalog.
 - [Multiple levels of security](https://console.bluemix.net/docs/containers/cs_security.html#cs_security) for Docker images stored in the IBM Container Registry, including automatic scanning by the [IBM Vulnerability Advisor](https://www.ibm.com/blogs/bluemix/2017/03/assessing-security-risk-containers-vulnerability-advisor/).
 - Automatic build and deploy workflows with the [IBM Continuous Delivery Service](https://console.bluemix.net/catalog/services/continuous-delivery/?taxonomyNavigation=services&cm_mc_uid=36647820015315082453960&cm_mc_sid_50200000=1509381998&env_id=ibm%3Ayp%3Aus-south) (formerly IBM DevOps Services).
 
@@ -24,7 +24,7 @@ When custom code is checked into this repository, it triggers a Docker image bui
 ## Setup the environment and deploy the cluster
 
 ### One time Container Service and Cloud data services setup
-See the Container Service Kubernetes and Bluemix services (MySQL, Redis, Memcached) [configuration instructions](docs/INITIAL-SETUP.md).
+See the Container Service Kubernetes and IBM Cloud services (MySQL, Redis, Memcached) [configuration instructions](docs/INITIAL-SETUP.md).
 
 ### Building and deploying the first set of containers
 See the Docker container build and Kubernetes deployment [instructions](docs/DEPLOY-CONTAINERS.md).

@@ -1,6 +1,6 @@
 # Toolchain Introduction
 
-This toolchain will enable your containers to automatically build and push to a registry as well as deploy to a Kubernetes cluster hosted on Bluemix. This toolchain will be comprised of multiple pipelines, one for each major component of the cluster. Ideally there would be four different layers in build/deploy process:
+This toolchain will enable your containers to automatically build and push to a registry as well as deploy to a Kubernetes cluster hosted on the IBM Cloud. This toolchain will be comprised of multiple pipelines, one for each major component of the cluster. Ideally there would be four different layers in build/deploy process:
 
   1. Build NGINX/PHP container images
   2. Drupal build layer
@@ -17,7 +17,7 @@ For the purpose of this P0C, we have one repo that contains all of our images an
 
 1. To get started, click on the "hamburger" menu at the top left of Bluemix and select **Dev Ops**.
 
-  ![Bluemix Menu](img/bluemixMenu.PNG)
+  ![IBM Cloud Menu](img/bluemixMenu.PNG)
 
 2. Click on Toolchains on the left pane
 3. Click Create Toolchain
@@ -45,7 +45,7 @@ For the purpose of this P0C, we have one repo that contains all of our images an
   - Name the pipeline **nginx**
   - Click **Create Integration**
 
-11. Before moving on, we need to get a Bluemix API key. Click on **Manage** at the top right of Bluemix, hover over **Security** and select **Bluemix API keys**.
+11. Before moving on, we need to get an IBM Cloud API key. Click on **Manage** at the top right, hover over **Security** and select **IBM Cloud API keys**.
 
 12. Click on **Create**, give your key a name and description, click Create.
 
@@ -68,8 +68,8 @@ For the purpose of this P0C, we have one repo that contains all of our images an
 
 18. Click on the **Jobs** tab. Click on **Add Job** and select **Build**.
   - Under *Builder Type* select **Container Registry**.
-  - Under *API Key* see if your Bluemix API Key appears. If not, click on **Add an existing API Key** and enter the API key that you copied earlier.
-  - For *Bluemix Container Registry namespace* enter **jjdojo**
+  - Under *API Key* see if your IBM Cloud API Key appears. If not, click on **Add an existing API Key** and enter the API key that you copied earlier.
+  - For *IBM Cloud Container Registry namespace* enter **jjdojo**
   - In *Docker image name* enter **nginx**
 
   ![Build Stage](img/buildJob.PNG)

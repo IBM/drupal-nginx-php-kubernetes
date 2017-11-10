@@ -16,7 +16,7 @@ echo $PHP_CLI_VERSION
 # Build each image and push
 ROOT_DIR=`pwd`
 
-# Log into the Bluemix Container Registry
+# Log into the IBM Cloud Container Registry
 bx cr login
 
 # Purge all existing images
