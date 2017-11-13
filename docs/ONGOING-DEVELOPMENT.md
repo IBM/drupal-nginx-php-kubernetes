@@ -6,3 +6,17 @@ Push updates to the `config` directory. The pipeline will detect changes and ini
 
 ## Updating the Drupal and code version
 Push updates to the `code` directory. The pipeline will detect changes and initiate a custom image rebuild.
+
+## Addressing security issues with Vulnerability Advisor
+As container images are built and pushed to the IBM Cloud Container Registry, they are automatically scanned by the Vulnerability Advisor.
+
+You can see whether there are any vulnerabilities in your images by listing the images:
+```bash
+bx cr images
+```
+
+If any of them are listed as `Vulnerable` you can then see the specific issues with:
+
+```bash
+bx cr va $IMAGE_NAME
+```
