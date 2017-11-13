@@ -30,7 +30,7 @@ See the Container Service Kubernetes and IBM Cloud services (MySQL, Redis, Memca
 See the Docker container build and Kubernetes deployment [instructions](docs/DEPLOY-CONTAINERS.md).
 
 ### Ongoing development and operations with GitHub commits
-See the ongoing development [instructions](docs/ONGOING-DEVELOPMENT.md). And the work in progress DevOps [pipeline docs](docs/PIPELINE-SETUP.md).
+See the ongoing development [instructions](docs/ONGOING-DEVELOPMENT.md). And the work in progress DevOps [pipeline docs](docs/PIPELINE-SETUP.md). This shows how container images are rebuilt and how to address security issues detected by the IBM Vulnerability Advisor.
 
 ### Synchronizing data from production back to staging
 There are two [synchronization scripts](docs/SYNCHRONIZING-DATA.md) that can be invoked to bring user generated changes to files or data from production back into the staging environment. You can also execute other scripts inside the containers as well.
