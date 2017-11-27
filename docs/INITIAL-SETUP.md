@@ -8,7 +8,7 @@
 
     ![](img/2-create-cluster.png)
 
-- Select the Standard type of cluster (this allows for storage volumes) and Create.
+- Select the Standard pay-as-you-go type of cluster (this allows for storage volumes and public floating IPs) and Create.
 
     ![](img/3-standard-cluster.png)
 
@@ -25,7 +25,7 @@
 - It will take time for the cluster to complete provisioning, so go get some coffee.
 
 ## Connect to your Kubernetes cluster from your workstation
-- Click on the Access link to download and configure the `bx` and `kubectl` CLIs. Kubectl version >=1.7.6 is required.
+- Click on the Access link to download and configure the `bx` and `kubectl` CLIs. `kubectl` version >=1.7.6 is required.
 
     ![](img/6-access.png)
 
@@ -33,7 +33,7 @@
 - You can then use `kubectl` or the `kubectl proxy` dashboard web UI that starts on localhost to inspect your Kubernetes environment.
 
 ## Provision and bind two MySQL-as-a-Service instances
-- You can do this with the `bx` command too, but I prefer to work with the dashboard as it's a one time setup operation with several options.
+- You can do this with the `bx` command too, but I prefer to work with the dashboard as it's just a one time setup operation with several options to browse through.
 - Go to the hamburger navigation again and choose Data & Analytics.
 
     ![](img/7-hamburger-data-analytics.png)
@@ -42,17 +42,18 @@
 
     ![](img/8-create-data-analytics.png)
 
-- You have a choice of two MySQL-as-a-Service providers, Compose and ClearDB. Compose is the preferred option, but ClearDB is quicker to get running with for a PoC. You can use the free plan.
+- You have a choice of two MySQL-as-a-Service providers, Compose and ClearDB. ClearDB is quicker to get running with for a PoC. You can use the free plan, but if you need better performance, choose a paid plan.
 
     ![](img/9-create-mysql-service.png)
 
-- Take note of the credentials, and save them in a `scripts/kubernetes/secrets/service-credentials.txt` file you copy from [`scripts/kubernetes/secrets/service-credentials.txt.tpl`](../scripts/kubernetes/secrets/service-credentials.txt.tpl).
+- Take note of the credentials, and save them in a `scripts/kubernetes/secrets/service-credentials.txt` file you copy from [`scripts/kubernetes/secrets/service-credentials.txt.tpl`](../scripts/kubernetes/secrets/service-credentials.txt.tpl). There are variables for both a "Staging" database instance and a "Production" instance. They will be separate databases with separate credentials.
+
+For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your database and click the "System Information" tab
+    ![](img/13-cleardb-credentials.png)
 
 For Compose, the credentials will be shown right before you create the service.
     ![](img/12-compose-credentials.png)
 
-For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your database and click the "System Information" tab
-    ![](img/13-cleardb-credentials.png)
 
 - The IBM Cloud Container Service offers a way to autobind credentials, but using a secret from this credentials file gives us the option to use services in another organization and space and/or start it up later as its own pod.
 
@@ -68,7 +69,7 @@ For ClearDB, the credentials can be found in the ClearDB Dashboard. Select your 
 
     ![](img/8-create-data-analytics.png)
 
-- You have a choice of two Redis-as-a-Service providers, Compose and Redis Cloud. Compose is the preferred option, but Redis Cloud has more plan options.
+- You have a choice of two Redis-as-a-Service providers, Compose and Redis Cloud. Redis Cloud has a free tier, so you can just use that. 
 
     ![](img/10-create-redis-service.png)
 
