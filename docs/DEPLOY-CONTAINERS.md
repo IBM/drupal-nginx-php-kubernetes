@@ -62,13 +62,13 @@ kubectl get nodes
 kubectl proxy
 ```
 
-## Optional: Configure your namespace
+## Configure your namespace
 The Dockerfiles in this repo are hardcoded to the `orod` image registry namespace. You need to create your own namespace and update the deployment manifests that reference images.
 
 Install the IBM Cloud Container Registry CLI plugin:
 ```bash
 bx plugin install container-registry -r Bluemix
-bx login
+bx login -a https://api.ng.bluemix.net
 ```
 
 Create a namespace:
