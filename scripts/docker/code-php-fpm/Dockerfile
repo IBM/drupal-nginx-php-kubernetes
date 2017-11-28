@@ -6,6 +6,8 @@ FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-fpm:${PHP_FPM_VERS
 ARG DRUPAL_VERSION
 ARG DRUPAL_MD5
 
+RUN apt-get update -y && apt-get upgrade -y
+
 # Register the COMPOSER_HOME environment variable.
 ENV COMPOSER_HOME=/root/.composer
 
