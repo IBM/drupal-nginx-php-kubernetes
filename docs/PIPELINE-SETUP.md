@@ -24,13 +24,16 @@ For the purpose of this POC, we have one repo that contains all of our images an
   ![IBM Cloud Menu](img/bluemixMenu.PNG)
 
 2. Click on Toolchains on the left pane
-3. Click Create Toolchian
+3. Click Create Toolchain
 4. Scroll down to Other Templates and select **Build Your Own Toolchain**
 
   ![Build your own template](img/customTemplate.PNG)
 
 5. Name toolchain and click **Create**
-6. Click on Add a Tool (img/addtool)
+6. Click on **Add a Tool**
+
+  ![Build your own template](img/addTool.png)
+
 7. Click on **Git Repos and Issue Tracking**
 
   ![Git Integration](img/gitTool.PNG)
@@ -45,7 +48,10 @@ For the purpose of this POC, we have one repo that contains all of our images an
   - Make sure the **Track deployment of code changes** checkbox is checked. This will allow the pipeline to trigger automatically with code changes.
   - Click **Create Integration**
 9. Add another tool
-10. Select **Delivery Pipeline** (img/deliveryPipeline)
+10. Select **Delivery Pipeline**
+
+  ![Git Settings](img/deliveryPipeline.png)
+  
   - Name the pipeline **nginx**
   - Click **Create Integration**
 
