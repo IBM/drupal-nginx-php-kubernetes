@@ -14,13 +14,12 @@ if kubectl get deployments | grep "${IMAGE}" ; then
 
   #Applying configs
 
-  echo "Updating image in the deployment..."
-  echo "Starting rolling update..."
-  kubectl set image deployment/${IMAGE} ${IMAGE}="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-${IMAGE}:latest"
-  echo $?
+  echo "Updating image in the deployment and rehashing deployment..."
+  sed -ie "s/REPLACE_AT_BUILD_TIME/$(date)/g" kubernetes/${IMAGE}.yaml
+  cat kubernetes/${IMAGE}.yaml
 
-  kubectl rollout status deployment/${IMAGE}
-  echo $?
+  echo "Starting rolling update..."
+  kubectl apply -f kubernetes/${IMAGE}.yaml
 
   kubectl get pods
 

@@ -5,6 +5,11 @@ metadata:
   name: php-cli
 spec:
   replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -15,6 +20,9 @@ spec:
       containers:
         -
           env:
+            -
+              name: BUILD_TIME
+              value: 'REPLACE_AT_BUILD_TIME'
             -
               name: HASH_SALT
               valueFrom:
@@ -178,8 +186,8 @@ spec:
                   key: MEMCACHED_PORT_PRD
                   name: service-credentials
           image: "registry.ng.bluemix.net/orod/code-php-cli:latest"
+          imagePullPolicy: Always
           name: php-cli
-          imagePullPolicy: Always # Set to IfNotPresent to improve performance at the expense of caching.
           volumeMounts:
             -
               mountPath: /var/www/drupal/web/sites/default/files-stg

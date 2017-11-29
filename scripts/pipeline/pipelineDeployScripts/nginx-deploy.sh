@@ -11,17 +11,16 @@ REGISTRY_NAMESPACE=$(grep "REGISTRY_NAMESPACE" pipeline/build.properties|cut -d'
 
 echo "Current environment is: ${ENVIRONMENT}"
 
-if kubectl get deployments | grep "${IMAGE}-${ENVIRONMENT}" ; then
+if kubectl get deployments | grep "${IMAGE}" ; then
 
   #Applying configs
 
-  echo "Updating image in the deployment..."
-  echo "Starting rolling update..."
-  kubectl set image deployment/${IMAGE}-${ENVIRONMENT} ${IMAGE}-${ENVIRONMENT}="${REGISTRY_URL}/${REGISTRY_NAMESPACE}/code-${IMAGE}:latest"
-  echo $?
+  echo "Updating image in the deployment and rehashing deployment..."
+  sed -ie "s/REPLACE_AT_BUILD_TIME/$(date)/g" kubernetes/${IMAGE}-${ENVIRONMENT}.yaml
+  cat kubernetes/${IMAGE}-${ENVIRONMENT}.yaml
 
-  kubectl rollout status deployment/${IMAGE}-${ENVIRONMENT}
-  echo $?
+  echo "Starting rolling update..."
+  kubectl apply -f kubernetes/${IMAGE}-${ENVIRONMENT}.yaml
 
   kubectl get pods
 

@@ -19,6 +19,11 @@ metadata:
   name: php-fpm-stg
 spec:
   replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -29,6 +34,9 @@ spec:
       containers:
         -
           env:
+            -
+              name: BUILD_TIME
+              value: 'REPLACE_AT_BUILD_TIME'
             -
               name: MYSQL_USER
               valueFrom:
