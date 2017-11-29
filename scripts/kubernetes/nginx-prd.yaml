@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: nginx-prd
 spec:
-  loadBalancerIP: xxx.xxx.xxx.xxx # Change to public from kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml 
+  loadBalancerIP: xxx.xxx.xxx.xxx # Change to public from kubectl get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml
   ports:
     -
       port: 80
@@ -21,6 +21,11 @@ metadata:
   name: nginx-prd
 spec:
   replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -31,6 +36,9 @@ spec:
       containers:
         -
           env:
+            -
+              name: BUILD_TIME
+              value: 'REPLACE_AT_BUILD_TIME'
             -
               name: ENV
               value: "prd"

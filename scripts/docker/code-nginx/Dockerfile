@@ -9,7 +9,7 @@ FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-nginx:${NGINX_VERSION}
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install prerequisite OS packages
-RUN apt-get update && apt-get install -y php7.0-cli php7.0-xml php-mbstring zip git
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y php7.0-cli php7.0-xml php-mbstring zip git
 
 # --- We do this to add static files, but we should look at an alternative approach.
 

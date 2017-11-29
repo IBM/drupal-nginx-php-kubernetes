@@ -5,6 +5,8 @@ FROM registry.ng.bluemix.net/${REGISTRY_NAMESPACE}/config-php-cli:${PHP_CLI_VERS
 
 ARG DRUSH_VERSION
 
+RUN apt-get update -y && apt-get upgrade -y
+
 # Worker name and index (TODO: where to set this?)
 ENV WORKER_NAME="send-emails" \
    WORKER_INDEX="1"
