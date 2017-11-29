@@ -50,8 +50,8 @@ For the purpose of this POC, we have one repo that contains all of our images an
 9. Add another tool
 10. Select **Delivery Pipeline**
 
-  ![Git Settings](img/deliveryPipeline.png)
-  
+  ![Git Settings](img/deliveryPipeline.PNG)
+
   - Name the pipeline **nginx**
   - Click **Create Integration**
 
@@ -99,7 +99,7 @@ For the purpose of this POC, we have one repo that contains all of our images an
 21. Under *Tester Type*, select **Vulnerability Advisor**
   - Under *API Key* slect the key for your org or enter a new one
   - Under *Bluemix Container Registry Namespace* enter your Namespace
-  - Select the *Docker Image Name* and *Docker Image Tag* that you want to test.
+  - Select the *Docker Image Name* and *Docker Image Tag* that you want to test. Be sure to include the "code-" portion of your image name as seen in the image below.
   - Add any additional testing scripts in the *Test Script* area.
   - When done, click *Save*
 
