@@ -30,6 +30,7 @@ ADD tmp/modules/ /var/www/drupal/web/modules/
 ADD tmp/profiles/ /var/www/drupal/web/profiles/
 ADD tmp/sites/ /var/www/drupal/web/sites/
 ADD tmp/themes/ /var/www/drupal/web/themes/
+ADD tmp/config/ /var/www/drupal/config/
 
 # --- We do the above to add static files, but we should look at an alternative approach.
 
