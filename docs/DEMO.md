@@ -48,7 +48,7 @@ You can exec into the PHP CLI container to [run the `transfer-data.sh` and `tran
 ### 3.3. Using a PHP FPM container to execute `drush` commands
 You can exec into the PHP FPM container to [run the `drush-status.sh` script injected from the `code/drush` directory](PHP-CLI-DRUSH.md). For example: `kubectl exec ${PHP_FPM_CONTAINER_NAME} /var/www/drupal/drush/drush-status.sh`
 
-## 4. Taking advantage of a continous integration pipeline
+## 4. Taking advantage of a continuous integration pipeline
 The [pipeline setup instructions](PIPELINE-SETUP.md) show how IBM DevOps can be used with user-defined scripts and webhooks to initiate build, test, and deployment flows. These can incorporate unit test scripts, security vulnerability assessments, and blue/green rolling deploys. These workflows can reuse build tool Docker images as well, which is a new feature of IBM DevOps services.
 
 ### 4.1. Checking in configuration or code updates
