@@ -28,7 +28,7 @@ RUN composer install --no-scripts --no-autoloader
 
 COPY . ./
 
-RUN composer create-project drupal-composer/drupal-project:8.x /var/www/drupal/ --stability dev --no-interaction
+RUN composer create-project drupal-composer/drupal-project:${DRUPAL_VERSION} /var/www/drupal/ --stability dev --no-interaction
 
 # The above uses the web subdirectory and default composer.json.
 # To customize before install, you can take the following approach instead:
@@ -47,6 +47,7 @@ ADD tmp/modules/ /var/www/drupal/web/modules/
 ADD tmp/profiles/ /var/www/drupal/web/profiles/
 ADD tmp/sites/ /var/www/drupal/web/sites/
 ADD tmp/themes/ /var/www/drupal/web/themes/
+ADD tmp/config/ /var/www/drupal/config/
 
 # One way to do the initial setup.
 # cd /var/www/drupal/web

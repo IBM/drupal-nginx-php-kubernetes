@@ -188,6 +188,7 @@ spec:
           image: "registry.ng.bluemix.net/orod/code-php-cli:latest"
           imagePullPolicy: Always
           name: php-cli
+          imagePullPolicy: Always # Set to IfNotPresent to improve performance at the expense of caching.
           volumeMounts:
             -
               mountPath: /var/www/drupal/web/sites/default/files-stg
